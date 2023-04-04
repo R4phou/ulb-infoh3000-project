@@ -35,9 +35,9 @@ def read_usage_file(path):
     return matrix
 
 
-cost_map = read_file("./../Données/Cost_map.txt")
-production_map = read_file("./../Données/Production_map.txt")
-usage_map = read_usage_file("./../Données/Usage_map.txt")
+cost_map = read_file("Données/Cost_map.txt")
+production_map = read_file("Données/Production_map.txt")
+usage_map = read_usage_file("Données/Usage_map.txt")
 
 print(cost_map)
 print(production_map)
