@@ -1,44 +1,52 @@
-import numpy as np
+from useful import *
+
+PROD_MAX = 10000
+PROX_MAX = 10000
+COMP_MAX = 10000
+
+COST_MAP = read_file("Data/Cost_map.txt")
+PRODUCTION_MAP = read_file("Data/Production_map.txt")
+USAGE_MAP = read_usage_file("Data/Usage_map.txt")
+
+SIZE_X = len(COST_MAP)
+SIZE_Y = len(COST_MAP[0])
+
+WEIGHTS = [0.2, 0.4, 0, 4]
+
+"""Générer une solution"""
+solution = np.zeros((SIZE_X, SIZE_Y))  # matrice avec des 1 et des 0 ()
 
 
-def read_file(path):
-    """Fonction qui lit le fichier et renvoie une matrice (numpy) des nombres du fichier"""
-    with open(path, "r") as file:
-        lines = file.readlines()
-        matrix = np.zeros((len(lines), len(lines[0])-1))
-        for i in range(len(lines)):
-            line = lines[i]
-            for j in range(len(line)):
-                if line[j] != '\n':
-                    matrix[i][j] = int(line[j])
-    return matrix
+def generate_solution():
+    """Génère une solution random"""
 
 
-def read_usage_file(path):
-    """Fonction qui lit le fichier Usage_map
-    Renvoie une matrice de nombres (numpy)
-    Lorsqu'il n'y a rien, c'est remplacé par le nombre 0
-    Les routes R sont remplacées par le nombre 1
-    Les constructions C sont remplacées par le nombre 2
+"""Calcul du score"""
+
+
+def productivity(solution):
+    """Calcule le score de productivité totale d'une solution
+    Solution = matrice de 0 et de 1 (1 = acheté et 0 = Pas acheté)
     """
-    with open(path, "r") as file:
-        lines = file.readlines()
-        matrix = np.zeros((len(lines), len(lines[0])-1))
-        for i in range(len(lines)):
-            line = lines[i]
-            for j in range(len(line)):
-                if line[j] != '\n':
-                    if line[j] == "R":
-                        matrix[i][j] = 1
-                    elif line[j] == "C":
-                        matrix[i][j] = 2
-    return matrix
+    return np.sum(np.multiply(solution, PRODUCTION_MAP))
 
 
-cost_map = read_file("Données/Cost_map.txt")
-production_map = read_file("Données/Production_map.txt")
-usage_map = read_usage_file("Données/Usage_map.txt")
+def proximity(solution):
+    """Calcule le score de proximité totale d'une solution"""
+    return
 
-print(cost_map)
-print(production_map)
-print(usage_map)
+
+def compacity(solution):
+    """Calcule le score de compacité totale d'une solution"""
+    return
+
+
+def calcul_global_score(solution, weights):
+    """Renvoie la somme pondérée des scores partiels"""
+    prod = productivity(solution)
+    comp = compacity(solution)
+    prox = proximity(solution)
+    return weights[0]*prod/PROD_MAX + weights[1]*prox/PROX_MAX + weights[2]*comp/COMP_MAX
+
+
+"""Trouver l'algo à implémenter"""
