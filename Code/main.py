@@ -116,5 +116,5 @@ def calcul_global_score(solution, weights):
                                     Implémentation de l'algorithme
 ----------------------------------------------------------------------------------------------------"""
 solution_claquee = generate_solution()
-np.savetxt("sol_claq.txt",solution_claquee,fmt='%.0f')
+np.savetxt("Results/sol_claq.txt",solution_claquee,fmt='%.0f')
 print(solution_claquee)
