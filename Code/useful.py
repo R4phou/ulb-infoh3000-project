@@ -1,4 +1,5 @@
 import numpy as np
+import random as r
 
 
 def read_file(path):
