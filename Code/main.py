@@ -34,13 +34,17 @@ def generate_solution():
     to_buy_init = [r.randint(0, SIZE_X), r.randint(0, SIZE_Y)]
     # S'assurer que l'emplacement de départ est libre
     while check_in_map(to_buy_init):
-        to_buy_init = (r.randint(0, SIZE_X), r.randint(0, SIZE_Y))
+        to_buy_init = [r.randint(0, SIZE_X), r.randint(0, SIZE_Y)]
+        print("emplacement initial trouvé")
+        print(to_buy_init)
     to_buy = to_buy_init
     budget = 0
     while budget < BUDGET:
         invested_map, budget = buy_position(
             to_buy, invested_map, budget)  # Acheter
+        print("achat d'un terrain")
         to_buy = select_next_pos(to_buy)  # selection de nouvelle position
+    print(budget)
     return invested_map
 
 
@@ -70,7 +74,7 @@ def check_in_map(position):
     Vérifie que la position est bien dans la carte, aussi non
     @return False si la position n'est pas achetable ou n'est pas dans la carte
     """
-    return ((position[0] <= len(USAGE_MAP[0])) or (position[1] <= len(USAGE_MAP)) or (USAGE_MAP[position[0]][position[1]] == 0))
+    return ((position[0] <= len(USAGE_MAP[0])) and (position[1] <= len(USAGE_MAP)) and (USAGE_MAP[position[0]][position[1]] == 0))
 
 
 def check_bought(position, invest_map):
@@ -112,5 +116,5 @@ def calcul_global_score(solution, weights):
                                     Implémentation de l'algorithme
 ----------------------------------------------------------------------------------------------------"""
 solution_claquee = generate_solution()
-
+np.savetxt("sol_claq.txt",solution_claquee,fmt='%.0f')
 print(solution_claquee)
