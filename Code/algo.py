@@ -1,6 +1,6 @@
 from useful import *
 
-r.seed(22)
+# r.seed(4)
 
 COST_MAP = read_file("Data/Cost_map.txt")
 PRODUCTION_MAP = read_file("Data/Production_map.txt")
@@ -31,25 +31,29 @@ def generate_solution():
     """
     invested_map = np.zeros(
         (SIZE_X, SIZE_Y))  # Matrice de la taille de la carte
-    to_buy_init = [r.randint(0, SIZE_X), r.randint(0, SIZE_Y)]
-    # S'assurer que l'emplacement de départ est libre
-    while check_in_map(to_buy_init):
-        to_buy_init = [r.randint(0, SIZE_X), r.randint(0, SIZE_Y)]
-    to_buy = to_buy_init
-    budget = 0
-    i = 0
+    to_buy = get_initial_pos()
+    budget = i = 0
     while budget < BUDGET:
         if i == 4:
             break
-        print("Budget restant: ", budget)
-        print("Prix du terrain à acheter: ", COST_MAP[to_buy[0]][to_buy[1]])
         if budget + COST_MAP[to_buy[0]][to_buy[1]] <= BUDGET:
             invested_map, budget = buy_position(
-                to_buy, invested_map, budget)  # Acheter
+                to_buy, invested_map, budget)  # Achat
         else:
             i += 1
         to_buy = select_next_pos(to_buy)  # selection de nouvelle position
     return invested_map, budget
+
+
+def get_initial_pos():
+    """Fonction qui renvoie la position initiale à partir de laquelle on va commencer à acheter des terrains
+    Vérifie que la position de départ est bien achetable
+    """
+    pos = [r.randint(0, SIZE_X), r.randint(0, SIZE_Y)]
+    # S'assurer que l'emplacement de départ est libre
+    while not check_in_map(pos):
+        pos = [r.randint(0, SIZE_X), r.randint(0, SIZE_Y)]
+    return pos
 
 
 def buy_position(pos, invest_map, budg):
@@ -62,13 +66,13 @@ def buy_position(pos, invest_map, budg):
 
 def select_next_pos(pos):
     x = r.randint(0, 3)
-    if x == 0:
+    if x == 0 and 0 <= pos[0]+1 <= SIZE_X:
         pos[0] += 1
-    elif x == 1:
+    elif x == 1 and 0 <= pos[0]-1 <= SIZE_X:
         pos[0] -= 1
-    elif x == 2:
+    elif x == 2 and 0 <= pos[1]+1 <= SIZE_Y:
         pos[1] += 1
-    elif x == 3:
+    elif x == 3 and 0 <= pos[1]-1 <= SIZE_Y:
         pos[1] -= 1
     return pos
 
@@ -123,7 +127,8 @@ def calcul_global_score(solution, weights):
 
 if __name__ == "__main__":
     import visualize
-    solution_claquee, budget = generate_solution()
+    for i in range(10):
+        solution_claquee, budget = generate_solution()
+        print("Budget utilisé: ", budget)
     visualize.print_usagemap_plus_sol(
-        USAGE_MAP, PRODUCTION_MAP, solution_claquee)
-    print(budget)
+        USAGE_MAP, solution_claquee)
