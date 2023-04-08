@@ -19,13 +19,13 @@ def print_usagemap_plus_sol(usage, production, sol):
                 mat[i][j] = 3
             elif sol[i][j] == 1 and usage[i][j] != 0:
                 mat[i][j] = 4
-    fig, ax = plt.subplots(2)
-    ax[0].matshow(mat, cmap=cmap)
-    ax[0].set_title("USAGE MAP et Achat (vert)")
-    ax[1].set_title("Production Map")
-    im = ax[1].imshow(production, cmap=plt.cm.Blues)
-    ax[1].matshow(production, cmap=plt.cm.Blues)
-    plt.colorbar(im)
+    fig, ax = plt.subplots()
+    ax.matshow(mat, cmap=cmap)
+    ax.set_title("USAGE MAP et Achat (vert)")
+    # ax[1].set_title("Production Map")
+    # im = ax[1].imshow(production, cmap=plt.cm.Blues)
+    # ax[1].matshow(production, cmap=plt.cm.Blues)
+    # plt.colorbar(im)
     plt.show()
 
 

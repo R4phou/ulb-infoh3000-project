@@ -9,7 +9,7 @@ USAGE_MAP = read_usage_file("Data/Usage_map.txt")
 SIZE_X = len(COST_MAP)  # Taille (largeur) de la carte
 SIZE_Y = len(COST_MAP[0])  # Taille (hauteur) de la carte
 
-BUDGET = 50  # en dizaines de milliers d'euros
+BUDGET = 500  # en dizaines de milliers d'euros
 PROD_MAX = 10000  # Valeur max du score de productivité
 PROX_MAX = 10000  # Valeur max du score de proximité
 COMP_MAX = 10000  # Valeur max du score de compacité
@@ -35,15 +35,21 @@ def generate_solution():
     # S'assurer que l'emplacement de départ est libre
     while check_in_map(to_buy_init):
         to_buy_init = [r.randint(0, SIZE_X), r.randint(0, SIZE_Y)]
-        print("emplacement initial trouvé")
-        print(to_buy_init)
     to_buy = to_buy_init
     budget = 0
+    i = 0
     while budget < BUDGET:
-        invested_map, budget = buy_position(
-            to_buy, invested_map, budget)  # Acheter
+        if i == 4:
+            break
+        print("Budget restant: ", budget)
+        print("Prix du terrain à acheter: ", COST_MAP[to_buy[0]][to_buy[1]])
+        if budget + COST_MAP[to_buy[0]][to_buy[1]] <= BUDGET:
+            invested_map, budget = buy_position(
+                to_buy, invested_map, budget)  # Acheter
+        else:
+            i += 1
         to_buy = select_next_pos(to_buy)  # selection de nouvelle position
-    return invested_map
+    return invested_map, budget
 
 
 def buy_position(pos, invest_map, budg):
@@ -116,6 +122,8 @@ def calcul_global_score(solution, weights):
 
 
 if __name__ == "__main__":
-    solution_claquee = generate_solution()
-    np.savetxt("Results/sol_claq.txt", solution_claquee, fmt='%.0f')
-    # print(solution_claquee)
+    import visualize
+    solution_claquee, budget = generate_solution()
+    visualize.print_usagemap_plus_sol(
+        USAGE_MAP, PRODUCTION_MAP, solution_claquee)
+    print(budget)
