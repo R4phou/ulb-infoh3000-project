@@ -66,13 +66,13 @@ def buy_position(pos, invest_map, budg):
 
 def select_next_pos(pos):
     x = r.randint(0, 3)
-    if x == 0 and 0 <= pos[0]+1 <= SIZE_X:
+    if x == 0 and 0 <= pos[0]+1 < SIZE_X:
         pos[0] += 1
-    elif x == 1 and 0 <= pos[0]-1 <= SIZE_X:
+    elif x == 1 and 0 <= pos[0]-1 < SIZE_X:
         pos[0] -= 1
-    elif x == 2 and 0 <= pos[1]+1 <= SIZE_Y:
+    elif x == 2 and 0 <= pos[1]+1 < SIZE_Y:
         pos[1] += 1
-    elif x == 3 and 0 <= pos[1]-1 <= SIZE_Y:
+    elif x == 3 and 0 <= pos[1]-1 < SIZE_Y:
         pos[1] -= 1
     return pos
 
