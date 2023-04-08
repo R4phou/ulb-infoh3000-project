@@ -1,18 +1,22 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-matrice = np.loadtxt("Results/sol_claq.txt")
-fig, ax = plt.subplots()
+# Données pour les graphes
+x = np.linspace(0, 2*np.pi, 100)
+y1 = np.sin(x)
+y2 = np.cos(x)
+y3 = np.tan(x)
 
-min_val, max_val = 0, 70
+# Création de la figure et des sous-figures
+fig, axs = plt.subplots(3, 1, figsize=(8, 8))
 
-intersection_matrix = np.random.randint(0, 10, size=(max_val, max_val))
+# Tracé des graphes sur les sous-figures
+axs[0].plot(x, y1)
+axs[0].set_title('Sinus')
+axs[1].plot(x, y2)
+axs[1].set_title('Cosinus')
+axs[2].plot(x, y3)
+axs[2].set_title('Tangente')
 
-ax.matshow(intersection_matrix, cmap=plt.cm.Blues)
-
-for i in range(15):
-    for j in range(15):
-        c = intersection_matrix[j,i]
-        ax.text(i, j, str(c), va='center', ha='center')
+# Affichage de la figure
 plt.show()
-print(matrice)
