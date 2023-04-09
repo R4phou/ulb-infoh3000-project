@@ -126,7 +126,12 @@ def proximity(solution):
 
 def compacity(solution):
     """Calcule le score de compacité totale d'une solution"""
-    return 0
+    boughts = position_of_item(1,solution)
+    distance_tot = 0
+    for bought in boughts:
+        for i in range(len(boughts)):
+            distance_tot+= distance_between_tuple(bought,boughts[i])
+    return round(1000/distance_tot,3)
 
 
 def calcul_global_score(solution, weights):
