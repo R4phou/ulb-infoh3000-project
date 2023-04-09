@@ -1,6 +1,7 @@
 from useful import *
 
-r.seed(4)
+# r.seed(4)
+
 
 COST_MAP = read_file("data/Cost_map.txt")
 PRODUCTION_MAP = read_file("data/Production_map.txt")
@@ -111,6 +112,7 @@ def proximity(solution):
     """Calcule le score de proximité totale d'une solution
     La proximité est la distance entre les bâtiments (2 dans USAGE_MAP) et le terrain acheté
     retourne la plus grande distance
+    PROXIMITE A MAXIMISER car 1000/distance_tot
     """
     boughts = position_of_item(1, solution)
     distance = 100000
@@ -119,7 +121,7 @@ def proximity(solution):
         for building in BUILDINGS:  # pour chaque terrain acheté, on regarde la distance minimale avec un batiment
             distance = min(distance, distance_between_tuple(bought, building))
         distance_tot += distance  # on ajoute la distance minimale pour un terrain
-    return int(distance_tot)  # simplifier les calculs
+    return round(1000/distance_tot, 3)  # simplifier les calculs
 
 
 def compacity(solution):
@@ -150,9 +152,10 @@ def get_score(solution):
 
 if __name__ == "__main__":
     import visualize
-    # for i in range(100):
+    begin = t.time()
     solution_claquee, budget = generate_solution()
     print("Budget utilisé: ", budget)
     print(get_score(solution_claquee))
+    print("Le programme a pris: ", round(t.time()-begin, 4), "s")
     visualize.print_usagemap_plus_sol(
         USAGE_MAP, solution_claquee)
