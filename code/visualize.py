@@ -3,20 +3,20 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
 
 
-def print_usagemap_plus_sol(usage, sol):
+def print_usagemap_plus_sol_list(usage, sol):
     """
+    sol = liste des tuples de terrains
     USAGE_MAP: 0 libre/ 1 Route/ 2 Construction
     """
     mat = usage
     # [vide, route, constru, acheté, erreur]
     couleurs = ['white', 'lightblue', 'red',  'blue', 'green']
     cmap = ListedColormap(couleurs)
-    for i in range(len(usage)):
-        for j in range(len(usage[0])):
-            if (sol[i][j] == 1 and usage[i][j] == 0):
-                mat[i][j] = 3
-            elif sol[i][j] == 1 and usage[i][j] != 0:
-                mat[i][j] = 4
+    for elem in sol:
+        if usage[elem[1]][elem[0]] == 0:
+            mat[elem[1]][elem[0]] = 3
+        else:
+            mat[elem[1]][elem[0]] = 4
     fig, ax = plt.subplots()
     ax.matshow(mat, cmap=cmap)
     ax.set_title("USAGE MAP et Achat (vert)")
@@ -34,5 +34,5 @@ def print_maps(prod_map, cost_map):
 
 if __name__ == "__main__":
     import algo as m
-    print_usagemap_plus_sol(m.USAGE_MAP, m.generate_solution()[0])
+    print_usagemap_plus_sol_list(m.USAGE_MAP, m.generate_random_solution()[0])
     # print_maps(m.PRODUCTION_MAP, m.COST_MAP)

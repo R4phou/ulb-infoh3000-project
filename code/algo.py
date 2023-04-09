@@ -1,6 +1,6 @@
 from useful import *
 
-# r.seed(4)
+r.seed(4)
 
 
 COST_MAP = read_file("data/Cost_map.txt")
@@ -28,26 +28,38 @@ WEIGHTS = [1, 1, 1]
 ----------------------------------------------------------------------------------------------------"""
 
 
-def generate_solution():
+def generate_compact_solution():
     """
     Génère une solution qui répond aux différentes contraintes (une solution de départ)
     Càd qu'on ne peut pas acheter de routes ou de batiments
     Et qu'on a un budget de 50
     """
-    invested_map = np.zeros(
-        (SIZE_Y, SIZE_X))  # Matrice de la taille de la carte
+    sol = []
     to_buy = get_initial_pos()
     budget = i = 0
     while budget < BUDGET:
-        if i == 4:
+        if i == 15:
             break
-        if budget + COST_MAP[to_buy[1]][to_buy[0]] <= BUDGET:
-            invested_map, budget = buy_position(
-                to_buy, invested_map, budget)  # Achat
+        if (check_in_map(to_buy)) and (to_buy not in sol):
+            if (budget + COST_MAP[to_buy[1]][to_buy[0]] <= BUDGET):
+                budget += COST_MAP[to_buy[1]][to_buy[0]]
+                sol.append(to_buy)
+                i = 0
         else:
             i += 1
         to_buy = select_next_pos(to_buy)  # selection de nouvelle position
-    return invested_map, budget
+    return sol, budget
+
+
+def generate_random_solution():
+    solution = []
+    budget = 0
+    while budget < BUDGET:
+        position = get_initial_pos()
+        if check_in_map(position) and position not in solution:
+            budget += COST_MAP[position[1]][position[0]]
+            solution.append(position)
+    return solution, budget
 
 
 def get_initial_pos():
@@ -61,16 +73,9 @@ def get_initial_pos():
     return pos
 
 
-def buy_position(pos, invest_map, budg):
-    """Achat d'un terrain"""
-    if check_in_map(pos) and check_bought(pos, invest_map):
-        budg += COST_MAP[pos[1]][pos[0]]
-        invest_map[pos[1]][pos[0]] = 1
-    return invest_map, budg
-
-
-def select_next_pos(pos):
+def select_next_pos(old_pos):
     """Position c'est [x,y]"""
+    pos = old_pos[:]
     x = r.randint(0, 3)
     if x == 0 and pos[0]+1 < SIZE_X:
         pos[0] += 1
@@ -91,11 +96,6 @@ def check_in_map(position):
     return ((position[0] < SIZE_X) and (position[1] < SIZE_Y) and (USAGE_MAP[position[1]][position[0]] == 0))
 
 
-def check_bought(position, invest_map):
-    """Vérifie que la position n'est pas déjà achetée"""
-    return invest_map[position[1]][position[0]] == 0
-
-
 """----------------------------------------------------------------------------------------------------
                                             Calcul du score
 ----------------------------------------------------------------------------------------------------"""
@@ -105,7 +105,10 @@ def productivity(solution):
     """Calcule le score de productivité totale d'une solution
     Solution = matrice de 0 et de 1 (1 = acheté et 0 = Pas acheté)
     """
-    return int(np.sum(np.multiply(solution, PRODUCTION_MAP)))
+    score = 0
+    for elem in solution:
+        score += PRODUCTION_MAP[elem[1]][elem[0]]
+    return score
 
 
 def proximity(solution):
@@ -114,10 +117,9 @@ def proximity(solution):
     retourne la plus grande distance
     PROXIMITE A MAXIMISER car 1000/distance_tot
     """
-    boughts = position_of_item(1, solution)
     distance = 100000
     distance_tot = 0
-    for bought in boughts:
+    for bought in solution:
         for building in BUILDINGS:  # pour chaque terrain acheté, on regarde la distance minimale avec un batiment
             distance = min(distance, distance_between_tuple(bought, building))
         distance_tot += distance  # on ajoute la distance minimale pour un terrain
@@ -126,12 +128,11 @@ def proximity(solution):
 
 def compacity(solution):
     """Calcule le score de compacité totale d'une solution"""
-    boughts = position_of_item(1,solution)
     distance_tot = 0
-    for bought in boughts:
-        for i in range(len(boughts)):
-            distance_tot+= distance_between_tuple(bought,boughts[i])
-    return round(1000/distance_tot,3)
+    for bought in solution:
+        for i in range(len(solution)):
+            distance_tot += distance_between_tuple(bought, solution[i])
+    return round(1000/distance_tot, 3)
 
 
 def calcul_global_score(solution, weights):
@@ -158,9 +159,9 @@ def get_score(solution):
 if __name__ == "__main__":
     import visualize
     begin = t.time()
-    solution_claquee, budget = generate_solution()
+    solution_claquee, budget = generate_random_solution()
     print("Budget utilisé: ", budget)
     print(get_score(solution_claquee))
     print("Le programme a pris: ", round(t.time()-begin, 4), "s")
-    visualize.print_usagemap_plus_sol(
+    visualize.print_usagemap_plus_sol_list(
         USAGE_MAP, solution_claquee)
