@@ -1,2 +1,3 @@
-Code/test.py
-Results/
+code/test.py
+results/
+code/__pycache__/

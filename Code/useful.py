@@ -24,7 +24,7 @@ def read_usage_file(path):
     """
     with open(path, "r") as file:
         lines = file.readlines()
-        matrix = np.zeros((len(lines), len(lines[0])-1))
+        matrix = np.zeros((len(lines), len(lines[0])-1))  # -1 car \n
         for i in range(len(lines)):
             line = lines[i]
             for j in range(len(line)):

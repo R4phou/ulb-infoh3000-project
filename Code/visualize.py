@@ -2,8 +2,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
 
-import main
-
 
 def print_usagemap_plus_sol(usage, sol):
     """
@@ -35,6 +33,6 @@ def print_maps(prod_map, cost_map):
 
 
 if __name__ == "__main__":
-    import main as m
-    print_usagemap_plus_sol(m.USAGE_MAP, m.generate_solution())
+    import algo as m
+    print_usagemap_plus_sol(m.USAGE_MAP, m.generate_solution()[0])
     # print_maps(m.PRODUCTION_MAP, m.COST_MAP)
