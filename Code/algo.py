@@ -1,10 +1,14 @@
 from useful import *
 
-# r.seed(4)
+r.seed(4)
 
 COST_MAP = read_file("data/Cost_map.txt")
 PRODUCTION_MAP = read_file("data/Production_map.txt")
 USAGE_MAP = read_usage_file("data/Usage_map.txt")
+
+
+# Liste des positions de tous les batiments (x,y)
+BUILDINGS = position_of_item(2, USAGE_MAP)
 
 SIZE_X = len(COST_MAP[0])  # Taille (largeur) de la carte
 SIZE_Y = len(COST_MAP)  # Taille (hauteur) de la carte
@@ -100,17 +104,27 @@ def productivity(solution):
     """Calcule le score de productivité totale d'une solution
     Solution = matrice de 0 et de 1 (1 = acheté et 0 = Pas acheté)
     """
-    return np.sum(np.multiply(solution, PRODUCTION_MAP))
+    return int(np.sum(np.multiply(solution, PRODUCTION_MAP)))
 
 
 def proximity(solution):
-    """Calcule le score de proximité totale d'une solution"""
-    return
+    """Calcule le score de proximité totale d'une solution
+    La proximité est la distance entre les bâtiments (2 dans USAGE_MAP) et le terrain acheté
+    retourne la plus grande distance
+    """
+    boughts = position_of_item(1, solution)
+    distance = 100000
+    distance_tot = 0
+    for bought in boughts:
+        for building in BUILDINGS:  # pour chaque terrain acheté, on regarde la distance minimale avec un batiment
+            distance = min(distance, distance_between_tuple(bought, building))
+        distance_tot += distance  # on ajoute la distance minimale pour un terrain
+    return int(distance_tot)  # simplifier les calculs
 
 
 def compacity(solution):
     """Calcule le score de compacité totale d'une solution"""
-    return
+    return 0
 
 
 def calcul_global_score(solution, weights):
@@ -119,6 +133,14 @@ def calcul_global_score(solution, weights):
     comp = compacity(solution)
     prox = proximity(solution)
     return weights[0]*prod/PROD_MAX + weights[1]*prox/PROX_MAX + weights[2]*comp/COMP_MAX
+
+
+def get_score(solution):
+    """Renvoie la liste des scores [prod, prox, comp]"""
+    prod = productivity(solution)
+    comp = compacity(solution)
+    prox = proximity(solution)
+    return [prod, prox, comp]
 
 
 """----------------------------------------------------------------------------------------------------
@@ -131,5 +153,6 @@ if __name__ == "__main__":
     # for i in range(100):
     solution_claquee, budget = generate_solution()
     print("Budget utilisé: ", budget)
+    print(get_score(solution_claquee))
     visualize.print_usagemap_plus_sol(
         USAGE_MAP, solution_claquee)

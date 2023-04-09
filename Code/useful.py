@@ -34,3 +34,13 @@ def read_usage_file(path):
                     elif line[j] == "C":
                         matrix[i][j] = 2
     return matrix
+
+
+def position_of_item(item, matrice):
+    """Fonction retournant la liste de toutes les positions des buildings dans la usage map"""
+    indices = np.where(matrice == item)
+    return list(zip(indices[1], indices[0]))
+
+
+def distance_between_tuple(tup1, tup2):
+    return np.sqrt((tup1[0]-tup2[0])**2 + (tup1[1]-tup2[1])**2)
