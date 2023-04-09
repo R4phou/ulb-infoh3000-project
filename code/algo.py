@@ -1,6 +1,6 @@
 from useful import *
 
-r.seed(4)
+# r.seed(4)
 
 
 COST_MAP = read_file("data/Cost_map.txt")
@@ -54,11 +54,17 @@ def generate_compact_solution():
 def generate_random_solution():
     solution = []
     budget = 0
+    i = 0
     while budget < BUDGET:
+        if i == 4:
+            break
         position = get_initial_pos()
-        if check_in_map(position) and position not in solution:
+        if budget + COST_MAP[position[1]][position[0]] <= BUDGET and check_in_map(position) and position not in solution:
             budget += COST_MAP[position[1]][position[0]]
             solution.append(position)
+            i = 0
+        else:
+            i += 1
     return solution, budget
 
 
@@ -159,8 +165,10 @@ def get_score(solution):
 if __name__ == "__main__":
     import visualize
     begin = t.time()
-    solution_claquee, budget = generate_random_solution()
-    print("Budget utilisé: ", budget)
+    for i in range(100):
+        solution_claquee, budget = generate_random_solution()
+        # if (budget > 50):
+        print("Budget utilisé: ", budget, "itération = ", i)
     print(get_score(solution_claquee))
     print("Le programme a pris: ", round(t.time()-begin, 4), "s")
     visualize.print_usagemap_plus_sol_list(
