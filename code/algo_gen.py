@@ -4,18 +4,21 @@ from algo import *
 def selection(population, scores_pop):
     """Selection d'un algorithme génétique
     Nico et Raph
+    Mercredi 12 aprem 14h
     """
 
 
 def reproduction(population):
     """Reproduction d'un algorithme génétique
     Alex et Raph
+    Vendredi aprem
     """
 
 
 def mutation(population):
     """Mutation d'un algorithme génétique
     Nico et Alex
+    Samedi aprem
     """
 
 
