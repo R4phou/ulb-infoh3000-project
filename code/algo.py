@@ -165,7 +165,7 @@ def get_score(solution):
 
 def generate_n_solutions(n):
     # print(get_score(generate_compact_solution()))
-    return [(generate_random_solution()[0]) for i in range(n)]
+    return [generate_random_solution()[0] for i in range(n)]
 
 
 def get_scores(solutions):
@@ -175,7 +175,7 @@ def get_scores(solutions):
 if __name__ == "__main__":
     import visualize as v
     begin = t.time()
-
+    # v.print_usagemap_plus_sol_list(USAGE_MAP, generate_random_solution()[0])
     solutions = generate_n_solutions(500)
     scores = get_scores(solutions)
     print("Le programme a pris: ", round(t.time()-begin, 4), "s")

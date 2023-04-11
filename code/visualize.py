@@ -44,7 +44,7 @@ def print_3D_solutions(scores):
     ax.set_xlabel('Productivity')
     ax.set_ylabel('Proximity')
     ax.set_zlabel('Compacity')
-    ax.set_xlim(0, 20)
+    ax.set_xlim(1, 3)
     ax.set_ylim(0, 500)
     ax.set_zlim(0, 5000)
 
