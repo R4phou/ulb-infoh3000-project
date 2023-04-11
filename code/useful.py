@@ -45,3 +45,7 @@ def position_of_item(item, matrice):
 
 def distance_between_tuple(tup1, tup2):
     return np.sqrt((tup1[0]-tup2[0])**2 + (tup1[1]-tup2[1])**2)
+
+
+if __name__ == "__main__":
+    print(distance_between_tuple((4, 0), (0, 3)))

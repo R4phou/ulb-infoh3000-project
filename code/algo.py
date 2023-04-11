@@ -114,7 +114,7 @@ def productivity(solution):
     score = 0
     for elem in solution:
         score += PRODUCTION_MAP[elem[1]][elem[0]]
-    return score
+    return round(1/score, 3)
 
 
 def proximity(solution):
@@ -129,16 +129,17 @@ def proximity(solution):
         for building in BUILDINGS:  # pour chaque terrain acheté, on regarde la distance minimale avec un batiment
             distance = min(distance, distance_between_tuple(bought, building))
         distance_tot += distance  # on ajoute la distance minimale pour un terrain
-    return round(1000/distance_tot, 3)  # simplifier les calculs
+    return round(distance_tot, 3)  # simplifier les calculs
 
 
 def compacity(solution):
     """Calcule le score de compacité totale d'une solution"""
     distance_tot = 0
-    for bought in solution:
-        for i in range(len(solution)):
-            distance_tot += distance_between_tuple(bought, solution[i])
-    return round(1000/distance_tot, 3)
+    n = len(solution)
+    for i in range(n):
+        for j in range(i+1, n):
+            distance_tot += distance_between_tuple(solution[i], solution[j])
+    return round(distance_tot, 3)
 
 
 def calcul_global_score(solution, weights):
@@ -162,14 +163,21 @@ def get_score(solution):
 ----------------------------------------------------------------------------------------------------"""
 
 
+def generate_n_solutions(n):
+    # print(get_score(generate_compact_solution()))
+    return [(generate_random_solution()[0]) for i in range(n)]
+
+
+def get_scores(solutions):
+    return [get_score(solutions[i]) for i in range(len(solutions))]
+
+
 if __name__ == "__main__":
-    import visualize
+    import visualize as v
     begin = t.time()
-    for i in range(100):
-        solution_claquee, budget = generate_random_solution()
-        # if (budget > 50):
-        print("Budget utilisé: ", budget, "itération = ", i)
-    print(get_score(solution_claquee))
+
+    solutions = generate_n_solutions(500)
+    scores = get_scores(solutions)
+    print(scores)
     print("Le programme a pris: ", round(t.time()-begin, 4), "s")
-    visualize.print_usagemap_plus_sol_list(
-        USAGE_MAP, solution_claquee)
+    v.print_3D_solutions(scores)
