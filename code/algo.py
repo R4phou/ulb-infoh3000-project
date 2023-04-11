@@ -114,7 +114,7 @@ def productivity(solution):
     score = 0
     for elem in solution:
         score += PRODUCTION_MAP[elem[1]][elem[0]]
-    return round(1/score, 3)
+    return round(100/score, 3)
 
 
 def proximity(solution):
@@ -178,6 +178,5 @@ if __name__ == "__main__":
 
     solutions = generate_n_solutions(500)
     scores = get_scores(solutions)
-    print(scores)
     print("Le programme a pris: ", round(t.time()-begin, 4), "s")
     v.print_3D_solutions(scores)
