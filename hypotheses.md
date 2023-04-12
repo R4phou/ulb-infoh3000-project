@@ -21,10 +21,17 @@ Pour le calcul de la **compacité**:
 - On renvoie 1000/distance totale entre chaque terrain acheté
 - Même raison de multiplication par 1000
 
-# Algorithme génétioque
+# Algorithme génétique
 
 - Génération de population
 - Evaluation du score
-- Sélection <---
+
+## Sélection
+
+Sélection par dominance de Pareto:
+
+1. Trier les scores de population par ordre croissant par critère (3 sous liste)
+2. Dans une boucle, enlever et conserver celui qui est dominant dans le sens de Pareto
+
 - Reproduction
 - Mutation <---

@@ -164,7 +164,6 @@ def get_score(solution):
 
 
 def generate_n_solutions(n):
-    # print(get_score(generate_compact_solution()))
     return [generate_random_solution()[0] for i in range(n)]
 
 
