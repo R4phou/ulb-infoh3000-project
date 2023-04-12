@@ -2,3 +2,4 @@ code/test.py
 results/
 code/__pycache__/
 .vscode/
+.venv/

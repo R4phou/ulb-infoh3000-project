@@ -30,8 +30,16 @@ Pour le calcul de la **compacité**:
 
 Sélection par dominance de Pareto:
 
-1. Trier les scores de population par ordre croissant par critère (3 sous liste)
-2. Dans une boucle, enlever et conserver celui qui est dominant dans le sens de Pareto
+Pour chaque individu de la population, on calcule le nombre d'individu qui le dominent
+(par comparaison avec tous les autres membres de la population) qu'on stocke dans un dictionnaire  
+Cf **sort_by_dominance(scores_pop)**
 
-- Reproduction
-- Mutation <---
+La comparaison entre 2 individus se fait via **if_dominated(ind1, ind2)**:  
+-> renvoie vrai si ind2 domine ind1 et false dans les autres cas  
+(attention: false peut signifier que ind1 domine ind2 mais dans notre utilisation osef)
+
+Enfin, on sélectionne la moitié des individus qui ont le score le plus bas dans le dictionnaire  
+Cf **selection_dominance_Pareto(population, scores_pop)**
+
+## Reproduction
+## Mutation <---
