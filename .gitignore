@@ -3,3 +3,6 @@ results/
 code/__pycache__/
 .vscode/
 .venv/
+
+# ignore all files with .pyc extension
+*.pyc

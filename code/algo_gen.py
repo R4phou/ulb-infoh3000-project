@@ -89,6 +89,6 @@ if __name__ == "__main__":
           newscore)
     print(len(scores_pop_100))
     print(len(newscore))
+    print("Le programme a pris: ", round(t.time()-begin, 4), "s")
     v.print_3D_solutions(scores_pop_100)
     v.print_3D_solutions(newscore)
-    print("Le programme a pris: ", round(t.time()-begin, 4), "s")

@@ -24,12 +24,14 @@ def print_usagemap_plus_sol_list(usage, sol):
     plt.show()
 
 
-def print_maps(prod_map, cost_map):
-    fig, axs = plt.subplots(2)
+def print_maps(prod_map, cost_map, prox_map):
+    fig, axs = plt.subplots(3)
     axs[0].set_title("Production Map")
     axs[0].matshow(prod_map, cmap=plt.cm.Oranges)
     axs[1].set_title("Cost Map")
     axs[1].matshow(cost_map, cmap=plt.cm.Blues)
+    axs[2].set_title("Proximity Map")
+    axs[2].matshow(prox_map, cmap=plt.cm.Greens)
     plt.show()
 
 

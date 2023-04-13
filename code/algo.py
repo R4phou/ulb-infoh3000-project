@@ -2,14 +2,16 @@ from useful import *
 
 # r.seed(4)
 
-
+# Matrices de données
 COST_MAP = read_file("data/Cost_map.txt")
 PRODUCTION_MAP = read_file("data/Production_map.txt")
 USAGE_MAP = read_usage_file("data/Usage_map.txt")
 
-
 # Liste des positions de tous les batiments (x,y)
 BUILDINGS = position_of_item(2, USAGE_MAP)
+# Matrice de proximité
+PROXIMITY_MAP = calculate_proximity_map(USAGE_MAP, BUILDINGS)
+
 
 SIZE_X = len(COST_MAP[0])  # Taille (largeur) de la carte
 SIZE_Y = len(COST_MAP)  # Taille (hauteur) de la carte
@@ -118,18 +120,11 @@ def productivity(solution):
 
 
 def proximity(solution):
-    """Calcule le score de proximité totale d'une solution
-    La proximité est la distance entre les bâtiments (2 dans USAGE_MAP) et le terrain acheté
-    retourne la plus grande distance
-    PROXIMITE A MAXIMISER car 1000/distance_tot
-    """
-    distance = 100000
+    """Calcule le score de proximité totale d'une solution en sommant la valeur de chaque parcelle de la proximity_map"""
     distance_tot = 0
     for bought in solution:
-        for building in BUILDINGS:  # pour chaque terrain acheté, on regarde la distance minimale avec un batiment
-            distance = min(distance, distance_between_tuple(bought, building))
-        distance_tot += distance  # on ajoute la distance minimale pour un terrain
-    return round(distance_tot, 3)  # simplifier les calculs
+        distance_tot += PROXIMITY_MAP[bought[1]][bought[0]]
+    return round(distance_tot, 3)  # simplifier les calculs en arrondissant
 
 
 def compacity(solution):
@@ -178,4 +173,5 @@ if __name__ == "__main__":
     solutions = generate_n_solutions(500)
     scores = get_scores(solutions)
     print("Le programme a pris: ", round(t.time()-begin, 4), "s")
-    v.print_3D_solutions(scores)
+    v.print_maps(USAGE_MAP, PRODUCTION_MAP, PROXIMITY_MAP)
+    #v.print_3D_solutions(scores)
