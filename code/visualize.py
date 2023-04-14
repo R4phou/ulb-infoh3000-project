@@ -76,8 +76,50 @@ def print_3D_solutions(scores):
     plt.show()
 
 
+def print_3D_evolutions(scores):
+    """Fonction qui reçoit en paramètre une liste contenant les scores initiaux, intermédiaires et finaux des solutions
+    [prod, prox, comp] = [x, y, z]
+
+    """
+    # Créer la figure et l'axe 3D
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+    ax.set_xlabel('Productivity')
+    ax.set_ylabel('Proximity')
+    ax.set_zlabel('Compacity')
+    ax.set_xlim(1, 3)
+    ax.set_ylim(0, 500)
+    ax.set_zlim(0, 5000)
+
+    # Les coordonnées des points
+    prods0 = [i[0] for i in scores[0]]
+    proxs0 = [i[1] for i in scores[0]]
+    comps0 = [i[2] for i in scores[0]]
+
+    # Ajouter les points à l'axe 3D
+    ax.scatter(prods0, proxs0, comps0, c='r')
+    # Les coordonnées des points
+    prods1 = [i[0] for i in scores[1]]
+    proxs1 = [i[1] for i in scores[1]]
+    comps1 = [i[2] for i in scores[1]]
+
+    # Ajouter les points à l'axe 3D
+    ax.scatter(prods1, proxs1, comps1, c='b')
+    # Les coordonnées des points
+    prods2 = [i[0] for i in scores[2]]
+    proxs2 = [i[1] for i in scores[2]]
+    comps2 = [i[2] for i in scores[2]]
+
+    # Ajouter les points à l'axe 3D
+    ax.scatter(prods2, proxs2, comps2, c='g')
+
+    # Afficher le graphique
+    plt.show()
+
+
 if __name__ == "__main__":
     import init as i
     print_maps(i.PRODUCTION_MAP, i.COST_MAP, i.PROXIMITY_MAP)
-    saved_scores=np.loadtxt("results/scores_gen100_pop1000.csv", delimiter=",")
+    saved_scores = np.loadtxt(
+        "results/scores_gen100_pop1000.csv", delimiter=",")
     print_3D_solutions(saved_scores)

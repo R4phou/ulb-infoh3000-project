@@ -123,7 +123,20 @@ def algo_genetic(population, nb_gen):
         reproduction(population)
         score_pop = get_scores(population)
         mutation(population)
-    return score_pop,population
+    return score_pop, population
+
+
+def algo_genetic_evolution(population, nb_gen):
+    score_pop = get_scores(population)
+    evolution0 = score_pop
+    for gen in tqdm(range(nb_gen), desc="Générations"):
+        population = selection_dominance_Pareto(population, score_pop)
+        reproduction(population)
+        score_pop = get_scores(population)
+        if gen == 10:
+            evolution1 = score_pop
+        mutation(population)
+    return score_pop, [evolution0, evolution1, score_pop]
 
 
 if __name__ == "__main__":
