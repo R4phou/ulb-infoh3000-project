@@ -152,6 +152,13 @@ def get_score(solution):
     prox = proximity(solution)
     return [prod, prox, comp]
 
+def get_price(individu):
+    """Renvoie le cout d'un individu"""
+    price = 0
+    for elem in individu:
+        price += COST_MAP[elem[1]][elem[0]]
+    return price
+
 
 """----------------------------------------------------------------------------------------------------
                                     Implémentation de l'algorithme
@@ -170,7 +177,8 @@ if __name__ == "__main__":
     import visualize as v
     begin = t.time()
     solutions = generate_n_solutions(500)
-    scores = get_scores(solutions)
+    for solution in solutions:
+        print(get_price(solution))
     print("Le programme a pris: ", round(t.time()-begin, 4), "s")
     v.print_maps(USAGE_MAP, PRODUCTION_MAP, PROXIMITY_MAP)
     # v.print_3D_solutions(scores)
