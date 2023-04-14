@@ -2,7 +2,7 @@ code/test.py
 results/
 code/__pycache__/
 .vscode/
-.venv/
+venv/
 
 # ignore all files with .pyc extension
-*.pyc
+code/__pycache__/*.pyc
