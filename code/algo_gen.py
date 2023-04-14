@@ -123,7 +123,7 @@ def algo_genetic(population, nb_gen):
         reproduction(population)
         score_pop = get_scores(population)
         mutation(population)
-    return score_pop
+    return score_pop,population
 
 
 if __name__ == "__main__":
