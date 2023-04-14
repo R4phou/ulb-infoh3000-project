@@ -47,19 +47,24 @@ def distance_between_tuple(tup1, tup2):
     """Fonction qui calcule la distance entre deux tuples"""
     return np.sqrt((tup1[0]-tup2[0])**2 + (tup1[1]-tup2[1])**2)
 
-def calculate_proximity_map(usage_map,buildings):
+
+def calculate_proximity_map(usage_map, buildings):
     """Fonction qui calcule la matrice de proximité"""
     mat = np.zeros((len(usage_map), len(usage_map[0])))
     for i in range(len(usage_map)):
         for j in range(len(usage_map[0])):
             if usage_map[i][j] == 2:
-                mat[i][j] = 0 # si c'est un batiment, la distance est 0
+                mat[i][j] = 0  # si c'est un batiment, la distance est 0
             else:
-                mat[i][j]=100000
+                mat[i][j] = 100000
                 for building in buildings:
-                    mat[i][j] = min(mat[i][j], distance_between_tuple((i, j), building)) # compare la distance entre le tuple et chaque batiment puis prends le minimum
+                    dist = distance_between_tuple((j, i), building)
+                    if dist < mat[i][j]:
+                        mat[i][j] = dist
+    np.savetxt("proximity_map.txt", mat, fmt="%d")
     return mat
 
 
 if __name__ == "__main__":
-    print(distance_between_tuple((4, 0), (0, 3)))
+    import algo as a
+    # mat = calculate_proximity_map(a.USAGE_MAP, a.BUILDINGS)

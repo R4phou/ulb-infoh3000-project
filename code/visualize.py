@@ -24,6 +24,20 @@ def print_usagemap_plus_sol_list(usage, sol):
     plt.show()
 
 
+def print_usage_map(usage):
+    """
+    USAGE_MAP: 0 libre/ 1 Route/ 2 Construction
+    """
+    mat = usage
+    # [vide, route, constru, acheté, erreur]
+    couleurs = ['white', 'lightblue', 'red',  'blue', 'green']
+    cmap = ListedColormap(couleurs)
+    fig, ax = plt.subplots()
+    ax.matshow(mat, cmap=cmap)
+    ax.set_title("USAGE MAP")
+    plt.show()
+
+
 def print_maps(prod_map, cost_map, prox_map):
     fig, axs = plt.subplots(3)
     axs[0].set_title("Production Map")
@@ -64,6 +78,4 @@ def print_3D_solutions(scores):
 
 if __name__ == "__main__":
     import algo as m
-    # print_usagemap_plus_sol_list(m.USAGE_MAP, m.generate_random_solution()[0])
-    # print_maps(m.PRODUCTION_MAP, m.COST_MAP)
-    print_3D_solutions(scores=0)
+    print_usage_map(m.USAGE_MAP)

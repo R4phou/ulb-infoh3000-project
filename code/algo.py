@@ -169,9 +169,8 @@ def get_scores(solutions):
 if __name__ == "__main__":
     import visualize as v
     begin = t.time()
-    # v.print_usagemap_plus_sol_list(USAGE_MAP, generate_random_solution()[0])
     solutions = generate_n_solutions(500)
     scores = get_scores(solutions)
     print("Le programme a pris: ", round(t.time()-begin, 4), "s")
     v.print_maps(USAGE_MAP, PRODUCTION_MAP, PROXIMITY_MAP)
-    #v.print_3D_solutions(scores)
+    # v.print_3D_solutions(scores)
