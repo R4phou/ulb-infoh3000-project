@@ -65,5 +65,5 @@ def calculate_proximity_map(usage_map, buildings):
 
 
 if __name__ == "__main__":
-    import algo as a
-    # mat = calculate_proximity_map(a.USAGE_MAP, a.BUILDINGS)
+    import init as i
+    

@@ -77,5 +77,7 @@ def print_3D_solutions(scores):
 
 
 if __name__ == "__main__":
-    import algo as m
-    print_usage_map(m.USAGE_MAP)
+    import init as i
+    print_maps(i.USAGE_MAP, i.PRODUCTION_MAP, i.PROXIMITY_MAP)
+    saved_sol=np.loadtxt("results/scores_gen100_pop1000.csv", delimiter=",")
+    print_3D_solutions(saved_sol)

@@ -42,4 +42,5 @@ Enfin, on sélectionne la moitié des individus qui ont le score le plus bas dan
 Cf **selection_dominance_Pareto(population, scores_pop)**
 
 ## Reproduction
+Un crossover uniforme à été utilisé pour la reproduction des solutions. Cela consiste à prendre aléatoirement du parent 1 ou 2.
 ## Mutation <---

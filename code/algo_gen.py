@@ -1,4 +1,5 @@
-from algo import *
+from init import *
+from tqdm import tqdm
 
 
 def selection(population, scores_pop):
@@ -101,7 +102,6 @@ def reproduction(population):
     for i in range(0, len(population), 2):
         individu1 = population[i]
         individu2 = population[i+1]
-        # print(get_price(individu1), get_price(individu2))
         child1, child2 = crossover_uniform(individu1, individu2)
         population.append(child1)
         population.append(child2)
@@ -118,9 +118,7 @@ def mutation(population):
 
 def algo_genetic(population, nb_gen):
     score_pop = get_scores(population)
-    # v.print_3D_solutions(score_pop)
-    for gen in range(nb_gen):
-        print("Génération n°", gen+1, "/", nb_gen)
+    for gen in tqdm(range(nb_gen), desc="Générations"):
         population = selection_dominance_Pareto(population, score_pop)
         reproduction(population)
         score_pop = get_scores(population)
@@ -130,7 +128,6 @@ def algo_genetic(population, nb_gen):
 
 if __name__ == "__main__":
     import visualize as v
-    r.seed(1)
     begin = t.time()
     population_100 = generate_n_solutions(1000)
     score_pop = algo_genetic(population_100, 100)

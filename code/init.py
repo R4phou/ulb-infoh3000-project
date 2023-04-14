@@ -1,6 +1,7 @@
 from useful import *
 
-# r.seed(4)
+time_init=t.time()
+print("Initialisation du programme")
 
 # Matrices de données
 COST_MAP = read_file("data/Cost_map.txt")
@@ -11,19 +12,13 @@ USAGE_MAP = read_usage_file("data/Usage_map.txt")
 BUILDINGS = position_of_item(2, USAGE_MAP)
 # Matrice de proximité
 PROXIMITY_MAP = calculate_proximity_map(USAGE_MAP, BUILDINGS)
-
+print("Matrices chargées en", round(t.time()-time_init,5), "secondes")
 
 SIZE_X = len(COST_MAP[0])  # Taille (largeur) de la carte
 SIZE_Y = len(COST_MAP)  # Taille (hauteur) de la carte
 
 BUDGET = 50  # en dizaines de milliers d'euros
-PROD_MAX = 10000  # Valeur max du score de productivité
-PROX_MAX = 10000  # Valeur max du score de proximité
-COMP_MAX = 10000  # Valeur max du score de compacité
 
-
-# Poids de la somme pondérée [Proximité, Productivité, Compacité]
-WEIGHTS = [1, 1, 1]
 
 """----------------------------------------------------------------------------------------------------
                                         Génération des solutions
@@ -137,14 +132,6 @@ def compacity(solution):
     return round(distance_tot, 3)
 
 
-def calcul_global_score(solution, weights):
-    """Renvoie la somme pondérée des scores partiels"""
-    prod = productivity(solution)
-    comp = compacity(solution)
-    prox = proximity(solution)
-    return weights[0]*prod/PROD_MAX + weights[1]*prox/PROX_MAX + weights[2]*comp/COMP_MAX
-
-
 def get_score(solution):
     """Renvoie la liste des scores [prod, prox, comp]"""
     prod = productivity(solution)
@@ -177,8 +164,4 @@ if __name__ == "__main__":
     import visualize as v
     begin = t.time()
     solutions = generate_n_solutions(500)
-    for solution in solutions:
-        print(get_price(solution))
     print("Le programme a pris: ", round(t.time()-begin, 4), "s")
-    v.print_maps(USAGE_MAP, PRODUCTION_MAP, PROXIMITY_MAP)
-    # v.print_3D_solutions(scores)
