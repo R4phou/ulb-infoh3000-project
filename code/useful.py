@@ -61,7 +61,6 @@ def calculate_proximity_map(usage_map, buildings):
                     dist = distance_between_tuple((j, i), building)
                     if dist < mat[i][j]:
                         mat[i][j] = dist
-    np.savetxt("proximity_map.txt", mat, fmt="%d")
     return mat
 
 

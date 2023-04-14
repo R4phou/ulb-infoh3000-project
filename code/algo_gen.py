@@ -81,14 +81,8 @@ if __name__ == "__main__":
     begin = t.time()
     population_100 = generate_n_solutions(100)
     scores_pop_100 = get_scores(population_100)
-    print(scores_pop_100)
-
     newpop, newscore = selection_dominance_Pareto(
         population_100, scores_pop_100)
-    print("--------------------------------------------------------------------------\n",
-          newscore)
-    print(len(scores_pop_100))
-    print(len(newscore))
     print("Le programme a pris: ", round(t.time()-begin, 4), "s")
     v.print_3D_solutions(scores_pop_100)
     v.print_3D_solutions(newscore)
