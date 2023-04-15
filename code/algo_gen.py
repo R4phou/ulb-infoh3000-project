@@ -68,6 +68,34 @@ def crossover_simple(individu1, individu2):
     return new_individu1, new_individu2
 
 
+# def crossover_uniform(individu1, individu2):
+#     """Crossover d'un algorithme génétique avec une coupe aléatoire en respectant le budget
+#     """
+#     new_individu1 = []
+#     new_individu2 = []
+#     len_individu1 = len(individu1)
+#     len_individu2 = len(individu2)
+#     max_len = max(len_individu1, len_individu2)
+#     for i in range(max_len):
+#         choose = r.randint(0, 1)
+#         if i < len_individu1 and get_price(new_individu1) < BUDGET and i < len_individu2:
+#             if choose == 0:
+#                 new_individu1.append(individu1[i])
+#             else:
+#                 new_individu1.append(individu2[i])
+#         if i < len_individu2 and get_price(new_individu2) < BUDGET and i < len_individu1:
+#             if choose == 0:
+#                 new_individu2.append(individu1[i])
+#             else:
+#                 new_individu2.append(individu2[i])
+#         if get_price(new_individu1) > BUDGET:
+#             new_individu1.pop(i)
+#         if get_price(new_individu2) > BUDGET:
+#             new_individu2.pop(i)
+#     # print(get_price(new_individu1), get_price(new_individu2))
+#     return new_individu1, new_individu2
+
+
 def crossover_uniform(individu1, individu2):
     """Crossover d'un algorithme génétique avec une coupe aléatoire en respectant le budget
     """
@@ -80,19 +108,27 @@ def crossover_uniform(individu1, individu2):
         choose = r.randint(0, 1)
         if i < len_individu1 and get_price(new_individu1) < BUDGET and i < len_individu2:
             if choose == 0:
-                new_individu1.append(individu1[i])
+                if get_price(new_individu1 + [individu1[i]]) <= BUDGET:
+                    new_individu1.append(individu1[i])
             else:
-                new_individu1.append(individu2[i])
+                if get_price(new_individu1 + [individu2[i]]) <= BUDGET:
+                    new_individu1.append(individu2[i])
         if i < len_individu2 and get_price(new_individu2) < BUDGET and i < len_individu1:
             if choose == 0:
-                new_individu2.append(individu1[i])
+                if get_price(new_individu2 + [individu1[i]]) <= BUDGET:
+                    new_individu2.append(individu1[i])
             else:
-                new_individu2.append(individu2[i])
-        if get_price(new_individu1) > BUDGET:
-            new_individu1.pop(i)
-        if get_price(new_individu2) > BUDGET:
-            new_individu2.pop(i)
-    # print(get_price(new_individu1), get_price(new_individu2))
+                if get_price(new_individu2 + [individu2[i]]) <= BUDGET:
+                    new_individu2.append(individu2[i])
+
+        while get_price(new_individu1) < BUDGET-3 or get_price(new_individu1) > BUDGET:
+            if get_price(new_individu1) > BUDGET:
+                new_individu1.pop()
+            new_individu1.append(get_initial_pos())
+        while get_price(new_individu2) < BUDGET-3 or get_price(new_individu2) > BUDGET:
+            if get_price(new_individu2) > BUDGET:
+                new_individu2.pop()
+            new_individu2.append(get_initial_pos())
     return new_individu1, new_individu2
 
 

@@ -1,6 +1,6 @@
 from useful import *
 
-time_init=t.time()
+time_init = t.time()
 print("Initialisation du programme")
 
 # Matrices de données
@@ -12,7 +12,7 @@ USAGE_MAP = read_usage_file("data/Usage_map.txt")
 BUILDINGS = position_of_item(2, USAGE_MAP)
 # Matrice de proximité
 PROXIMITY_MAP = calculate_proximity_map(USAGE_MAP, BUILDINGS)
-print("Matrices chargées en", round(t.time()-time_init,5), "secondes")
+print("Matrices chargées en", round(t.time()-time_init, 5), "secondes")
 
 SIZE_X = len(COST_MAP[0])  # Taille (largeur) de la carte
 SIZE_Y = len(COST_MAP)  # Taille (hauteur) de la carte
@@ -91,6 +91,23 @@ def select_next_pos(old_pos):
     return pos
 
 
+def get_pos_close_to(pos):
+    """Renvoie une position proche de pos"""
+    newpos = [SIZE_X+1, SIZE_Y+1]
+    while(not check_in_map(newpos)):
+        newpos = pos
+        x = r.randint(0, 3)
+        if x == 0 and newpos[0]+1 < SIZE_X:
+            newpos[0] += 1
+        elif x == 1 and 0 <= newpos[0]-1:
+            newpos[0] -= 1
+        elif x == 2 and newpos[1]+1 < SIZE_Y:
+            newpos[1] += 1
+        elif x == 3 and 0 <= newpos[1]-1:
+            newpos[1] -= 1
+    return newpos
+
+
 def check_in_map(position):
     """reçoit un position = [x, y]
     Vérifie que la position est bien dans la carte, aussi non
@@ -138,6 +155,7 @@ def get_score(solution):
     comp = compacity(solution)
     prox = proximity(solution)
     return [prod, prox, comp]
+
 
 def get_price(individu):
     """Renvoie le cout d'un individu"""
