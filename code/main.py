@@ -19,12 +19,14 @@ def launch_normal_genetic(nb_gen, nb_ind):
           round(t.time() - time_algo, 5), "s")
     np.savetxt("results/scores_gen"+str(nb_gen)+"_pop" +
                str(nb_ind)+".csv", score_pop, delimiter=",")
+    # for i in range(len(population)):
+    #     np.savetxt("results/ind"+str(i)+"_gen"+str(nb_gen)+"_pop" + str(nb_ind)+".csv", population[i], delimiter=",")
     print_3D_solutions(score_pop)
     print_usagemap_plus_sol_list(USAGE_MAP, population[0])
 
 
 if __name__ == "__main__":
     r.seed(4)
-    NB_GENERATIONS = 200  # Nombre de générations
-    NB_INDIVIDUS = 100  # Nombre d'individus par génération
+    NB_GENERATIONS = 300  # Nombre de générations
+    NB_INDIVIDUS = 1000  # Nombre d'individus par génération
     launch_normal_genetic(NB_GENERATIONS, NB_INDIVIDUS)

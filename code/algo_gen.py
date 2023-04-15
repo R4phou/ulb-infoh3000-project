@@ -184,6 +184,8 @@ def algo_genetic(population, nb_gen):
         reproduction(population)
         score_pop = get_scores(population)
         mutation(population)
+    population = selection_dominance_Pareto(population, score_pop)
+    score_pop = get_scores(population)
     return score_pop, population
 
 
