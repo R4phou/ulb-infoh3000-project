@@ -143,13 +143,38 @@ def reproduction(population):
         population.append(child2)
 
 
+def mutation_simple(population):
+    """Mutation avec une probabilité de 20% d'un terrain"""
+    for individu in population:
+        if r.randint(0, 100) < 20:
+            change_terrain=r.choice(individu)
+            new_terrain=change_terrain 
+            # retire le prix de l'ancien terrain et ajoute le prix du nouveau terrain
+            while (new_terrain in individu) or (get_price(individu)-get_price_terrain(change_terrain)+get_price_terrain(new_terrain)>BUDGET):
+                new_terrain=get_initial_pos()
+            individu.remove(change_terrain)
+            individu.append(new_terrain)
+
+
+def multiple_mutation(population):
+    """Mutation avec une probabilité de 20% de plusieurs terrains"""
+    for individu in population:
+        for change_terrain in individu:
+            if r.randint(0, 100) < 20:
+                new_terrain=change_terrain 
+                # retire le prix de l'ancien terrain et ajoute le prix du nouveau terrain
+                while (new_terrain in individu) or (get_price(individu)-get_price_terrain(change_terrain)+get_price_terrain(new_terrain)>BUDGET):
+                    new_terrain=get_initial_pos()
+                individu.remove(change_terrain)
+                individu.append(new_terrain)
+
+
 def mutation(population):
     """Mutation d'un algorithme génétique
-    Nico et Alex
     """
-    # TODO
-    # possibilité d'acheter une parcelle en plus si budget < BUDGET
-    # échanger une parcelle avec une autre pas encore achetée du mm prix
+    mutation_simple(population)
+    #multiple_mutation(population)
+
 
 
 def algo_genetic(population, nb_gen):

@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
-from algo import *
+from init import *
 
 
 def print_usagemap_plus_sol(usage, sol):

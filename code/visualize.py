@@ -121,5 +121,7 @@ if __name__ == "__main__":
     import init as i
     print_maps(i.PRODUCTION_MAP, i.COST_MAP, i.PROXIMITY_MAP)
     # saved_scores = np.loadtxt(
-    #     "results/scores_gen500_pop100.csv", delimiter=",")
+    #     "results/scores_gen100_pop2000.csv", delimiter=",")
     # print_3D_solutions(saved_scores)
+    
+

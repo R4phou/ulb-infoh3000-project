@@ -164,6 +164,10 @@ def get_price(individu):
         price += COST_MAP[elem[1]][elem[0]]
     return price
 
+def get_price_terrain(terrain):
+    """Renvoie le cout d'un terrain"""
+    return COST_MAP[terrain[1]][terrain[0]]
+
 
 """----------------------------------------------------------------------------------------------------
                                     Implémentation de l'algorithme

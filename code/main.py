@@ -25,6 +25,6 @@ def launch_normal_genetic(nb_gen, nb_ind):
 
 if __name__ == "__main__":
     r.seed(4)
-    NB_GENERATIONS = 5000  # Nombre de générations
+    NB_GENERATIONS = 200  # Nombre de générations
     NB_INDIVIDUS = 100  # Nombre d'individus par génération
-    launch_evolutive_genetic(NB_GENERATIONS, NB_INDIVIDUS)
+    launch_normal_genetic(NB_GENERATIONS, NB_INDIVIDUS)
