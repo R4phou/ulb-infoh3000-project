@@ -120,8 +120,8 @@ def print_3D_evolutions(scores):
 if __name__ == "__main__":
     import init as i
     print_maps(i.PRODUCTION_MAP, i.COST_MAP, i.PROXIMITY_MAP)
-    NB_GEN = 300
-    NB_POP = 1000
+    NB_GEN = 200
+    NB_POP = 2000
     NUM_IND = 4
     saved_scores = np.loadtxt("results/scores_gen"+str(NB_GEN)+"_pop"+str(NB_POP)+".csv", delimiter=",")
     #saved_ind = np.loadtxt("results/ind"+str(NUM_IND)+"_gen"+str(NB_GEN)+"_pop"+str(NB_POP)+".csv", delimiter=",")

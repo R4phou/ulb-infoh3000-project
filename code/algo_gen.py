@@ -120,7 +120,6 @@ def crossover_uniform(individu1, individu2):
             else:
                 if get_price(new_individu2 + [individu2[i]]) <= BUDGET:
                     new_individu2.append(individu2[i])
-
         while get_price(new_individu1) < BUDGET-3 or get_price(new_individu1) > BUDGET:
             if get_price(new_individu1) > BUDGET:
                 new_individu1.pop()
@@ -196,7 +195,7 @@ def algo_genetic_evolution(population, nb_gen):
         population = selection_dominance_Pareto(population, score_pop)
         reproduction(population)
         score_pop = get_scores(population)
-        if gen == 10:
+        if gen == nb_gen//2:
             evolution1 = score_pop
         mutation(population)
     return score_pop, [evolution0, evolution1, score_pop]
