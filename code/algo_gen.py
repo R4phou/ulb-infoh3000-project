@@ -68,34 +68,6 @@ def crossover_simple(individu1, individu2):
     return new_individu1, new_individu2
 
 
-# def crossover_uniform(individu1, individu2):
-#     """Crossover d'un algorithme génétique avec une coupe aléatoire en respectant le budget
-#     """
-#     new_individu1 = []
-#     new_individu2 = []
-#     len_individu1 = len(individu1)
-#     len_individu2 = len(individu2)
-#     max_len = max(len_individu1, len_individu2)
-#     for i in range(max_len):
-#         choose = r.randint(0, 1)
-#         if i < len_individu1 and get_price(new_individu1) < BUDGET and i < len_individu2:
-#             if choose == 0:
-#                 new_individu1.append(individu1[i])
-#             else:
-#                 new_individu1.append(individu2[i])
-#         if i < len_individu2 and get_price(new_individu2) < BUDGET and i < len_individu1:
-#             if choose == 0:
-#                 new_individu2.append(individu1[i])
-#             else:
-#                 new_individu2.append(individu2[i])
-#         if get_price(new_individu1) > BUDGET:
-#             new_individu1.pop(i)
-#         if get_price(new_individu2) > BUDGET:
-#             new_individu2.pop(i)
-#     # print(get_price(new_individu1), get_price(new_individu2))
-#     return new_individu1, new_individu2
-
-
 def crossover_uniform(individu1, individu2):
     """Crossover d'un algorithme génétique avec une coupe aléatoire en respectant le budget
     """
@@ -131,13 +103,62 @@ def crossover_uniform(individu1, individu2):
     return new_individu1, new_individu2
 
 
+def sort_by_price(positions):
+    """Renvoie la population triée par prix
+    """
+    pos_prix = [(pos, get_price_terrain(pos)) for pos in positions]
+    sorted_pos_prix = sorted(pos_prix, key=lambda x: x[1], reverse=True)
+    return sorted_pos_prix
+
+
+def crossover_no_delete(individu1, individu2):
+    """Crossover d'un algorithme génétique avec une coupe aléatoire en respectant le budget
+    """
+    all_terrain = individu1+individu2
+    child1 = individu1[:len(individu1)//2] + individu2[len(individu2)//2:]
+    child2 = individu2[:len(individu2)//2] + individu1[len(individu1)//2:]
+    a = 0
+    sorted_terrains = sort_by_price(all_terrain)
+    while get_price(child1) > BUDGET or get_price(child2) > BUDGET or len(child1+child2) != len(all_terrain):
+        print("a =", a, " | ", get_price(child1), " | ", get_price(
+            child2), " | ", len(child1+child2), " | ", len(all_terrain))
+        child1 = []
+        child2 = []
+        a += 1
+        if a > 100:
+            for i in range(0, len(all_terrain), 2):
+                x = r.randint(0, 1)
+                if x == 0:
+                    child1.append(sorted_terrains[i][0])
+                    if i+1 < len(all_terrain):
+                        child2.append(sorted_terrains[i+1][0])
+                else:
+                    child2.append(sorted_terrains[i][0])
+                    if i+1 < len(all_terrain):
+                        child1.append(sorted_terrains[i+1][0])
+        else:
+            for i in range(0, len(all_terrain), 2):
+                x = r.randint(0, 1)
+                if x == 0:
+                    child1.append(all_terrain[i])
+                    if i+1 < len(all_terrain):
+                        child2.append(all_terrain[i+1])
+                else:
+                    child2.append(all_terrain[i])
+                    if i+1 < len(all_terrain):
+                        child1.append(all_terrain[i+1])
+    print("Fin:", len(child1+child2), " et ", len(all_terrain),
+          "|", get_price(child1), 'et', get_price(child2))
+    return child1, child2
+
+
 def reproduction(population):
     """Reproduction d'un algorithme génétique
     """
     for i in range(0, len(population), 2):
         individu1 = population[i]
         individu2 = population[i+1]
-        child1, child2 = crossover_uniform(individu1, individu2)
+        child1, child2 = crossover_no_delete(individu1, individu2)
         population.append(child1)
         population.append(child2)
 
@@ -146,11 +167,11 @@ def mutation_simple(population):
     """Mutation avec une probabilité de 20% d'un terrain"""
     for individu in population:
         if r.randint(0, 100) < 20:
-            change_terrain=r.choice(individu)
-            new_terrain=change_terrain 
+            change_terrain = r.choice(individu)
+            new_terrain = change_terrain
             # retire le prix de l'ancien terrain et ajoute le prix du nouveau terrain
-            while (new_terrain in individu) or (get_price(individu)-get_price_terrain(change_terrain)+get_price_terrain(new_terrain)>BUDGET):
-                new_terrain=get_initial_pos()
+            while (new_terrain in individu) or (get_price(individu)-get_price_terrain(change_terrain)+get_price_terrain(new_terrain) > BUDGET):
+                new_terrain = get_initial_pos()
             individu.remove(change_terrain)
             individu.append(new_terrain)
 
@@ -160,10 +181,10 @@ def multiple_mutation(population):
     for individu in population:
         for change_terrain in individu:
             if r.randint(0, 100) < 20:
-                new_terrain=change_terrain 
+                new_terrain = change_terrain
                 # retire le prix de l'ancien terrain et ajoute le prix du nouveau terrain
-                while (new_terrain in individu) or (get_price(individu)-get_price_terrain(change_terrain)+get_price_terrain(new_terrain)>BUDGET):
-                    new_terrain=get_initial_pos()
+                while (new_terrain in individu) or (get_price(individu)-get_price_terrain(change_terrain)+get_price_terrain(new_terrain) > BUDGET):
+                    new_terrain = get_initial_pos()
                 individu.remove(change_terrain)
                 individu.append(new_terrain)
 
@@ -172,8 +193,7 @@ def mutation(population):
     """Mutation d'un algorithme génétique
     """
     mutation_simple(population)
-    #multiple_mutation(population)
-
+    # multiple_mutation(population)
 
 
 def algo_genetic(population, nb_gen):

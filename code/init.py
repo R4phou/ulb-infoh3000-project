@@ -164,6 +164,7 @@ def get_price(individu):
         price += COST_MAP[elem[1]][elem[0]]
     return price
 
+
 def get_price_terrain(terrain):
     """Renvoie le cout d'un terrain"""
     return COST_MAP[terrain[1]][terrain[0]]
@@ -175,7 +176,7 @@ def get_price_terrain(terrain):
 
 
 def generate_n_solutions(n):
-    return [generate_compact_solution()[0] for i in range(n)]
+    return [generate_random_solution()[0] for i in range(n)]
 
 
 def get_scores(solutions):
