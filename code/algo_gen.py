@@ -152,8 +152,8 @@ def crossover_no_delete(individu1, individu2):
             break
     # print("Fin:", len(child1+child2), " et ", len(all_terrain),
     #       "|", get_price(child1), 'et', get_price(child2))
-    multiple_mutation(child1)
-    multiple_mutation(child2)
+    mutation(child1)
+    mutation(child2)
     return child1, child2
 
 
@@ -195,8 +195,8 @@ def multiple_mutation(individu):
 def mutation(individu):
     """Mutation d'un algorithme génétique
     """
-    mutation_simple(individu)
-    # multiple_mutation(population)
+    #mutation_simple(individu)
+    multiple_mutation(individu)
 
 
 def algo_genetic(population, nb_gen):

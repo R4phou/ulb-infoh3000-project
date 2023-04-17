@@ -64,9 +64,9 @@ def print_3D_solutions(scores):
     ax.set_xlabel('Productivity')
     ax.set_ylabel('Proximity')
     ax.set_zlabel('Compacity')
-    ax.set_xlim(0, 1.5)
-    ax.set_ylim(0, 1.5)
-    ax.set_zlim(0, 1.5)
+    ax.set_xlim(0, 1.0)
+    ax.set_ylim(0, 1.0)
+    ax.set_zlim(0, 1.0)
 
     # Les coordonnées des points
     prods = [i[0]/MAX_PROD for i in scores]
@@ -124,11 +124,11 @@ def print_3D_evolutions(scores):
 if __name__ == "__main__":
     import init as i
     #print_maps(i.PRODUCTION_MAP, i.COST_MAP, i.PROXIMITY_MAP)
-    NB_GEN = 200
-    NB_POP = 1000
-    NUM_IND = 4
+    NB_GEN = 300
+    NB_POP = 200
+    NUM_IND = 1
     saved_scores = np.loadtxt(
         "results/scores_gen"+str(NB_GEN)+"_pop"+str(NB_POP)+".csv", delimiter=",")
-    #saved_ind = np.loadtxt("results/ind"+str(NUM_IND)+"_gen"+str(NB_GEN)+"_pop"+str(NB_POP)+".csv", delimiter=",")
+    saved_ind = np.loadtxt("results/ind"+str(NUM_IND)+"_gen"+str(NB_GEN)+"_pop"+str(NB_POP)+".csv", delimiter=",")
     print_3D_solutions(saved_scores)
     #print_usagemap_plus_sol_list(i.USAGE_MAP, saved_ind)
