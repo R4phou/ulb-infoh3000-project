@@ -187,4 +187,13 @@ if __name__ == "__main__":
     import visualize as v
     begin = t.time()
     solutions = generate_n_solutions(500)
+    # print(get_scores(solutions))
+    max_comp = max_prod = max_prox = 0
+    for i in range(len(solutions)):
+        max_comp = max(max_comp, get_score(solutions[i])[2])
+        max_prod = max(max_prod, get_score(solutions[i])[0])
+        max_prox = max(max_prox, get_score(solutions[i])[1])
+    print("max_comp: ", max_comp)
+    print("max_prod: ", max_prod)
+    print("max_prox: ", max_prox)
     print("Le programme a pris: ", round(t.time()-begin, 4), "s")

@@ -120,12 +120,23 @@ def crossover_no_delete(individu1, individu2):
     a = 0
     sorted_terrains = sort_by_price(all_terrain)
     while get_price(child1) > BUDGET or get_price(child2) > BUDGET or len(child1+child2) != len(all_terrain):
-        print("a =", a, " | ", get_price(child1), " | ", get_price(
-            child2), " | ", len(child1+child2), " | ", len(all_terrain))
+        # print("a =", a, " | ", get_price(child1), " | ", get_price(
+        #     child2), " | ", len(child1+child2), " | ", len(all_terrain))
         child1 = []
         child2 = []
         a += 1
-        if a > 100:
+        if a < 10:  # teste 10 fois de façon random
+            for i in range(0, len(all_terrain), 2):
+                x = r.randint(0, 1)
+                if x == 0:
+                    child1.append(all_terrain[i])
+                    if i+1 < len(all_terrain):
+                        child2.append(all_terrain[i+1])
+                else:
+                    child2.append(all_terrain[i])
+                    if i+1 < len(all_terrain):
+                        child1.append(all_terrain[i+1])
+        elif a > 20:  # teste 10 fois en triant par prix
             for i in range(0, len(all_terrain), 2):
                 x = r.randint(0, 1)
                 if x == 0:
@@ -137,18 +148,10 @@ def crossover_no_delete(individu1, individu2):
                     if i+1 < len(all_terrain):
                         child1.append(sorted_terrains[i+1][0])
         else:
-            for i in range(0, len(all_terrain), 2):
-                x = r.randint(0, 1)
-                if x == 0:
-                    child1.append(all_terrain[i])
-                    if i+1 < len(all_terrain):
-                        child2.append(all_terrain[i+1])
-                else:
-                    child2.append(all_terrain[i])
-                    if i+1 < len(all_terrain):
-                        child1.append(all_terrain[i+1])
-    print("Fin:", len(child1+child2), " et ", len(all_terrain),
-          "|", get_price(child1), 'et', get_price(child2))
+            child1, child2 = crossover_uniform(individu1, individu2)
+            break
+    # print("Fin:", len(child1+child2), " et ", len(all_terrain),
+    #       "|", get_price(child1), 'et', get_price(child2))
     return child1, child2
 
 
