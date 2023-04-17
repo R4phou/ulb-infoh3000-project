@@ -152,6 +152,8 @@ def crossover_no_delete(individu1, individu2):
             break
     # print("Fin:", len(child1+child2), " et ", len(all_terrain),
     #       "|", get_price(child1), 'et', get_price(child2))
+    mutation(child1)
+    mutation(child2)
     return child1, child2
 
 
@@ -166,11 +168,22 @@ def reproduction(population):
         population.append(child2)
 
 
-def mutation_simple(population):
+def mutation_simple(individu):
     """Mutation avec une probabilité de 20% d'un terrain"""
-    for individu in population:
+    if r.randint(0, 100) < 20:
+        change_terrain = r.choice(individu)
+        new_terrain = change_terrain
+        # retire le prix de l'ancien terrain et ajoute le prix du nouveau terrain
+        while (new_terrain in individu) or (get_price(individu)-get_price_terrain(change_terrain)+get_price_terrain(new_terrain) > BUDGET):
+            new_terrain = get_initial_pos()
+        individu.remove(change_terrain)
+        individu.append(new_terrain)
+
+
+def multiple_mutation(individu):
+    """Mutation avec une probabilité de 20% de plusieurs terrains"""
+    for change_terrain in individu:
         if r.randint(0, 100) < 20:
-            change_terrain = r.choice(individu)
             new_terrain = change_terrain
             # retire le prix de l'ancien terrain et ajoute le prix du nouveau terrain
             while (new_terrain in individu) or (get_price(individu)-get_price_terrain(change_terrain)+get_price_terrain(new_terrain) > BUDGET):
@@ -179,23 +192,10 @@ def mutation_simple(population):
             individu.append(new_terrain)
 
 
-def multiple_mutation(population):
-    """Mutation avec une probabilité de 20% de plusieurs terrains"""
-    for individu in population:
-        for change_terrain in individu:
-            if r.randint(0, 100) < 20:
-                new_terrain = change_terrain
-                # retire le prix de l'ancien terrain et ajoute le prix du nouveau terrain
-                while (new_terrain in individu) or (get_price(individu)-get_price_terrain(change_terrain)+get_price_terrain(new_terrain) > BUDGET):
-                    new_terrain = get_initial_pos()
-                individu.remove(change_terrain)
-                individu.append(new_terrain)
-
-
-def mutation(population):
+def mutation(individu):
     """Mutation d'un algorithme génétique
     """
-    mutation_simple(population)
+    mutation_simple(individu)
     # multiple_mutation(population)
 
 
@@ -205,7 +205,6 @@ def algo_genetic(population, nb_gen):
         population = selection_dominance_Pareto(population, score_pop)
         reproduction(population)
         score_pop = get_scores(population)
-        mutation(population)
     population = selection_dominance_Pareto(population, score_pop)
     score_pop = get_scores(population)
     return score_pop, population
@@ -220,7 +219,6 @@ def algo_genetic_evolution(population, nb_gen):
         score_pop = get_scores(population)
         if gen == nb_gen//2:
             evolution1 = score_pop
-        mutation(population)
     return score_pop, [evolution0, evolution1, score_pop]
 
 
