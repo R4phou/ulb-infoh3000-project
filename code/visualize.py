@@ -91,9 +91,9 @@ def print_3D_evolutions(scores):
     ax.set_xlabel('Productivity')
     ax.set_ylabel('Proximity')
     ax.set_zlabel('Compacity')
-    ax.set_xlim(0, 1.5)
-    ax.set_ylim(0, 1.5)
-    ax.set_zlim(0, 1.5)
+    ax.set_xlim(0, 1.0)
+    ax.set_ylim(0, 1.0)
+    ax.set_zlim(0, 1.0)
 
     # Les coordonnées des points
     prods0 = [i[0]/MAX_PROD for i in scores[0]]

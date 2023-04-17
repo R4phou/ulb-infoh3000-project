@@ -152,8 +152,8 @@ def crossover_no_delete(individu1, individu2):
             break
     # print("Fin:", len(child1+child2), " et ", len(all_terrain),
     #       "|", get_price(child1), 'et', get_price(child2))
-    mutation(child1)
-    mutation(child2)
+    multiple_mutation(child1)
+    multiple_mutation(child2)
     return child1, child2
 
 
@@ -169,8 +169,8 @@ def reproduction(population):
 
 
 def mutation_simple(individu):
-    """Mutation avec une probabilité de 20% d'un terrain"""
-    if r.randint(0, 100) < 20:
+    """Mutation avec une probabilité de 50% d'un terrain"""
+    if r.randint(0, 100) < 50:
         change_terrain = r.choice(individu)
         new_terrain = change_terrain
         # retire le prix de l'ancien terrain et ajoute le prix du nouveau terrain
@@ -181,9 +181,9 @@ def mutation_simple(individu):
 
 
 def multiple_mutation(individu):
-    """Mutation avec une probabilité de 20% de plusieurs terrains"""
+    """Mutation avec une probabilité de 10% de chaque terrain"""
     for change_terrain in individu:
-        if r.randint(0, 100) < 20:
+        if r.randint(0, 100) < 10:
             new_terrain = change_terrain
             # retire le prix de l'ancien terrain et ajoute le prix du nouveau terrain
             while (new_terrain in individu) or (get_price(individu)-get_price_terrain(change_terrain)+get_price_terrain(new_terrain) > BUDGET):
