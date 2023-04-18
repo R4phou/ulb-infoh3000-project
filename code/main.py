@@ -28,7 +28,7 @@ def launch_normal_genetic(nb_gen, nb_ind):
                str(nb_ind)+".csv", score_pop, delimiter=",")
 
     # permet de sauvegarder les individus
-    for i in range(3):
+    for i in range(45, 51):
         np.savetxt("results/ind"+str(i)+"_gen"+str(nb_gen)+"_pop" +
                    str(nb_ind)+".csv", population[i], delimiter=",")
 
