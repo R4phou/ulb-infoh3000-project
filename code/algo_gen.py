@@ -152,8 +152,6 @@ def crossover_no_delete(individu1, individu2):
             break
     # print("Fin:", len(child1+child2), " et ", len(all_terrain),
     #       "|", get_price(child1), 'et', get_price(child2))
-    mutation(child1)
-    mutation(child2)
     return child1, child2
 
 
@@ -164,6 +162,8 @@ def reproduction(population):
         individu1 = population[i]
         individu2 = population[i+1]
         child1, child2 = crossover_no_delete(individu1, individu2)
+        mutation(child1)
+        mutation(child2)
         population.append(child1)
         population.append(child2)
 
@@ -219,6 +219,8 @@ def algo_genetic_evolution(population, nb_gen):
         score_pop = get_scores(population)
         if gen == nb_gen//2:
             evolution1 = score_pop
+    population = selection_dominance_Pareto(population, score_pop)
+    score_pop = get_scores(population)
     return score_pop, [evolution0, evolution1, score_pop]
 
 
