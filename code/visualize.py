@@ -125,9 +125,13 @@ if __name__ == "__main__":
     import init as i
     #print_maps(i.PRODUCTION_MAP, i.COST_MAP, i.PROXIMITY_MAP)
     NB_GEN = 300
-    NB_POP = 2000
-    NUM_IND = 1
-    saved_scores = np.loadtxt("results/scores_gen"+str(NB_GEN)+"_pop"+str(NB_POP)+".csv", delimiter=",")
-    saved_ind = np.loadtxt("results/ind"+str(NUM_IND)+"_gen"+str(NB_GEN)+"_pop"+str(NB_POP)+".csv", delimiter=",",dtype=int)
-    print_3D_solutions(saved_scores)
+    NB_POP = 100
+    NUM_IND = 0
+    saved_scores = np.loadtxt(
+        "results/scores_gen"+str(NB_GEN)+"_pop"+str(NB_POP)+".csv", delimiter=",")
+    saved_ind = np.loadtxt("results/ind"+str(NUM_IND)+"_gen" +
+                           str(NB_GEN)+"_pop"+str(NB_POP)+".csv", delimiter=",", dtype=int)
+    # print_3D_solutions(saved_scores)
     print_usagemap_plus_sol_list(i.USAGE_MAP, saved_ind)
+    # print_maps(i.PRODUCTION_MAP, i.COST_MAP, i.PROXIMITY_MAP)
+    # print_usage_map(i.USAGE_MAP)
