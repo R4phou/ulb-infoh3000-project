@@ -28,7 +28,7 @@ def launch_normal_genetic(nb_gen, nb_ind):
                str(nb_ind)+".csv", score_pop, delimiter=",")
 
     # permet de sauvegarder les individus
-    for i in range(3):
+    for i in range(45,51):
          np.savetxt("results/ind"+str(i)+"_gen"+str(nb_gen)+"_pop" + str(nb_ind)+".csv", population[i], delimiter=",")
 
     # affiche les solutions
@@ -36,7 +36,7 @@ def launch_normal_genetic(nb_gen, nb_ind):
 
 
 if __name__ == "__main__":
-    r.seed(4)
-    NB_GENERATIONS = 300  # Nombre de générations
-    NB_INDIVIDUS = 2000  # Nombre d'individus par génération
+    #r.seed(4)
+    NB_GENERATIONS = 1000  # Nombre de générations
+    NB_INDIVIDUS = 500  # Nombre d'individus par génération
     launch_normal_genetic(NB_GENERATIONS, NB_INDIVIDUS)
