@@ -32,11 +32,12 @@ def launch_normal_genetic(nb_gen, nb_ind):
         np.savetxt("results/ind"+str(i)+"_gen"+str(nb_gen)+"_pop" +
                    str(nb_ind)+".csv", population[i], delimiter=",")
     # affiche les solutions
+    print(len(population))
     print_3D_solutions(score_pop)
 
 
 if __name__ == "__main__":
     r.seed(4)
-    NB_GENERATIONS = 500  # Nombre de générations
-    NB_INDIVIDUS = 2000  # Nombre d'individus par génération
+    NB_GENERATIONS = 200  # Nombre de générations
+    NB_INDIVIDUS = 1000  # Nombre d'individus par génération
     launch_normal_genetic(NB_GENERATIONS, NB_INDIVIDUS)

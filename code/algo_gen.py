@@ -180,7 +180,7 @@ def reproduction(population):
 
 def mutation_simple(individu):
     """Mutation avec une probabilité de 50% d'un terrain"""
-    if r.randint(0, 100) < 50:
+    if r.randint(0, 100) < 100:
         change_terrain = r.choice(individu)
         new_terrain = change_terrain
         # retire le prix de l'ancien terrain et ajoute le prix du nouveau terrain
@@ -205,7 +205,7 @@ def multiple_mutation(individu):
 def mutation(individu):
     """Mutation d'un algorithme génétique
     """
-    # mutation_simple(individu)
+    mutation_simple(individu)
     multiple_mutation(individu)
 
 
