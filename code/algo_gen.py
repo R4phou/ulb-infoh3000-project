@@ -8,6 +8,15 @@ def selection(population, scores_pop):
     scores_pop = liste des scores des solutions sous la forme [prod, prox, comp]
     """
 
+def is_dominated(ind1, ind2):
+    """Fonction qui return true si ind1 est dominé
+    False ne veut rien dire (si i1 n'est pas dominé, il n'est pas d'office dominant)
+    Args:
+        ind1 (list): score de l'individu 1
+        ind2 (list): score de l'individu 2
+    """
+    return ind1[0] <= ind2[0] and ind1[1] <= ind2[1] and ind1[2] <= ind2[2] and (ind1[0] < ind2[0] or ind1[1] < ind2[1] or ind1[2] < ind2[2])
+
 
 def sort_by_dominance(scores_pop):
     """
@@ -39,17 +48,18 @@ def selection_dominance_Pareto(population, scores_pop):
         if len(selected_pop) == len(population)//2:
             return selected_pop
 
-
-def is_dominated(ind1, ind2):
-    """Fonction qui return true si ind1 est dominé
-    False ne veut rien dire (si i1 n'est pas dominé, il n'est pas d'office dominant)
-    Args:
-        ind1 (list): score de l'individu 1
-        ind2 (list): score de l'individu 2
+def selection_dominance_pareto_final(population, scores_pop):
     """
-    return ind1[0] <= ind2[0] and ind1[1] <= ind2[1] and ind1[2] <= ind2[2] and (ind1[0] < ind2[0] or ind1[1] < ind2[1] or ind1[2] < ind2[2])
-
-
+    Selection d'un algorithme génétique avec la méthode de dominance de Pareto
+    population = liste des solutions
+    scores_pop = liste des scores des solutions sous la forme [prod, prox, comp]
+    """
+    sorted_scores = sort_by_dominance(scores_pop)
+    selected_pop = []
+    for i, score in sorted(sorted_scores.items(), key=lambda x: x[1]):
+        if score == 0:
+            selected_pop.append(population[i])
+    return selected_pop
 
 def crossover_uniform(individu1, individu2):
     """Crossover d'un algorithme génétique avec une coupe aléatoire en respectant le budget
@@ -205,7 +215,7 @@ def algo_genetic(population, nb_gen):
         population = selection_dominance_Pareto(population, score_pop)
         reproduction(population)
         score_pop = get_scores(population)
-    population = selection_dominance_Pareto(population, score_pop)
+    population = selection_dominance_pareto_final(population, score_pop)
     score_pop = get_scores(population)
     return score_pop, population
 
@@ -219,7 +229,7 @@ def algo_genetic_evolution(population, nb_gen):
         score_pop = get_scores(population)
         if gen == nb_gen//2:
             evolution1 = score_pop
-    population = selection_dominance_Pareto(population, score_pop)
+    population = selection_dominance_pareto_final(population, score_pop)
     score_pop = get_scores(population)
     return score_pop, [evolution0, evolution1, score_pop]
 
