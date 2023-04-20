@@ -64,6 +64,9 @@ def calculate_proximity_map(usage_map, buildings):
     return mat
 
 
+def normalize(x, max):
+    return [i/max for i in x]
+
+
 if __name__ == "__main__":
     import init as i
-    

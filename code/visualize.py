@@ -121,16 +121,48 @@ def print_3D_evolutions(scores):
     plt.show()
 
 
+def plot_surface(filename):
+    mat = np.loadtxt(filename,
+                     dtype=float, delimiter=",")
+    # Diviser les points en coordonnées x, y et z
+    x = mat[:, 0]
+    y = mat[:, 1]
+    z = mat[:, 2]
+    import useful as u
+    from scipy.interpolate import griddata
+    x = u.normalize(x, MAX_PROD)
+    y = u.normalize(y, MAX_PROX)
+    z = u.normalize(z, MAX_COMP)
+
+    # Créer une grille régulière pour la surface
+    xi = np.linspace(min(x), max(x), 100)
+    yi = np.linspace(min(y), max(y), 100)
+    xi, yi = np.meshgrid(xi, yi)
+
+    # Interpoler les valeurs de z sur la grille régulière à l'aide de la méthode de l'interpolation
+    zi = griddata((x, y), z, (xi, yi), method='linear')
+
+    # Visualiser la surface interpolée à l'aide de Matplotlib
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+    ax.plot_surface(xi, yi, zi)
+    plt.show()
+
+
 if __name__ == "__main__":
     import init as init
-    print_maps(init.PRODUCTION_MAP, init.COST_MAP, init.PROXIMITY_MAP)
     NB_GEN = 300
     NB_POP = 500
     NUM_IND = 48
-    saved_scores = np.loadtxt("results/scores_gen"+str(NB_GEN)+"_pop"+str(NB_POP)+".csv", delimiter=",")
-    saved_ind = np.loadtxt("results/ind"+str(NUM_IND)+"_gen"+str(NB_GEN)+"_pop"+str(NB_POP)+".csv", delimiter=",",dtype=int)
-    print_3D_solutions(saved_scores)
-    print_usagemap_plus_sol_list(init.USAGE_MAP, saved_ind)
+    # print_maps(init.PRODUCTION_MAP, init.COST_MAP, init.PROXIMITY_MAP)
+    # saved_scores = np.loadtxt(
+    #     "results/scores_gen"+str(NB_GEN)+"_pop"+str(NB_POP)+".csv", delimiter=",")
+    # saved_ind = np.loadtxt("results/ind"+str(NUM_IND)+"_gen" +
+    #                        str(NB_GEN)+"_pop"+str(NB_POP)+".csv", delimiter=",", dtype=int)
+    # print_3D_solutions(saved_scores)
+    # print_usagemap_plus_sol_list(init.USAGE_MAP, saved_ind)
     # for i in range(45,NUM_IND+1):
     #     saved_ind = np.loadtxt("results/ind"+str(i)+"_gen"+str(NB_GEN)+"_pop"+str(NB_POP)+".csv", delimiter=",",dtype=int)
     #     print_usagemap_plus_sol_list(init.USAGE_MAP, saved_ind)
+    filename = "results/scores_gen"+str(NB_GEN)+"_pop"+str(NB_POP)+".csv"
+    plot_surface(filename)
