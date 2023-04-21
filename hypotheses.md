@@ -56,12 +56,12 @@ On associe à chaque individu d'une population une certaine masse dans un repèr
 ## Etapes:
 
 - identification de l'espace de recherche (espace de travail dans laquelle notre population va évoluer)
-- initialisation d'une population random
-- Evaluation des scores de chaque individu
-- Actualisation du fitness, best, worst (scores)
-- Calcul de la masse puis de forces d'attraction agissant sur chaque individu
-- Calcul de l'accélération et de la vitesse
-- Mise à jour de la position des individus
-- boucler de l'étape 3 jusqu'à l'étape précédente sur n itérations (ou jusqu'à ce que le budget soit dépassé)
-
-
+- Pour chacun des m individus:
+    - initialisation d'un nombre de parcelles random
+    - Evaluation des scores de chaque parcelle
+    - Actualisation du fitness, best, worst (scores)
+    - Calcul de la masse puis de forces d'attraction agissant sur chaque parcelle
+    - Calcul de l'accélération et de la vitesse
+    - Mise à jour de la position des parcelles
+    - boucler de l'étape 3 jusqu'à l'étape précédente sur n itérations (ou jusqu'à ce que le budget soit dépassé)
+- Afficher les m individus optimisés sur la carte (les m individus = frontière de Pareto)

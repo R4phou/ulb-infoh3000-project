@@ -6,3 +6,4 @@ venv/
 
 # ignore all files with .pyc extension
 code/__pycache__/*.pyc
+.gitconfig
