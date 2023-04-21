@@ -75,7 +75,6 @@ def print_3D_solutions(scores):
 
     # Ajouter les points à l'axe 3D
     ax.scatter(prods, proxs, comps, c='r')
-
     # Afficher le graphique
     plt.show()
 
@@ -145,24 +144,23 @@ def plot_surface(filename):
     # Visualiser la surface interpolée à l'aide de Matplotlib
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
+    ax.set_xlim(0, 1.0)
+    ax.set_ylim(0, 1.0)
+    ax.set_zlim(0, 1.0)
     ax.plot_surface(xi, yi, zi)
     plt.show()
 
 
 if __name__ == "__main__":
     import init as init
-    NB_GEN = 300
-    NB_POP = 500
+    NB_GEN = 500
+    NB_POP = 1000
     NUM_IND = 48
-    # print_maps(init.PRODUCTION_MAP, init.COST_MAP, init.PROXIMITY_MAP)
-    # saved_scores = np.loadtxt(
-    #     "results/scores_gen"+str(NB_GEN)+"_pop"+str(NB_POP)+".csv", delimiter=",")
-    # saved_ind = np.loadtxt("results/ind"+str(NUM_IND)+"_gen" +
-    #                        str(NB_GEN)+"_pop"+str(NB_POP)+".csv", delimiter=",", dtype=int)
-    # print_3D_solutions(saved_scores)
-    # print_usagemap_plus_sol_list(init.USAGE_MAP, saved_ind)
-    # for i in range(45,NUM_IND+1):
-    #     saved_ind = np.loadtxt("results/ind"+str(i)+"_gen"+str(NB_GEN)+"_pop"+str(NB_POP)+".csv", delimiter=",",dtype=int)
-    #     print_usagemap_plus_sol_list(init.USAGE_MAP, saved_ind)
     filename = "results/scores_gen"+str(NB_GEN)+"_pop"+str(NB_POP)+".csv"
+    filename_ind = "results/ind" + \
+        str(NUM_IND)+"_gen" + str(NB_GEN)+"_pop"+str(NB_POP)+".csv"
+    # print_maps(init.PRODUCTION_MAP, init.COST_MAP, init.PROXIMITY_MAP)
+    saved_scores = np.loadtxt(filename, delimiter=",")
+    saved_ind = np.loadtxt(filename_ind, delimiter=",", dtype=int)
+    print_3D_solutions(saved_scores)
     plot_surface(filename)
