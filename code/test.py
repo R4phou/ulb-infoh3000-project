@@ -1,18 +1,17 @@
-import numpy as np
-import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
-from scipy.interpolate import griddata
+POPULATION = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+SCORES = [["a", "b"], ["c", "d"], ["e", "f"]]
+# # print(zip(POPULATION, SCORES))
 
 
-def normalize(x, max):
-    return [i/max for i in x]
+def from_list_to_dict(liste1, liste2):
+    dico = []
+    for i in range(len(liste1)):
+        dico.append((liste1[i], liste2[i]))
+    return dico
 
 
-# Charger le nuage de points
-mat = np.loadtxt("results/scores_gen300_pop500.csv",
-                 dtype=float, delimiter=",")
+DICO_POPU_SCORE = from_list_to_dict(POPULATION, SCORES)
 
-
-MAX_COMP = 5500
-MAX_PROD = 2.6
-MAX_PROX = 330
+print(DICO_POPU_SCORE)
+# dico = {[1, 2, 3]: ["a", "b"], [4, 5, 6]: ["c", "d"], [7, 8, 9]: ["e", "f"]}
+# print(dico)

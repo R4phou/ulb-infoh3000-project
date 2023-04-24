@@ -68,5 +68,12 @@ def normalize(x, max):
     return [i/max for i in x]
 
 
+def to_tuple_liste(liste1, liste2):
+    final = []
+    for i in range(len(liste1)):
+        final.append((liste1[i], liste2[i]))
+    return final
+
+
 if __name__ == "__main__":
     import init as i

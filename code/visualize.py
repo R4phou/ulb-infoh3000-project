@@ -151,6 +151,32 @@ def plot_surface(filename):
     plt.show()
 
 
+def save_pop(population, nb_gen, nb_ind):
+    """population est une liste de solutions sous la forme d'une liste d'individu
+    un individu est une liste de liste [x,y]
+    """
+    with open("result_AMCD/ind"+"_gen" + str(nb_gen)+"_pop"+str(nb_ind)+".txt", "w") as f:
+        for i in range(len(population)):
+            for j in range(len(population[i])):
+                f.write(str(population[i][j][0])+","+str(population[i][j][1]))
+                if j < len(population[i])-1:
+                    f.write("|")
+            if i < len(population)-1:
+                f.write("\n")
+
+
+def read_pop(filename):
+    with open(filename, "r") as f:
+        lines = f.readlines()
+        population = []
+        for line in lines:
+            ind = []
+            for i in line.split("|"):
+                ind.append([int(i.split(",")[0]), int(i.split(",")[1])])
+            population.append(ind)
+    return population
+
+
 if __name__ == "__main__":
     import init as init
     NB_GEN = 500

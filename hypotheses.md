@@ -65,3 +65,14 @@ On associe à chaque individu d'une population une certaine masse dans un repèr
     - Mise à jour de la position des parcelles
     - boucler de l'étape 3 jusqu'à l'étape précédente sur n itérations (ou jusqu'à ce que le budget soit dépassé)
 - Afficher les m individus optimisés sur la carte (les m individus = frontière de Pareto)
+
+# PROMETHEE
+
+q = 3
+
+3 critères
+ - Productivite
+ - Proximité
+ - Compacité
+
+n individus de la frontière de paretos

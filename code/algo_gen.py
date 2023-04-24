@@ -2,12 +2,6 @@ from init import *
 from tqdm import tqdm
 
 
-def selection(population, scores_pop):
-    """Selection d'un algorithme génétique
-    population = liste des solutions
-    scores_pop = liste des scores des solutions sous la forme [prod, prox, comp]
-    """
-
 def is_dominated(ind1, ind2):
     """Fonction qui return true si ind1 est dominé
     False ne veut rien dire (si i1 n'est pas dominé, il n'est pas d'office dominant)
@@ -48,6 +42,7 @@ def selection_dominance_Pareto(population, scores_pop):
         if len(selected_pop) == len(population)//2:
             return selected_pop
 
+
 def selection_dominance_pareto_final(population, scores_pop):
     """
     Selection d'un algorithme génétique avec la méthode de dominance de Pareto
@@ -60,6 +55,7 @@ def selection_dominance_pareto_final(population, scores_pop):
         if score == 0:
             selected_pop.append(population[i])
     return selected_pop
+
 
 def crossover_uniform(individu1, individu2):
     """Crossover d'un algorithme génétique avec une coupe aléatoire en respectant le budget
@@ -160,10 +156,11 @@ def crossover_no_delete(individu1, individu2):
     return child1, child2
 
 
-def no_crossover(parent1,parent2):
+def no_crossover(parent1, parent2):
     child1 = parent1[:]
     child2 = parent2[:]
     return child1, child2
+
 
 def reproduction(population):
     """Reproduction d'un algorithme génétique
