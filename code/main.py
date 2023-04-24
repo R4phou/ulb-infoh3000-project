@@ -1,6 +1,9 @@
 from algo_gen import *
 from visualize import *
 
+"""----------------------------------------------------------------------------------------------------
+                                    Choix de la manière de launch
+----------------------------------------------------------------------------------------------------"""
 
 def launch_evolutive_genetic(nb_gen, nb_ind):
     time_algo = t.time()
@@ -27,11 +30,12 @@ def launch_normal_genetic(nb_gen, nb_ind):
     np.savetxt("results/scores_gen"+str(nb_gen)+"_pop" +
                str(nb_ind)+".csv", score_pop, delimiter=",")
 
-    # # permet de sauvegarder les individus
-    # for i in range(45, 51):
-    #     np.savetxt("results/ind"+str(i)+"_gen"+str(nb_gen)+"_pop" +
-    #                str(nb_ind)+".csv", population[i], delimiter=",")
-    # # affiche les solutions
+    # permet de sauvegarder les individus
+    for i in range(10, 15):
+        np.savetxt("results/ind"+str(i)+"_gen"+str(nb_gen)+"_pop" +
+                   str(nb_ind)+".csv", population[i], delimiter=",")
+        
+    # affiche les solutions
     print(len(population))
     print_3D_solutions(score_pop)
 

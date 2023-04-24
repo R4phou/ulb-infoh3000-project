@@ -49,6 +49,7 @@ def generate_compact_solution():
 
 
 def generate_random_solution():
+    """Génère une solution aléatoire qui répond aux différentes contraintes (une solution de départ)"""
     solution = []
     budget = 0
     i = 0
@@ -115,6 +116,8 @@ def check_in_map(position):
     """
     return ((position[0] < SIZE_X) and (position[1] < SIZE_Y) and (USAGE_MAP[position[1]][position[0]] == 0))
 
+def generate_n_solutions(n):
+    return [generate_random_solution()[0] for i in range(n)]
 
 """----------------------------------------------------------------------------------------------------
                                             Calcul du score
@@ -168,15 +171,6 @@ def get_price(individu):
 def get_price_terrain(terrain):
     """Renvoie le cout d'un terrain"""
     return COST_MAP[terrain[1]][terrain[0]]
-
-
-"""----------------------------------------------------------------------------------------------------
-                                    Implémentation de l'algorithme
-----------------------------------------------------------------------------------------------------"""
-
-
-def generate_n_solutions(n):
-    return [generate_random_solution()[0] for i in range(n)]
 
 
 def get_scores(solutions):

@@ -1,7 +1,9 @@
 from init import *
 from tqdm import tqdm
 
-
+"""----------------------------------------------------------------------------------------------------
+                                    Etape de sélection
+----------------------------------------------------------------------------------------------------"""
 def is_dominated(ind1, ind2):
     """Fonction qui return true si ind1 est dominé
     False ne veut rien dire (si i1 n'est pas dominé, il n'est pas d'office dominant)
@@ -56,107 +58,12 @@ def selection_dominance_pareto_final(population, scores_pop):
             selected_pop.append(population[i])
     return selected_pop
 
-
-def crossover_uniform(individu1, individu2):
-    """Crossover d'un algorithme génétique avec une coupe aléatoire en respectant le budget
-    """
-    new_individu1 = []
-    new_individu2 = []
-    len_individu1 = len(individu1)
-    len_individu2 = len(individu2)
-    max_len = max(len_individu1, len_individu2)
-    for i in range(max_len):
-        choose = r.randint(0, 1)
-        if i < len_individu1 and get_price(new_individu1) < BUDGET and i < len_individu2:
-            if choose == 0:
-                if get_price(new_individu1 + [individu1[i]]) <= BUDGET and individu1[i] not in new_individu1:
-                    new_individu1.append(individu1[i])
-            else:
-                if get_price(new_individu1 + [individu2[i]]) <= BUDGET and individu2[i] not in new_individu1:
-                    new_individu1.append(individu2[i])
-        if i < len_individu2 and get_price(new_individu2) < BUDGET and i < len_individu1:
-            if choose == 0:
-                if get_price(new_individu2 + [individu1[i]]) <= BUDGET and individu1[i] not in new_individu2:
-                    new_individu2.append(individu1[i])
-            else:
-                if get_price(new_individu2 + [individu2[i]]) <= BUDGET and individu2[i] not in new_individu2:
-                    new_individu2.append(individu2[i])
-        while get_price(new_individu1) < BUDGET-3 or get_price(new_individu1) > BUDGET:
-            new_pos = get_initial_pos()
-            if get_price(new_individu1) > BUDGET:
-                new_individu1.pop()
-            if new_pos not in new_individu1:
-                new_individu1.append(new_pos)
-        while get_price(new_individu2) < BUDGET-3 or get_price(new_individu2) > BUDGET:
-            new_pos = get_initial_pos()
-            if get_price(new_individu2) > BUDGET:
-                new_individu2.pop()
-            if new_pos not in new_individu2:
-                new_individu2.append(get_initial_pos())
-    return new_individu1, new_individu2
-
-
-def sort_by_price(positions):
-    """Renvoie la population triée par prix
-    """
-    pos_prix = [(pos, get_price_terrain(pos)) for pos in positions]
-    sorted_pos_prix = sorted(pos_prix, key=lambda x: x[1], reverse=True)
-    return sorted_pos_prix
-
-
-def crossover_no_delete(individu1, individu2):
-    """Crossover d'un algorithme génétique avec une coupe aléatoire en respectant le budget
-    """
-    all_terrain = individu1+individu2
-    child1 = individu1[:len(individu1)//2] + individu2[len(individu2)//2:]
-    child2 = individu2[:len(individu2)//2] + individu1[len(individu1)//2:]
-    a = 0
-    sorted_terrains = sort_by_price(all_terrain)
-    while get_price(child1) > BUDGET or get_price(child2) > BUDGET or len(child1+child2) != len(all_terrain):
-        # print("a =", a, " | ", get_price(child1), " | ", get_price(
-        #     child2), " | ", len(child1+child2), " | ", len(all_terrain))
-        child1 = []
-        child2 = []
-        a += 1
-        if a < 10:  # teste 10 fois de façon random
-            for i in range(0, len(all_terrain), 2):
-                x = r.randint(0, 1)
-                if x == 0:
-                    if all_terrain[i] not in child1:
-                        child1.append(all_terrain[i])
-                    if i+1 < len(all_terrain):
-                        if all_terrain[i+1] not in child2:
-                            child2.append(all_terrain[i+1])
-                else:
-                    if all_terrain[i] not in child2:
-                        child2.append(all_terrain[i])
-                    if i+1 < len(all_terrain):
-                        if all_terrain[i+1] not in child1:
-                            child1.append(all_terrain[i+1])
-        elif a > 20:  # teste 10 fois en triant par prix
-            for i in range(0, len(all_terrain), 2):
-                x = r.randint(0, 1)
-                if x == 0:
-                    if sorted_terrains[i][0] not in child1:
-                        child1.append(sorted_terrains[i][0])
-                    if i+1 < len(all_terrain):
-                        if sorted_terrains[i+1][0] not in child2:
-                            child2.append(sorted_terrains[i+1][0])
-                else:
-                    if sorted_terrains[i][0] not in child2:
-                        child2.append(sorted_terrains[i][0])
-                    if i+1 < len(all_terrain):
-                        if sorted_terrains[i+1][0] not in child1:
-                            child1.append(sorted_terrains[i+1][0])
-        else:
-            child1, child2 = crossover_uniform(individu1, individu2)
-            break
-    # print("Fin:", len(child1+child2), " et ", len(all_terrain),
-    #       "|", get_price(child1), 'et', get_price(child2))
-    return child1, child2
-
+"""----------------------------------------------------------------------------------------------------
+                                    Etape de reproduction
+----------------------------------------------------------------------------------------------------"""
 
 def no_crossover(parent1, parent2):
+    """Replique les parents"""
     child1 = parent1[:]
     child2 = parent2[:]
     return child1, child2
@@ -174,6 +81,9 @@ def reproduction(population):
         population.append(child1)
         population.append(child2)
 
+"""----------------------------------------------------------------------------------------------------
+                                    Etape de mutation
+----------------------------------------------------------------------------------------------------"""
 
 def mutation_simple(individu):
     """Mutation avec une probabilité de 50% d'un terrain"""
@@ -205,6 +115,9 @@ def mutation(individu):
     mutation_simple(individu)
     multiple_mutation(individu)
 
+"""----------------------------------------------------------------------------------------------------
+                                    Algorithme complet
+----------------------------------------------------------------------------------------------------"""
 
 def algo_genetic(population, nb_gen):
     score_pop = get_scores(population)

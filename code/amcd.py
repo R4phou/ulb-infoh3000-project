@@ -9,17 +9,19 @@ POIDS = [1, 1, 1]
 SEUIL_PREF = 0.9
 SEUIL_INDIF = 0.1
 
+"""----------------------------------------------------------------------------------------------------
+                                    Chargement des données
+----------------------------------------------------------------------------------------------------"""
 
 SCORES = np.loadtxt("result_AMCD/scores_gen200_pop500.csv", delimiter=",")
-MAXS = [max(SCORES[:, i]) for i in range(len(SCORES[0]))]
-# print(MAXS)
-
-
+MAXS = [max(SCORES[:, i]) for i in range(len(SCORES[0]))] #prends le maximum de chaque colonne pour normaliser
 SCORES = normalise(SCORES, MAXS)
 POPULATION = v.read_pop("result_AMCD/ind_gen200_pop500.txt")
+POPU_SCORE = to_tuple_liste(POPULATION, SCORES) 
 
-POPU_SCORE = to_tuple_liste(POPULATION, SCORES)
-
+"""----------------------------------------------------------------------------------------------------
+                                    1.Préférences mono-critères
+----------------------------------------------------------------------------------------------------"""
 
 def get_dk(sol_1, sol_2, critere):
     """
@@ -39,11 +41,17 @@ def preference_monocritere(sol_1, sol_2, critere):
         return 1
     return 1/(SEUIL_PREF-SEUIL_INDIF)*(dk-SEUIL_INDIF)
 
+"""----------------------------------------------------------------------------------------------------
+                                    2.Matrice de préférence
+----------------------------------------------------------------------------------------------------"""
 
 def matrice_preference(sol_1, sol_2, w):
-    """"""
+    """matrice de préférence entre deux solutions """
     return sum(w[i]*preference_monocritere(sol_1, sol_2, i) for i in range(len(w)))
 
+"""----------------------------------------------------------------------------------------------------
+                                    3.Calcul des flux
+----------------------------------------------------------------------------------------------------"""
 
 def flux_pos(ai):
     """Calcule le flux positif de l'individu ai"""
@@ -54,6 +62,9 @@ def flux_neg(ai):
     """Calcule le flux négatif de l'individu ai"""
     return 1/(len(POPU_SCORE)-1)*sum(matrice_preference(aj, ai, POIDS) for aj in POPU_SCORE)
 
+"""----------------------------------------------------------------------------------------------------
+                                    4.Calcul des flux nets totaux
+----------------------------------------------------------------------------------------------------"""
 
 def flux_net(ai):
     """Calcule le flux net de l'individu ai"""
@@ -64,12 +75,15 @@ def fluxes_net_population():
     """Calcule les flux nets de la population"""
     return {flux_net(ai): ai for ai in POPU_SCORE}
 
+"""----------------------------------------------------------------------------------------------------
+                                    Implémentation de promethee II
+----------------------------------------------------------------------------------------------------"""
 
 def prometheeII():
-    """Méthode de PROMETHEE I"""
+    """Méthode de PROMETHEE II"""
     return sorted(fluxes_net_population().items(), reverse=True)
 
-
-sol = prometheeII()
-for i in sol:
-    print(i, '\n')
+if __name__ == "__main__":
+    sol = prometheeII()
+    for i in sol:
+        print(i, '\n')

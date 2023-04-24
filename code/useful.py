@@ -65,10 +65,12 @@ def calculate_proximity_map(usage_map, buildings):
 
 
 def normalize(x, max):
+    """Fonction qui normalise une liste de nombres"""
     return [i/max for i in x]
 
 
 def to_tuple_liste(liste1, liste2):
+    """Fonction qui transforme deux listes en une liste de tuples"""
     final = []
     for i in range(len(liste1)):
         final.append((liste1[i], liste2[i]))

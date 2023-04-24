@@ -42,9 +42,9 @@ Enfin, on sélectionne la moitié des individus qui ont le score le plus bas dan
 Cf **selection_dominance_Pareto(population, scores_pop)**
 
 ## Reproduction
-Un crossover uniforme à été utilisé pour la reproduction des solutions. Cela consiste à prendre aléatoirement du parent 1 ou 2.
-## Mutation <---
-
+La reproduction avec un crossover simple coupe ou un crossover uniforme n'a pas donné de bons résultats. L'alternative à été de répliquer les meilleures solutions puis de les faire muter minimum une fois.
+## Mutation
+La mutation des solutions consiste à échanger un terrain aléatoire avec un autre choisi également aléatoirement tout en s'assurant de respecter le budget.
 # Gravitational Search Algorithm (GSA)
 
 ## Principe:
