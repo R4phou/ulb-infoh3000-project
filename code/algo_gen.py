@@ -4,6 +4,8 @@ from tqdm import tqdm
 """----------------------------------------------------------------------------------------------------
                                     Etape de sélection
 ----------------------------------------------------------------------------------------------------"""
+
+
 def is_dominated(ind1, ind2):
     """Fonction qui return true si ind1 est dominé
     False ne veut rien dire (si i1 n'est pas dominé, il n'est pas d'office dominant)
@@ -11,7 +13,8 @@ def is_dominated(ind1, ind2):
         ind1 (list): score de l'individu 1
         ind2 (list): score de l'individu 2
     """
-    return ind1[0] <= ind2[0] and ind1[1] <= ind2[1] and ind1[2] <= ind2[2] and (ind1[0] < ind2[0] or ind1[1] < ind2[1] or ind1[2] < ind2[2])
+    return ind1[0] <= ind2[0] and ind1[1] <= ind2[1] and ind1[2] <= ind2[2] and (
+        ind1[0] < ind2[0] or ind1[1] < ind2[1] or ind1[2] < ind2[2])
 
 
 def sort_by_dominance(scores_pop):
@@ -41,7 +44,7 @@ def selection_dominance_Pareto(population, scores_pop):
     selected_pop = []
     for i, score in sorted(sorted_scores.items(), key=lambda x: x[1]):
         selected_pop.append(population[i])
-        if len(selected_pop) == len(population)//2:
+        if len(selected_pop) == len(population) // 2:
             return selected_pop
 
 
@@ -58,9 +61,11 @@ def selection_dominance_pareto_final(population, scores_pop):
             selected_pop.append(population[i])
     return selected_pop
 
+
 """----------------------------------------------------------------------------------------------------
                                     Etape de reproduction
 ----------------------------------------------------------------------------------------------------"""
+
 
 def no_crossover(parent1, parent2):
     """Replique les parents"""
@@ -74,16 +79,18 @@ def reproduction(population):
     """
     for i in range(0, len(population), 2):
         individu1 = population[i]
-        individu2 = population[i+1]
+        individu2 = population[i + 1]
         child1, child2 = no_crossover(individu1, individu2)
         mutation(child1)
         mutation(child2)
         population.append(child1)
         population.append(child2)
 
+
 """----------------------------------------------------------------------------------------------------
                                     Etape de mutation
 ----------------------------------------------------------------------------------------------------"""
+
 
 def mutation_simple(individu):
     """Mutation avec une probabilité de 50% d'un terrain"""
@@ -91,7 +98,8 @@ def mutation_simple(individu):
         change_terrain = r.choice(individu)
         new_terrain = change_terrain
         # retire le prix de l'ancien terrain et ajoute le prix du nouveau terrain
-        while (new_terrain in individu) or (get_price(individu)-get_price_terrain(change_terrain)+get_price_terrain(new_terrain) > BUDGET):
+        while (new_terrain in individu) or (
+                get_price(individu) - get_price_terrain(change_terrain) + get_price_terrain(new_terrain) > BUDGET):
             new_terrain = get_initial_pos()
         individu.remove(change_terrain)
         individu.append(new_terrain)
@@ -103,7 +111,8 @@ def multiple_mutation(individu):
         if r.randint(0, 100) < 10:
             new_terrain = change_terrain
             # retire le prix de l'ancien terrain et ajoute le prix du nouveau terrain
-            while (new_terrain in individu) or (get_price(individu)-get_price_terrain(change_terrain)+get_price_terrain(new_terrain) > BUDGET):
+            while (new_terrain in individu) or (
+                    get_price(individu) - get_price_terrain(change_terrain) + get_price_terrain(new_terrain) > BUDGET):
                 new_terrain = get_initial_pos()
             individu.remove(change_terrain)
             individu.append(new_terrain)
@@ -115,9 +124,11 @@ def mutation(individu):
     mutation_simple(individu)
     multiple_mutation(individu)
 
+
 """----------------------------------------------------------------------------------------------------
                                     Algorithme complet
 ----------------------------------------------------------------------------------------------------"""
+
 
 def algo_genetic(population, nb_gen):
     score_pop = get_scores(population)
@@ -137,7 +148,7 @@ def algo_genetic_evolution(population, nb_gen):
         population = selection_dominance_Pareto(population, score_pop)
         reproduction(population)
         score_pop = get_scores(population)
-        if gen == nb_gen//2:
+        if gen == nb_gen // 2:
             evolution1 = score_pop
     population = selection_dominance_pareto_final(population, score_pop)
     score_pop = get_scores(population)
@@ -146,10 +157,11 @@ def algo_genetic_evolution(population, nb_gen):
 
 if __name__ == "__main__":
     import visualize as v
+
     begin = t.time()
     population_100 = generate_n_solutions(1000)
     score_pop = algo_genetic(population_100, 100)
-    print("Le programme a pris: ", round(t.time()-begin, 4), "s")
+    print("Le programme a pris: ", round(t.time() - begin, 4), "s")
     print(score_pop)
     # np.savetxt("score_pop.txt", score_pop)
     v.print_3D_solutions(score_pop)

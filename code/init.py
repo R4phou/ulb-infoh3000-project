@@ -38,7 +38,7 @@ def generate_compact_solution():
         if i == 15:
             break
         if (check_in_map(to_buy)) and (to_buy not in sol):
-            if (budget + COST_MAP[to_buy[1]][to_buy[0]] <= BUDGET):
+            if budget + COST_MAP[to_buy[1]][to_buy[0]] <= BUDGET:
                 budget += COST_MAP[to_buy[1]][to_buy[0]]
                 sol.append(to_buy)
                 i = 0

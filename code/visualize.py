@@ -79,6 +79,33 @@ def print_3D_solutions(scores):
     plt.show()
 
 
+def print_3D_solutions_AMCD(scores, best):
+    """Fonction qui reçoit en paramètre une liste des scores de toutes les solutions
+    [prod, prox, comp] = [x, y, z]
+
+    """
+    # Créer la figure et l'axe 3D
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+    ax.set_xlabel('Productivity')
+    ax.set_ylabel('Proximity')
+    ax.set_zlabel('Compacity')
+    ax.set_xlim(0, 1.0)
+    ax.set_ylim(0, 1.0)
+    ax.set_zlim(0, 1.0)
+
+    # Les coordonnées des points
+    prods = [i[0] for i in scores]
+    proxs = [i[1] for i in scores]
+    comps = [i[2] for i in scores]
+
+    # Ajouter les points à l'axe 3D
+    ax.scatter(prods, proxs, comps, c='r')
+    ax.scatter(best[0], best[1], best[2], c='b')
+    # Afficher le graphique
+    plt.show()
+
+
 def print_3D_evolutions(scores):
     """Fonction qui reçoit en paramètre une liste contenant les scores initiaux, intermédiaires et finaux des solutions
     [prod, prox, comp] = [x, y, z]

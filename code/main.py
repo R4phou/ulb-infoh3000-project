@@ -5,6 +5,7 @@ from visualize import *
                                     Choix de la manière de launch
 ----------------------------------------------------------------------------------------------------"""
 
+
 def launch_evolutive_genetic(nb_gen, nb_ind):
     time_algo = t.time()
     population = generate_n_solutions(nb_ind)
@@ -34,7 +35,7 @@ def launch_normal_genetic(nb_gen, nb_ind):
     for i in range(10, 15):
         np.savetxt("results/ind"+str(i)+"_gen"+str(nb_gen)+"_pop" +
                    str(nb_ind)+".csv", population[i], delimiter=",")
-        
+
     # affiche les solutions
     print(len(population))
     print_3D_solutions(score_pop)
@@ -52,12 +53,13 @@ def launch_normal_genetic_for_AMCD(nb_gen, nb_ind):
                str(nb_ind)+".csv", score_pop, delimiter=",")
     # sauvegarde des invividus
     save_pop(population, nb_gen, nb_ind)
-    print(len(population))
+    print("Il y a ", len(population),
+          "solutions composant la frontière de Pareto!")
     print_3D_solutions(score_pop)
 
 
 if __name__ == "__main__":
     r.seed(4)
-    NB_GENERATIONS = 200  # Nombre de générations
-    NB_INDIVIDUS = 500  # Nombre d'individus par génération
+    NB_GENERATIONS = 500  # Nombre de générations
+    NB_INDIVIDUS = 1000  # Nombre d'individus par génération
     launch_normal_genetic_for_AMCD(NB_GENERATIONS, NB_INDIVIDUS)
