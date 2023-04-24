@@ -75,5 +75,14 @@ def to_tuple_liste(liste1, liste2):
     return final
 
 
+def normalise(scores, maxs):
+    """
+    scores est une liste de liste de scores
+    maxs est une liste de max de chaque critère
+    """
+    return [[scores[i][j]/maxs[j] for j in range(len(scores[0]))]
+            for i in range(len(scores))]
+
+
 if __name__ == "__main__":
     import init as i

@@ -5,12 +5,17 @@ from useful import *
 
 Q = 3
 CRITERES = ["Production", "Proximité", "Compacité"]
-POIDS = [8, 3, 400]
-SEUIL_PREF = 0.7
-SEUIL_INDIF = 0.3
+POIDS = [1, 1, 1]
+SEUIL_PREF = 0.9
+SEUIL_INDIF = 0.1
 
 
 SCORES = np.loadtxt("result_AMCD/scores_gen200_pop500.csv", delimiter=",")
+MAXS = [max(SCORES[:, i]) for i in range(len(SCORES[0]))]
+# print(MAXS)
+
+
+SCORES = normalise(SCORES, MAXS)
 POPULATION = v.read_pop("result_AMCD/ind_gen200_pop500.txt")
 
 POPU_SCORE = to_tuple_liste(POPULATION, SCORES)
@@ -62,11 +67,9 @@ def fluxes_net_population():
 
 def prometheeII():
     """Méthode de PROMETHEE I"""
-    # sorted = fluxes_net_population().keys(), reverse=True
     return sorted(fluxes_net_population().items(), reverse=True)
 
 
-# print(prometheeII()[:10])
 sol = prometheeII()
 for i in sol:
     print(i, '\n')
