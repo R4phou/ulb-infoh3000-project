@@ -3,9 +3,9 @@ import visualize as v
 from useful import *
 
 
-Q = 3
-CRITERES = ["Production", "Proximité", "Compacité"]
-POIDS = [1, 10000, 1]
+Q = 4
+CRITERES = ["Production", "Proximité", "Compacité", "Pollution"]
+POIDS = [1, 1, 100, 1]
 SEUIL_PREF = 0.9
 SEUIL_INDIF = 0.1
 
@@ -13,11 +13,12 @@ SEUIL_INDIF = 0.1
                                     Chargement des données
 ----------------------------------------------------------------------------------------------------"""
 
-SCORES = np.loadtxt("result_AMCD/scores_gen1000_pop500.csv", delimiter=",")
+SCORES = np.loadtxt(
+    "bonus/results_AMCD/scores_gen1000_pop500.csv", delimiter=",")
 # prends le maximum de chaque colonne pour normaliser
 MAXS = [max(SCORES[:, i]) for i in range(len(SCORES[0]))]
 SCORES = normalise(SCORES, MAXS)
-POPULATION = v.read_pop("result_AMCD/ind_gen1000_pop500.txt")
+POPULATION = v.read_pop("bonus/results_AMCD/ind_gen1000_pop500.txt")
 POPU_SCORE = to_tuple_liste(POPULATION, SCORES)
 
 """----------------------------------------------------------------------------------------------------
@@ -123,4 +124,4 @@ if __name__ == "__main__":
     print("Fin de la méthode PROMETHEE II en: ", round(t.time()-begin, 5), "s")
     scores = [sol[i][1][1] for i in range(len(sol))]
     print_solution(sol[0])
-    v.print_3D_solutions_AMCD(scores, best=sol[0][1][1])
+    v.print_4D_solutions_with_best(scores, sol[0][1][1])

@@ -1,17 +1,29 @@
-POPULATION = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
-SCORES = [["a", "b"], ["c", "d"], ["e", "f"]]
-# # print(zip(POPULATION, SCORES))
+import matplotlib.pyplot as plt
+import numpy as np
 
+# Données à tracer
+x = np.linspace(0, 10, 100)
+y1 = np.sin(x)
+y2 = np.cos(x)
+y3 = np.tan(x)
+y4 = np.exp(x)
 
-def from_list_to_dict(liste1, liste2):
-    dico = []
-    for i in range(len(liste1)):
-        dico.append((liste1[i], liste2[i]))
-    return dico
+# Création des subplots en 2 colonnes
+fig, axs = plt.subplots(nrows=2, ncols=2, figsize=(10, 8))
 
+# Tracé des données dans chaque subplot
+axs[0, 0].plot(x, y1)
+axs[0, 0].set_title('Sin(x)')
 
-DICO_POPU_SCORE = from_list_to_dict(POPULATION, SCORES)
+axs[0, 1].plot(x, y2)
+axs[0, 1].set_title('Cos(x)')
 
-print(DICO_POPU_SCORE)
-# dico = {[1, 2, 3]: ["a", "b"], [4, 5, 6]: ["c", "d"], [7, 8, 9]: ["e", "f"]}
-# print(dico)
+axs[1, 0].plot(x, y3)
+axs[1, 0].set_title('Tan(x)')
+
+axs[1, 1].plot(x, y4)
+axs[1, 1].set_title('Exp(x)')
+
+# Affichage des subplots
+plt.tight_layout()
+plt.show()
