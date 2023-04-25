@@ -107,14 +107,16 @@ def print_solution(sol):
     print("Flux net : ", sol[0])
     print("Individu : ", sol[1][0])
     print("Scores : ", sol[1][1])
+    print("Budget: ", ag.get_price(sol[1][0]))
     v.print_usagemap_plus_sol_list(ag.USAGE_MAP, sol[1][0])
 
 
 def print_all_solutions(sol):
     """Affiche toutes les solutions PROMETHEE II"""
     for i in sol:
-        print_solution(i)
-        print("\n")
+        # print_solution(i)
+        print("Budget: ", ag.get_price(i[1][0]))
+        # print("\n")
 
 
 if __name__ == "__main__":
@@ -123,5 +125,6 @@ if __name__ == "__main__":
     sol = prometheeII()
     print("Fin de la méthode PROMETHEE II en: ", round(t.time()-begin, 5), "s")
     scores = [sol[i][1][1] for i in range(len(sol))]
-    print_solution(sol[0])
+    # print_solution(sol[0])
+    print_all_solutions(sol)
     v.print_4D_solutions_with_best(scores, sol[0][1][1])

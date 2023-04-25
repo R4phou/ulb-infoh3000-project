@@ -1,6 +1,5 @@
 from algo_gen import *
 from visualize import *
-from amcd import *
 
 """----------------------------------------------------------------------------------------------------
                                     Choix de la manière de launch
@@ -62,6 +61,6 @@ def launch_normal_genetic_for_AMCD(nb_gen, nb_ind):
 
 if __name__ == "__main__":
     r.seed(4)
-    NB_GENERATIONS = 1000  # Nombre de générations
+    NB_GENERATIONS = 200  # Nombre de générations
     NB_INDIVIDUS = 500  # Nombre d'individus par génération
-    launch_normal_genetic_for_AMCD(NB_GENERATIONS, NB_INDIVIDUS)
+    launch_normal_genetic(NB_GENERATIONS, NB_INDIVIDUS)
