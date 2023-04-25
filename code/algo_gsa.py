@@ -135,10 +135,11 @@ def update_coordinates(individual, old_velocity_matrix, universe_time):
 
 def is_budget_ok(individual):
     """Vérifie si le budget est respecté"""
-    budget = 0
-    for i in range(len(individual)):
-        budget += COST_MAP[individual[i][1]][individual[i][0]]
-    return budget <= BUDGET
+    price = get_price(individual)
+    if price < 43:
+        individual.append(get_initial_pos())
+    elif price > 50:
+        individual.pop(-1)
 
 
 def init_velocity_matrix(individual):
@@ -167,16 +168,10 @@ def check_no_doubles(individual):
 def generate_solution():
     """Génère une solution aléatoire"""
     individual = generate_random_solution()[0]
-    temp = 0
+    print(individual)
     for i in range(NB_ITERATIONS):
         update_coordinates(individual, init_velocity_matrix(individual), i)
-        if not is_budget_ok(individual):
-            temp += 1
-            # print("Budget dépassé")
-            if temp > 100:
-                break
-        else:
-            temp = 0
+        is_budget_ok(individual)
     return individual
 
 
@@ -185,6 +180,8 @@ def get_initial_population():
     population = []
     for i in tqdm(range(POPULATION_SIZE), desc="INDIVIDUS"):
         population.append(generate_solution())
+        print(population[i])
+        print("Budget:", get_price(population[i]))
     return population
 
 
