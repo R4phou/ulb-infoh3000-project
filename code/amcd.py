@@ -13,11 +13,11 @@ SEUIL_INDIF = 0.1
                                     Chargement des données
 ----------------------------------------------------------------------------------------------------"""
 
-SCORES = np.loadtxt("result_AMCD/scores_gen1000_pop500.csv", delimiter=",")
+SCORES = np.loadtxt("result_AMCD/scores_gen500_pop1000.csv", delimiter=",")
 # prends le maximum de chaque colonne pour normaliser
 MAXS = [max(SCORES[:, i]) for i in range(len(SCORES[0]))]
 SCORES = normalise(SCORES, MAXS)
-POPULATION = v.read_pop("result_AMCD/ind_gen1000_pop500.txt")
+POPULATION = v.read_pop("result_AMCD/ind_gen500_pop1000.txt")
 POPU_SCORE = to_tuple_liste(POPULATION, SCORES)
 
 """----------------------------------------------------------------------------------------------------
