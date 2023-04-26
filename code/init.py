@@ -116,8 +116,10 @@ def check_in_map(position):
     """
     return ((position[0] < SIZE_X) and (position[1] < SIZE_Y) and (USAGE_MAP[position[1]][position[0]] == 0))
 
+
 def generate_n_solutions(n):
     return [generate_random_solution()[0] for i in range(n)]
+
 
 """----------------------------------------------------------------------------------------------------
                                             Calcul du score
@@ -144,12 +146,35 @@ def proximity(solution):
 
 def compacity(solution):
     """Calcule le score de compacité totale d'une solution"""
-    distance_tot = 0
+    score = 0
     n = len(solution)
     for i in range(n):
         for j in range(i+1, n):
-            distance_tot += distance_between_tuple(solution[i], solution[j])
-    return round(distance_tot, 3)
+            distance = distance_between_tuple(solution[i], solution[j])
+            if distance <= 1:
+                score += 0
+            elif 1 < distance <= 2:
+                score += 1
+            else:
+                score += 10
+    return round(score, 3)
+
+
+# def compacity(individu):
+#     nb_colle = 0
+#     n = len(individu)
+#     for parcelle in range(n):
+#         for autre_parcelle in range(parcelle, n):
+#             distance = distance_between_tuple(
+#                 individu[parcelle], individu[autre_parcelle])
+#             if distance <= 1:
+#                 nb_colle += 1
+#                 break
+#     return 100*n/nb_colle
+
+
+def next_to(parcelle1, parcelle2):
+    return distance_between_tuple(parcelle1, parcelle2) <= 1
 
 
 def get_score(solution):
@@ -180,14 +205,11 @@ def get_scores(solutions):
 if __name__ == "__main__":
     import visualize as v
     begin = t.time()
-    solutions = generate_n_solutions(500)
-    # print(get_scores(solutions))
-    max_comp = max_prod = max_prox = 0
-    for i in range(len(solutions)):
-        max_comp = max(max_comp, get_score(solutions[i])[2])
-        max_prod = max(max_prod, get_score(solutions[i])[0])
-        max_prox = max(max_prox, get_score(solutions[i])[1])
-    print("max_comp: ", max_comp)
-    print("max_prod: ", max_prod)
-    print("max_prox: ", max_prox)
+    for j in range(100):
+        solutions = generate_n_solutions(500)
+        # print(get_scores(solutions))
+        max_comp = max_prod = max_prox = 0
+        for i in range(len(solutions)):
+            max_comp = max(max_comp, get_score(solutions[i])[2])
+        print("max_comp: ", max_comp)
     print("Le programme a pris: ", round(t.time()-begin, 4), "s")

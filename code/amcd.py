@@ -5,19 +5,19 @@ from useful import *
 
 Q = 3
 CRITERES = ["Production", "Proximité", "Compacité"]
-POIDS = [1, 10000, 1]
-SEUIL_PREF = 0.9
-SEUIL_INDIF = 0.1
+POIDS = [6, 2, 100]
+SEUIL_PREF = [0.7, 0.7, 0.9]
+SEUIL_INDIF = [0.2, 0.2, 0.5]
 
 """----------------------------------------------------------------------------------------------------
                                     Chargement des données
 ----------------------------------------------------------------------------------------------------"""
 
-SCORES = np.loadtxt("result_AMCD/scores_gen500_pop1000.csv", delimiter=",")
+SCORES = np.loadtxt("result_AMCD/scores_gen200_pop500.csv", delimiter=",")
 # prends le maximum de chaque colonne pour normaliser
 MAXS = [max(SCORES[:, i]) for i in range(len(SCORES[0]))]
 SCORES = normalise(SCORES, MAXS)
-POPULATION = v.read_pop("result_AMCD/ind_gen500_pop1000.txt")
+POPULATION = v.read_pop("result_AMCD/ind_gen200_pop500.txt")
 POPU_SCORE = to_tuple_liste(POPULATION, SCORES)
 
 """----------------------------------------------------------------------------------------------------
@@ -37,11 +37,11 @@ def preference_monocritere(sol_1, sol_2, critere):
     sol1 et sol2 sont des tuples (individu, score)
     """
     dk = get_dk(sol_1, sol_2, critere)
-    if dk < SEUIL_INDIF:
+    if dk < SEUIL_INDIF[critere]:
         return 0
-    if dk > SEUIL_PREF:
+    if dk > SEUIL_PREF[critere]:
         return 1
-    return 1/(SEUIL_PREF-SEUIL_INDIF)*(dk-SEUIL_INDIF)
+    return 1/(SEUIL_PREF[critere]-SEUIL_INDIF[critere])*(dk-SEUIL_INDIF[critere])
 
 
 """----------------------------------------------------------------------------------------------------
@@ -106,6 +106,7 @@ def print_solution(sol):
     print("Flux net : ", sol[0])
     print("Individu : ", sol[1][0])
     print("Scores : ", sol[1][1])
+    print("Budget : ", ag.get_price(sol[1][0]))
     v.print_usagemap_plus_sol_list(ag.USAGE_MAP, sol[1][0])
 
 
@@ -116,7 +117,7 @@ def print_all_solutions(sol):
         print("\n")
 
 
-if __name__ == "__main__":
+def launch_amcd():
     begin = t.time()
     print("Début de la méthode PROMETHEE II")
     sol = prometheeII()
@@ -124,3 +125,7 @@ if __name__ == "__main__":
     scores = [sol[i][1][1] for i in range(len(sol))]
     print_solution(sol[0])
     v.print_3D_solutions_AMCD(scores, best=sol[0][1][1])
+
+
+if __name__ == "__main__":
+    launch_amcd()

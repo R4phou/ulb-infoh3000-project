@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
 from mpl_toolkits.mplot3d import Axes3D
 
-MAX_COMP = 5500
+MAX_COMP = 800
 MAX_PROD = 2.6
 MAX_PROX = 330
 
@@ -100,8 +100,8 @@ def print_3D_solutions_AMCD(scores, best):
     comps = [i[2] for i in scores]
 
     # Ajouter les points à l'axe 3D
-    ax.scatter(prods, proxs, comps, c='r')
-    ax.scatter(best[0], best[1], best[2], c='b')
+    ax.scatter(prods, proxs, comps, c='violet')
+    ax.scatter(best[0], best[1], best[2], c='green')
     # Afficher le graphique
     plt.show()
 
@@ -209,12 +209,12 @@ if __name__ == "__main__":
     NB_GEN = 500
     NB_POP = 1000
     NUM_IND = 48
-    filename = "results/scores_gen"+str(NB_GEN)+"_pop"+str(NB_POP)+".csv"
-    filename_ind = "results/ind" + \
-        str(NUM_IND)+"_gen" + str(NB_GEN)+"_pop"+str(NB_POP)+".csv"
-    print_usage_map(init.USAGE_MAP)
-    print_maps(init.PRODUCTION_MAP, init.COST_MAP, init.PROXIMITY_MAP)
+    filename = "result_AMCD/scores_gen"+str(NB_GEN)+"_pop"+str(NB_POP)+".csv"
+    # filename_ind = "results/ind" + \
+    #     str(NUM_IND)+"_gen" + str(NB_GEN)+"_pop"+str(NB_POP)+".csv"
+    # print_usage_map(init.USAGE_MAP)
+    # print_maps(init.PRODUCTION_MAP, init.COST_MAP, init.PROXIMITY_MAP)
     saved_scores = np.loadtxt(filename, delimiter=",")
-    saved_ind = np.loadtxt(filename_ind, delimiter=",", dtype=int)
+    # saved_ind = np.loadtxt(filename_ind, delimiter=",", dtype=int)
     print_3D_solutions(saved_scores)
     # plot_surface(filename)

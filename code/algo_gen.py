@@ -160,8 +160,8 @@ if __name__ == "__main__":
 
     begin = t.time()
     population_100 = generate_n_solutions(1000)
-    score_pop = algo_genetic(population_100, 100)
+    score_pop, population = algo_genetic(population_100, 100)
     print("Le programme a pris: ", round(t.time() - begin, 4), "s")
-    print(score_pop)
-    # np.savetxt("score_pop.txt", score_pop)
+    # print(score_pop)
+    np.savetxt("score_pop.txt", score_pop)
     v.print_3D_solutions(score_pop)
