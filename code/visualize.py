@@ -212,8 +212,9 @@ if __name__ == "__main__":
     filename = "results/scores_gen"+str(NB_GEN)+"_pop"+str(NB_POP)+".csv"
     filename_ind = "results/ind" + \
         str(NUM_IND)+"_gen" + str(NB_GEN)+"_pop"+str(NB_POP)+".csv"
-    # print_maps(init.PRODUCTION_MAP, init.COST_MAP, init.PROXIMITY_MAP)
+    print_usage_map(init.USAGE_MAP)
+    print_maps(init.PRODUCTION_MAP, init.COST_MAP, init.PROXIMITY_MAP)
     saved_scores = np.loadtxt(filename, delimiter=",")
     saved_ind = np.loadtxt(filename_ind, delimiter=",", dtype=int)
     print_3D_solutions(saved_scores)
-    plot_surface(filename)
+    # plot_surface(filename)

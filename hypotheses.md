@@ -14,7 +14,8 @@ Pour le calcul de la **productivité**:
 
 - On somme les productivités des terrains achetés
 
-##Compacité
+## Compacité
+
 Pour le calcul de la **compacité**:
 
 - On somme la distance entre chaque terrain acheté et on essaye de minimiser
@@ -42,37 +43,49 @@ Enfin, on sélectionne la moitié des individus qui ont le score le plus bas dan
 Cf **selection_dominance_Pareto(population, scores_pop)**
 
 ## Reproduction
-La reproduction avec un crossover simple coupe ou un crossover uniforme n'a pas donné de bons résultats. L'alternative à été de répliquer les meilleures solutions puis de les faire muter minimum une fois.
-## Mutation
-La mutation des solutions consiste à échanger un terrain aléatoire avec un autre choisi également aléatoirement tout en s'assurant de respecter le budget.
-# Gravitational Search Algorithm (GSA)
 
-## Principe:
+La reproduction avec un crossover simple coupe ou un crossover uniforme n'a pas donné de bons résultats. L'alternative à été de répliquer les meilleures solutions puis de les faire muter minimum une fois.
+
+## Mutation
+
+La mutation des solutions consiste à échanger un terrain aléatoire avec un autre choisi également aléatoirement tout en s'assurant de respecter le budget.
+
+# Gravitational Search Algorithm (GSA)
+## Principe
 
 Se base sur les lois de gravitation et du mouvement.
 On associe à chaque individu d'une population une certaine masse dans un repère (spatio-temporel (en gros comme notre univers)) dans lequel il va évoluer.
 à chaque itération, on actualise sa nouvelle masse, ainsi que sa vitesse et direction de déplacement dans le repère.
 
-## Etapes:
+## Etapes
 
 - identification de l'espace de recherche (espace de travail dans laquelle notre population va évoluer)
 - Pour chacun des m individus:
-    - initialisation d'un nombre de parcelles random
-    - Evaluation des scores de chaque parcelle
-    - Actualisation du fitness, best, worst (scores)
-    - Calcul de la masse puis de forces d'attraction agissant sur chaque parcelle
-    - Calcul de l'accélération et de la vitesse
-    - Mise à jour de la position des parcelles
-    - boucler de l'étape 3 jusqu'à l'étape précédente sur n itérations (ou jusqu'à ce que le budget soit dépassé)
+  - initialisation d'un nombre de parcelles random
+  - Evaluation des scores de chaque parcelle
+  - Actualisation du fitness, best, worst (scores)
+  - Calcul de la masse puis de forces d'attraction agissant sur chaque parcelle
+  - Calcul de l'accélération et de la vitesse
+  - Mise à jour de la position des parcelles
+  - boucler de l'étape 3 jusqu'à l'étape précédente sur n itérations (ou jusqu'à ce que le budget soit dépassé)
+  - S'assurer que le budget ne dépasse pas le budget max en supprimant un élément s'il dépasse et en en rachetant un s'il est trop faible
+  - S'assurer qu'il n'achète pas 2 fois la même parcelle au sein d'un individu en remplaçant le doublon par une parcelle random
 - Afficher les m individus optimisés sur la carte (les m individus = frontière de Pareto)
 
 # PROMETHEE
-
-q = 3
-
 3 critères
- - Productivite
- - Proximité
- - Compacité
+- Productivite
+- Proximité
+- Compacité
 
-n individus de la frontière de paretos
+
+Implémentation de PROMETHEE II
+- Chargement de la population PARETO optimale
+- Chargement des scores de cette population
+- Raisonnement en étapes
+  - Calcul des préférences monocritères avec des seuils de préférences et d'indifférence
+--> dans un premier temps, relation linéaire pour simplifier (peut être bientôt une fonction particulière)
+  - Calcul de la somme pondérée des préférences monocritères (poids choisis)
+  - Calcul des flux positifs et négatifs
+  - Calcul des flux nets
+  - Tri croissant des flux nets (car on cherche à minimiser!)
