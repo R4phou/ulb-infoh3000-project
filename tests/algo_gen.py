@@ -96,56 +96,41 @@ def mutation_simple(individu):
     """Mutation avec une probabilité de 50% d'un terrain"""
     if r.randint(0, 100) < 100:
         change_terrain = r.choice(individu)
-        new_terrain = change_terrain
+        new_terrain = change_terrain[:]
         # retire le prix de l'ancien terrain et ajoute le prix du nouveau terrain
+        i = 0
         while (new_terrain in individu) or (
                 get_price(individu) - get_price_terrain(change_terrain) + get_price_terrain(new_terrain) > BUDGET):
-            new_terrain = get_initial_pos()
+            new_terrain = get_pos_close_to(change_terrain)
+            i += 1
+            if i > 4:
+                change_terrain = r.choice(individu)
+                i = 0
         individu.remove(change_terrain)
         individu.append(new_terrain)
 
 
 def multiple_mutation(individu):
     """Mutation avec une probabilité de 10% de chaque terrain"""
-    for change_terrain in individu:
-        if r.randint(0, 100) < 10:
-            new_terrain = change_terrain
-            # retire le prix de l'ancien terrain et ajoute le prix du nouveau terrain
-            while (new_terrain in individu) or (
-                    get_price(individu) - get_price_terrain(change_terrain) + get_price_terrain(new_terrain) > BUDGET):
-                new_terrain = get_initial_pos()
-            individu.remove(change_terrain)
-            individu.append(new_terrain)
+    return generate_compact_solution()[0]
+    # for change_terrain in individu:
+    #     if r.randint(0, 100) < 10:
+    #         new_terrain = change_terrain
+    #         # retire le prix de l'ancien terrain et ajoute le prix du nouveau terrain
+    #         while (new_terrain in individu) or (
+    #                 get_price(individu) - get_price_terrain(change_terrain) + get_price_terrain(new_terrain) > BUDGET):
+    #             new_terrain = get_pos_close_to(change_terrain)
+    #             # print("dans while2")
+    #         individu.remove(change_terrain)
+    #         individu.append(new_terrain)
+    #         # print("hors while 2")
 
 
-# def mutation_simple(individu):
-#     """Mutation avec une probabilité de 50% d'un terrain"""
-#     if r.randint(0, 100) < 100:
-#         change_terrain = r.choice(individu)
-#         new_terrain = change_terrain[:]
-#         # retire le prix de l'ancien terrain et ajoute le prix du nouveau terrain
-#         i = 0
-#         while (new_terrain in individu) or (
-#                 get_price(individu) - get_price_terrain(change_terrain) + get_price_terrain(new_terrain) > BUDGET):
-#             new_terrain = get_pos_close_to(change_terrain)
-#             i += 1
-#             if i > 4:
-#                 change_terrain = r.choice(individu)
-#                 i = 0
-#         individu.remove(change_terrain)
-#         individu.append(new_terrain)
-
-
-# def multiple_mutation(individu):
-#     """Mutation avec une probabilité de 10% de chaque terrain"""
-#     return generate_compact_solution()[0]
-
-
-# def mutation(individu):
-#     """Mutation d'un algorithme génétique
-#     """
-#     mutation_simple(individu)
-#     multiple_mutation(individu)
+def mutation(individu):
+    """Mutation d'un algorithme génétique
+    """
+    mutation_simple(individu)
+    multiple_mutation(individu)
 
 
 """----------------------------------------------------------------------------------------------------

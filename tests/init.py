@@ -118,7 +118,7 @@ def check_in_map(position):
 
 
 def generate_n_solutions(n):
-    return [generate_random_solution()[0] for i in range(n)]
+    return [generate_compact_solution()[0] for i in range(n)]
 
 
 """----------------------------------------------------------------------------------------------------
@@ -144,42 +144,20 @@ def proximity(solution):
     return round(distance_tot, 3)  # simplifier les calculs en arrondissant
 
 
-# def compacity(solution):
-#     """Calcule le score de compacité totale d'une solution"""
-#     score = 0
-#     n = len(solution)
-#     for i in range(n):
-#         for j in range(i+1, n):
-#             distance = distance_between_tuple(solution[i], solution[j])
-#             if distance <= 1:
-#                 score += 0
-#             elif 1 < distance <= 2:
-#                 score += 1
-#             else:
-#                 score += 10
-#     return round(score, 3)
-
 def compacity(solution):
     """Calcule le score de compacité totale d'une solution"""
-    distance_tot = 0
+    score = 0
     n = len(solution)
     for i in range(n):
         for j in range(i+1, n):
-            distance_tot += distance_between_tuple(solution[i], solution[j])
-    return round(distance_tot, 3)
-
-
-# def compacity(individu):
-#     nb_colle = 0
-#     n = len(individu)
-#     for parcelle in range(n):
-#         for autre_parcelle in range(parcelle, n):
-#             distance = distance_between_tuple(
-#                 individu[parcelle], individu[autre_parcelle])
-#             if distance <= 1:
-#                 nb_colle += 1
-#                 break
-#     return 100*n/nb_colle
+            distance = distance_between_tuple(solution[i], solution[j])
+            if distance <= 1:
+                score += 0
+            elif 1 < distance <= 2:
+                score += 1
+            else:
+                score += 10
+    return round(score, 3)
 
 
 def next_to(parcelle1, parcelle2):
@@ -214,11 +192,12 @@ def get_scores(solutions):
 if __name__ == "__main__":
     import visualize as v
     begin = t.time()
-    for j in range(100):
+    for j in range(1):
         solutions = generate_n_solutions(500)
         # print(get_scores(solutions))
         max_comp = max_prod = max_prox = 0
         for i in range(len(solutions)):
             max_comp = max(max_comp, get_score(solutions[i])[2])
+            print("budget: ", get_price(solutions[i]))
         print("max_comp: ", max_comp)
     print("Le programme a pris: ", round(t.time()-begin, 4), "s")
