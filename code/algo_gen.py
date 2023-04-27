@@ -141,11 +141,11 @@ def multiple_mutation(individu):
 #     return generate_compact_solution()[0]
 
 
-# def mutation(individu):
-#     """Mutation d'un algorithme génétique
-#     """
-#     mutation_simple(individu)
-#     multiple_mutation(individu)
+def mutation(individu):
+    """Mutation d'un algorithme génétique
+    """
+    mutation_simple(individu)
+    multiple_mutation(individu)
 
 
 """----------------------------------------------------------------------------------------------------
