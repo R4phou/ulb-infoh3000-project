@@ -4,7 +4,7 @@ from matplotlib.colors import ListedColormap
 from mpl_toolkits.mplot3d import Axes3D
 
 MAX_COMP = 500
-MAX_PROD = 2.6
+MAX_PROD = 1
 MAX_PROX = 330
 
 
@@ -217,7 +217,7 @@ if __name__ == "__main__":
     # filename_ind = "results/ind" + \
     #     str(NUM_IND)+"_gen" + str(NB_GEN)+"_pop"+str(NB_POP)+".csv"
     # print_usage_map(init.USAGE_MAP)
-    # print_maps(init.PRODUCTION_MAP, init.COST_MAP, init.PROXIMITY_MAP)
+    print_maps(init.PRODUCTION_MAP, init.COST_MAP, init.PROXIMITY_MAP)
     saved_scores = np.loadtxt(filename, delimiter=",")
     # saved_ind = np.loadtxt(filename_ind, delimiter=",", dtype=int)
     print_3D_solutions(saved_scores)

@@ -145,7 +145,7 @@ def productivity(solution):
     score = 0
     for elem in solution:
         score += PRODUCTION_MAP[elem[1]][elem[0]]
-    return round(100 / score, 3)
+    return round(1 - score / 75, 3)
 
 
 def proximity(solution):
@@ -233,6 +233,6 @@ if __name__ == "__main__":
         # print(get_scores(solutions))
         max_comp = max_prod = max_prox = 0
         for i in range(len(solutions)):
-            max_comp = max(max_comp, get_score(solutions[i])[2])
+            max_comp = max(max_comp, get_score(solutions[i])[0])
         print("max_comp: ", max_comp)
     print("Le programme a pris: ", round(t.time() - begin, 4), "s")

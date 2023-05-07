@@ -143,13 +143,14 @@ def launch_amcd():
     print("Fin de la méthode PROMETHEE II en: ", round(t.time() - begin, 5), "s")
     scores = [sol[i][1][1] for i in range(len(sol))]
     print_solution(sol[0])
+
     v.print_3D_solutions_AMCD(scores, best=sol[0][1][1])
 
 
-POIDS = [6, 2, 100]
-SEUIL_PREF = [0.7, 0.7, 0.9]
-SEUIL_INDIF = [0.2, 0.2, 0.5]
-NBGEN = 200
-NBPOP = 500
+POIDS = [0.5, 0.5, 0.5]
+SEUIL_PREF = [0.7, 0.7, 0.7]
+SEUIL_INDIF = [0.2, 0.2, 0.2]
+NBGEN = 1000
+NBPOP = 1000
 if __name__ == "__main__":
     launch_amcd()

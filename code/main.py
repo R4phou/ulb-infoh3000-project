@@ -88,8 +88,8 @@ def get_pareto_frontier(nb_gen, nb_ind):
 
 if __name__ == "__main__":
     r.seed(4)
-    NB_GENERATIONS = 200  # Nombre de générations
-    NB_INDIVIDUS = 500  # Nombre d'individus par génération
+    NB_GENERATIONS = 1000  # Nombre de générations
+    NB_INDIVIDUS = 1000  # Nombre d'individus par génération
     get_pareto_frontier(NB_GENERATIONS, NB_INDIVIDUS)
     # launch_evolutive_genetic(NB_GENERATIONS, NB_INDIVIDUS)
     # import amcd as amcd
