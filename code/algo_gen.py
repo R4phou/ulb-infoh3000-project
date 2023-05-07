@@ -90,6 +90,18 @@ def reproduction(population):
         population.append(child2)
 
 
+def reproduction_compact(population):
+    """Reproduction d'un algorithme génétique"""
+    for i in range(0, len(population), 2):
+        individu1 = population[i]
+        individu2 = population[i + 1]
+        child1, child2 = no_crossover(individu1, individu2)
+        mutation_compact(child1)
+        mutation_compact(child2)
+        population.append(child1)
+        population.append(child2)
+
+
 """----------------------------------------------------------------------------------------------------
                                     Etape de mutation
 ----------------------------------------------------------------------------------------------------"""
@@ -129,33 +141,43 @@ def multiple_mutation(individu):
             individu.append(new_terrain)
 
 
-# def mutation_simple(individu):
-#     """Mutation avec une probabilité de 50% d'un terrain"""
-#     if r.randint(0, 100) < 100:
-#         change_terrain = r.choice(individu)
-#         new_terrain = change_terrain[:]
-#         # retire le prix de l'ancien terrain et ajoute le prix du nouveau terrain
-#         i = 0
-#         while (new_terrain in individu) or (
-#                 get_price(individu) - get_price_terrain(change_terrain) + get_price_terrain(new_terrain) > BUDGET):
-#             new_terrain = get_pos_close_to(change_terrain)
-#             i += 1
-#             if i > 4:
-#                 change_terrain = r.choice(individu)
-#                 i = 0
-#         individu.remove(change_terrain)
-#         individu.append(new_terrain)
-
-
-# def multiple_mutation(individu):
-#     """Mutation avec une probabilité de 10% de chaque terrain"""
-#     return generate_compact_solution()[0]
-
-
 def mutation(individu):
     """Mutation d'un algorithme génétique"""
     mutation_simple(individu)
     multiple_mutation(individu)
+
+
+def mutation_simple_compact(individu):
+    """Mutation avec une probabilité de 50% d'un terrain"""
+    if r.randint(0, 100) < 100:
+        change_terrain = r.choice(individu)
+        new_terrain = change_terrain[:]
+        # retire le prix de l'ancien terrain et ajoute le prix du nouveau terrain
+        i = 0
+        while (new_terrain in individu) or (
+            get_price(individu)
+            - get_price_terrain(change_terrain)
+            + get_price_terrain(new_terrain)
+            > BUDGET
+        ):
+            new_terrain = get_pos_close_to(change_terrain)
+            i += 1
+            if i > 4:
+                change_terrain = r.choice(individu)
+                i = 0
+        individu.remove(change_terrain)
+        individu.append(new_terrain)
+
+
+def multiple_mutation_compact(individu):
+    """Mutation d'un chaque terrain"""
+    return generate_compact_solution()[0]
+
+
+def mutation_compact(individu):
+    """Mutation d'un algorithme génétique"""
+    mutation_simple_compact(individu)
+    multiple_mutation_compact(individu)
 
 
 """----------------------------------------------------------------------------------------------------
@@ -163,9 +185,10 @@ def mutation(individu):
 ----------------------------------------------------------------------------------------------------"""
 
 
-def algo_genetic(population, nb_gen):
+def algo_genetic(nb_gen):
+    population = generate_n_solutions(nb_gen)
     score_pop = get_scores(population)
-    for gen in tqdm(range(nb_gen), desc="Générations"):
+    for gen in tqdm(range(nb_gen), desc="Générations normales"):
         population = selection_dominance_Pareto(population, score_pop)
         reproduction(population)
         score_pop = get_scores(population)
@@ -177,7 +200,7 @@ def algo_genetic(population, nb_gen):
 def algo_genetic_compact(nb_gen):
     population = generate_n_compact_solutions(nb_gen)
     score_pop = get_scores(population)
-    for gen in tqdm(range(nb_gen), desc="Générations"):
+    for gen in tqdm(range(nb_gen), desc="Générations compactes"):
         population = selection_dominance_Pareto(population, score_pop)
         reproduction_compact(population)
         score_pop = get_scores(population)
@@ -189,7 +212,7 @@ def algo_genetic_compact(nb_gen):
 def algo_genetic_evolution(population, nb_gen):
     score_pop = get_scores(population)
     evolution0 = score_pop
-    for gen in tqdm(range(nb_gen), desc="Générations"):
+    for gen in tqdm(range(nb_gen), desc="Générations évolutives"):
         population = selection_dominance_Pareto(population, score_pop)
         reproduction(population)
         score_pop = get_scores(population)
@@ -204,8 +227,7 @@ if __name__ == "__main__":
     import visualize as v
 
     begin = t.time()
-    population_100 = generate_n_solutions(1000)
-    score_pop, population = algo_genetic(population_100, 100)
+    score_pop, population = algo_genetic(100)
     print("Le programme a pris: ", round(t.time() - begin, 4), "s")
     # print(score_pop)
     np.savetxt("score_pop.txt", score_pop)

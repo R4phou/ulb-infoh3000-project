@@ -58,12 +58,16 @@ def launch_normal_genetic(nb_gen, nb_ind):
     print_3D_solutions(score_pop)
 
 
-def launch_normal_genetic_for_AMCD(nb_gen, nb_ind):
+def get_pareto_frontier(nb_gen, nb_ind):
     time_algo = t.time()
-    population = generate_n_solutions(nb_ind)
-    score_pop, population = algo_genetic(population, nb_gen)
+    score_pop, population = algo_genetic(nb_gen)
+    score_pop_comp, population_comp = algo_genetic_compact(nb_gen)
+    score_pop = np.concatenate((score_pop, score_pop_comp), axis=0)
+    population = population + population_comp
+    population = selection_dominance_pareto_final(population, score_pop)
+    score_pop = get_scores(population)
     print(
-        "Temps d'exécution de l'algorithme génétique: ",
+        "Temps d'exécution des algorithmes génétiques: ",
         round(t.time() - time_algo, 5),
         "s",
     )
@@ -86,7 +90,7 @@ if __name__ == "__main__":
     r.seed(4)
     NB_GENERATIONS = 200  # Nombre de générations
     NB_INDIVIDUS = 500  # Nombre d'individus par génération
-    launch_normal_genetic_for_AMCD(NB_GENERATIONS, NB_INDIVIDUS)
+    get_pareto_frontier(NB_GENERATIONS, NB_INDIVIDUS)
     # launch_evolutive_genetic(NB_GENERATIONS, NB_INDIVIDUS)
     # import amcd as amcd
 

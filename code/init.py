@@ -129,6 +129,10 @@ def generate_n_solutions(n):
     return [generate_random_solution()[0] for i in range(n)]
 
 
+def generate_n_compact_solutions(n):
+    return [generate_compact_solution()[0] for i in range(n)]
+
+
 """----------------------------------------------------------------------------------------------------
                                             Calcul du score
 ----------------------------------------------------------------------------------------------------"""
@@ -152,12 +156,12 @@ def proximity(solution):
     return round(distance_tot, 3)  # simplifier les calculs en arrondissant
 
 
-# def compacity(solution):
+# def compacity_comp(solution):
 #     """Calcule le score de compacité totale d'une solution"""
 #     score = 0
 #     n = len(solution)
 #     for i in range(n):
-#         for j in range(i+1, n):
+#         for j in range(i + 1, n):
 #             distance = distance_between_tuple(solution[i], solution[j])
 #             if distance <= 1:
 #                 score += 0
