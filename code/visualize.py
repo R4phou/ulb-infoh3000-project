@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
 from mpl_toolkits.mplot3d import Axes3D
 
-MAX_COMP = 6000
+MAX_COMP = 500
 MAX_PROD = 2.6
 MAX_PROX = 330
 

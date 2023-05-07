@@ -156,30 +156,30 @@ def proximity(solution):
     return round(distance_tot, 3)  # simplifier les calculs en arrondissant
 
 
-# def compacity_comp(solution):
-#     """Calcule le score de compacité totale d'une solution"""
-#     score = 0
-#     n = len(solution)
-#     for i in range(n):
-#         for j in range(i + 1, n):
-#             distance = distance_between_tuple(solution[i], solution[j])
-#             if distance <= 1:
-#                 score += 0
-#             elif 1 < distance <= 2:
-#                 score += 1
-#             else:
-#                 score += 10
-#     return round(score, 3)
-
-
 def compacity(solution):
     """Calcule le score de compacité totale d'une solution"""
-    distance_tot = 0
+    score = 0
     n = len(solution)
     for i in range(n):
         for j in range(i + 1, n):
-            distance_tot += distance_between_tuple(solution[i], solution[j])
-    return round(distance_tot, 3)
+            distance = distance_between_tuple(solution[i], solution[j])
+            if distance <= 1:
+                score += 0
+            elif 1 < distance <= 2:
+                score += 1
+            else:
+                score += 6
+    return round(score, 3)
+
+
+# def compacity(solution):
+#     """Calcule le score de compacité totale d'une solution"""
+#     distance_tot = 0
+#     n = len(solution)
+#     for i in range(n):
+#         for j in range(i + 1, n):
+#             distance_tot += distance_between_tuple(solution[i], solution[j])
+#     return round(distance_tot, 3)
 
 
 # def compacity(individu):
