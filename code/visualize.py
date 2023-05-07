@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
 from mpl_toolkits.mplot3d import Axes3D
 
-MAX_COMP = 800
+MAX_COMP = 6000
 MAX_PROD = 2.6
 MAX_PROX = 330
 
@@ -15,7 +15,7 @@ def print_usagemap_plus_sol_list(usage, sol):
     """
     mat = usage
     # [vide, route, constru, acheté, erreur]
-    couleurs = ['white', 'lightblue', 'red',  'blue', 'green']
+    couleurs = ["white", "lightblue", "red", "blue", "green"]
     cmap = ListedColormap(couleurs)
     for elem in sol:
         if usage[elem[1]][elem[0]] == 0:
@@ -34,7 +34,7 @@ def print_usage_map(usage):
     """
     mat = usage
     # [vide, route, constru, acheté, erreur]
-    couleurs = ['white', 'lightblue', 'red',  'blue', 'green']
+    couleurs = ["white", "lightblue", "red", "blue", "green"]
     cmap = ListedColormap(couleurs)
     fig, ax = plt.subplots()
     ax.matshow(mat, cmap=cmap)
@@ -60,21 +60,21 @@ def print_3D_solutions(scores):
     """
     # Créer la figure et l'axe 3D
     fig = plt.figure()
-    ax = fig.add_subplot(111, projection='3d')
-    ax.set_xlabel('Productivity')
-    ax.set_ylabel('Proximity')
-    ax.set_zlabel('Compacity')
+    ax = fig.add_subplot(111, projection="3d")
+    ax.set_xlabel("Productivity")
+    ax.set_ylabel("Proximity")
+    ax.set_zlabel("Compacity")
     ax.set_xlim(0, 1.0)
     ax.set_ylim(0, 1.0)
     ax.set_zlim(0, 1.0)
 
     # Les coordonnées des points
-    prods = [i[0]/MAX_PROD for i in scores]
-    proxs = [i[1]/MAX_PROX for i in scores]
-    comps = [i[2]/MAX_COMP for i in scores]
+    prods = [i[0] / MAX_PROD for i in scores]
+    proxs = [i[1] / MAX_PROX for i in scores]
+    comps = [i[2] / MAX_COMP for i in scores]
 
     # Ajouter les points à l'axe 3D
-    ax.scatter(prods, proxs, comps, c='r')
+    ax.scatter(prods, proxs, comps, c="r")
     # Afficher le graphique
     plt.show()
 
@@ -86,10 +86,10 @@ def print_3D_solutions_AMCD(scores, best):
     """
     # Créer la figure et l'axe 3D
     fig = plt.figure()
-    ax = fig.add_subplot(111, projection='3d')
-    ax.set_xlabel('Productivity')
-    ax.set_ylabel('Proximity')
-    ax.set_zlabel('Compacity')
+    ax = fig.add_subplot(111, projection="3d")
+    ax.set_xlabel("Productivity")
+    ax.set_ylabel("Proximity")
+    ax.set_zlabel("Compacity")
     ax.set_xlim(0, 1.0)
     ax.set_ylim(0, 1.0)
     ax.set_zlim(0, 1.0)
@@ -100,8 +100,8 @@ def print_3D_solutions_AMCD(scores, best):
     comps = [i[2] for i in scores]
 
     # Ajouter les points à l'axe 3D
-    ax.scatter(prods, proxs, comps, c='violet')
-    ax.scatter(best[0], best[1], best[2], c='green')
+    ax.scatter(prods, proxs, comps, c="violet")
+    ax.scatter(best[0], best[1], best[2], c="green")
     # Afficher le graphique
     plt.show()
 
@@ -113,49 +113,49 @@ def print_3D_evolutions(scores):
     """
     # Créer la figure et l'axe 3D
     fig = plt.figure()
-    ax = fig.add_subplot(111, projection='3d')
-    ax.set_xlabel('Productivity')
-    ax.set_ylabel('Proximity')
-    ax.set_zlabel('Compacity')
+    ax = fig.add_subplot(111, projection="3d")
+    ax.set_xlabel("Productivity")
+    ax.set_ylabel("Proximity")
+    ax.set_zlabel("Compacity")
     ax.set_xlim(0, 1.0)
     ax.set_ylim(0, 1.0)
     ax.set_zlim(0, 1.0)
 
     # Les coordonnées des points
-    prods0 = [i[0]/MAX_PROD for i in scores[0]]
-    proxs0 = [i[1]/MAX_PROX for i in scores[0]]
-    comps0 = [i[2]/MAX_COMP for i in scores[0]]
+    prods0 = [i[0] / MAX_PROD for i in scores[0]]
+    proxs0 = [i[1] / MAX_PROX for i in scores[0]]
+    comps0 = [i[2] / MAX_COMP for i in scores[0]]
 
     # Ajouter les points à l'axe 3D
-    ax.scatter(prods0, proxs0, comps0, c='r')
+    ax.scatter(prods0, proxs0, comps0, c="r")
     # Les coordonnées des points
-    prods1 = [i[0]/MAX_PROD for i in scores[1]]
-    proxs1 = [i[1]/MAX_PROX for i in scores[1]]
-    comps1 = [i[2]/MAX_COMP for i in scores[1]]
+    prods1 = [i[0] / MAX_PROD for i in scores[1]]
+    proxs1 = [i[1] / MAX_PROX for i in scores[1]]
+    comps1 = [i[2] / MAX_COMP for i in scores[1]]
 
     # Ajouter les points à l'axe 3D
-    ax.scatter(prods1, proxs1, comps1, c='b')
+    ax.scatter(prods1, proxs1, comps1, c="b")
     # Les coordonnées des points
-    prods2 = [i[0]/MAX_PROD for i in scores[2]]
-    proxs2 = [i[1]/MAX_PROX for i in scores[2]]
-    comps2 = [i[2]/MAX_COMP for i in scores[2]]
+    prods2 = [i[0] / MAX_PROD for i in scores[2]]
+    proxs2 = [i[1] / MAX_PROX for i in scores[2]]
+    comps2 = [i[2] / MAX_COMP for i in scores[2]]
 
     # Ajouter les points à l'axe 3D
-    ax.scatter(prods2, proxs2, comps2, c='g')
+    ax.scatter(prods2, proxs2, comps2, c="g")
 
     # Afficher le graphique
     plt.show()
 
 
 def plot_surface(filename):
-    mat = np.loadtxt(filename,
-                     dtype=float, delimiter=",")
+    mat = np.loadtxt(filename, dtype=float, delimiter=",")
     # Diviser les points en coordonnées x, y et z
     x = mat[:, 0]
     y = mat[:, 1]
     z = mat[:, 2]
     import useful as u
     from scipy.interpolate import griddata
+
     x = u.normalize(x, MAX_PROD)
     y = u.normalize(y, MAX_PROX)
     z = u.normalize(z, MAX_COMP)
@@ -166,11 +166,11 @@ def plot_surface(filename):
     xi, yi = np.meshgrid(xi, yi)
 
     # Interpoler les valeurs de z sur la grille régulière à l'aide de la méthode de l'interpolation
-    zi = griddata((x, y), z, (xi, yi), method='linear')
+    zi = griddata((x, y), z, (xi, yi), method="linear")
 
     # Visualiser la surface interpolée à l'aide de Matplotlib
     fig = plt.figure()
-    ax = fig.add_subplot(111, projection='3d')
+    ax = fig.add_subplot(111, projection="3d")
     ax.set_xlim(0, 1.0)
     ax.set_ylim(0, 1.0)
     ax.set_zlim(0, 1.0)
@@ -182,13 +182,16 @@ def save_pop(population, nb_gen, nb_ind):
     """population est une liste de solutions sous la forme d'une liste d'individu
     un individu est une liste de liste [x,y]
     """
-    with open("result_AMCD/ind"+"_gen" + str(nb_gen)+"_pop"+str(nb_ind)+".txt", "w") as f:
+    with open(
+        "result_AMCD/population" + str(nb_gen) + "_gen_" + str(nb_ind) + "_pop.txt",
+        "w",
+    ) as f:
         for i in range(len(population)):
             for j in range(len(population[i])):
-                f.write(str(population[i][j][0])+","+str(population[i][j][1]))
-                if j < len(population[i])-1:
+                f.write(str(population[i][j][0]) + "," + str(population[i][j][1]))
+                if j < len(population[i]) - 1:
                     f.write("|")
-            if i < len(population)-1:
+            if i < len(population) - 1:
                 f.write("\n")
 
 
@@ -206,10 +209,11 @@ def read_pop(filename):
 
 if __name__ == "__main__":
     import init as init
+
     NB_GEN = 500
     NB_POP = 1000
     NUM_IND = 48
-    filename = "result_AMCD/scores_gen"+str(NB_GEN)+"_pop"+str(NB_POP)+".csv"
+    filename = "result_AMCD/scores_gen" + str(NB_GEN) + "_pop" + str(NB_POP) + ".csv"
     # filename_ind = "results/ind" + \
     #     str(NUM_IND)+"_gen" + str(NB_GEN)+"_pop"+str(NB_POP)+".csv"
     # print_usage_map(init.USAGE_MAP)

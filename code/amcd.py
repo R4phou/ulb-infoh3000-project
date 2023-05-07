@@ -5,20 +5,27 @@ from useful import *
 
 Q = 3
 CRITERES = ["Production", "Proximité", "Compacité"]
-POIDS = [6, 2, 100]
-SEUIL_PREF = [0.7, 0.7, 0.9]
-SEUIL_INDIF = [0.2, 0.2, 0.5]
+
 
 """----------------------------------------------------------------------------------------------------
                                     Chargement des données
 ----------------------------------------------------------------------------------------------------"""
 
-SCORES = np.loadtxt("result_AMCD/scores_gen200_pop500.csv", delimiter=",")
-# prends le maximum de chaque colonne pour normaliser
-MAXS = [max(SCORES[:, i]) for i in range(len(SCORES[0]))]
-SCORES = normalise(SCORES, MAXS)
-POPULATION = v.read_pop("result_AMCD/ind_gen200_pop500.txt")
-POPU_SCORE = to_tuple_liste(POPULATION, SCORES)
+
+def getData():
+    SCORES = np.loadtxt(
+        "result_AMCD/scores" + str(NBGEN) + "_gen_" + str(NBPOP) + "_pop.csv",
+        delimiter=",",
+    )
+    # prends le maximum de chaque colonne pour normaliser
+    MAXS = [max(SCORES[:, i]) for i in range(len(SCORES[0]))]
+    SCORES = normalise(SCORES, MAXS)
+    POPULATION = v.read_pop(
+        "result_AMCD/population" + str(NBGEN) + "_gen_" + str(NBPOP) + "_pop.txt"
+    )
+    POPU_SCORE = to_tuple_liste(POPULATION, SCORES)
+    return SCORES, POPULATION, POPU_SCORE
+
 
 """----------------------------------------------------------------------------------------------------
                                     1.Préférences mono-critères
@@ -29,7 +36,7 @@ def get_dk(sol_1, sol_2, critere):
     """
     sol1 et sol2 sont des tuples (individu, score)
     """
-    return sol_1[1][critere]-sol_2[1][critere]
+    return sol_1[1][critere] - sol_2[1][critere]
 
 
 def preference_monocritere(sol_1, sol_2, critere):
@@ -41,7 +48,9 @@ def preference_monocritere(sol_1, sol_2, critere):
         return 0
     if dk > SEUIL_PREF[critere]:
         return 1
-    return 1/(SEUIL_PREF[critere]-SEUIL_INDIF[critere])*(dk-SEUIL_INDIF[critere])
+    return (
+        1 / (SEUIL_PREF[critere] - SEUIL_INDIF[critere]) * (dk - SEUIL_INDIF[critere])
+    )
 
 
 """----------------------------------------------------------------------------------------------------
@@ -50,8 +59,8 @@ def preference_monocritere(sol_1, sol_2, critere):
 
 
 def matrice_preference(sol_1, sol_2, w):
-    """matrice de préférence entre deux solutions """
-    return sum(w[i]*preference_monocritere(sol_1, sol_2, i) for i in range(len(w)))
+    """matrice de préférence entre deux solutions"""
+    return sum(w[i] * preference_monocritere(sol_1, sol_2, i) for i in range(len(w)))
 
 
 """----------------------------------------------------------------------------------------------------
@@ -61,12 +70,20 @@ def matrice_preference(sol_1, sol_2, w):
 
 def flux_pos(ai):
     """Calcule le flux positif de l'individu ai"""
-    return 1/(len(POPU_SCORE)-1)*sum(matrice_preference(ai, aj, POIDS) for aj in POPU_SCORE)
+    return (
+        1
+        / (len(POPU_SCORE) - 1)
+        * sum(matrice_preference(ai, aj, POIDS) for aj in POPU_SCORE)
+    )
 
 
 def flux_neg(ai):
     """Calcule le flux négatif de l'individu ai"""
-    return 1/(len(POPU_SCORE)-1)*sum(matrice_preference(aj, ai, POIDS) for aj in POPU_SCORE)
+    return (
+        1
+        / (len(POPU_SCORE) - 1)
+        * sum(matrice_preference(aj, ai, POIDS) for aj in POPU_SCORE)
+    )
 
 
 """----------------------------------------------------------------------------------------------------
@@ -76,7 +93,7 @@ def flux_neg(ai):
 
 def flux_net(ai):
     """Calcule le flux net de l'individu ai"""
-    return flux_pos(ai)-flux_neg(ai)
+    return flux_pos(ai) - flux_neg(ai)
 
 
 def fluxes_net_population():
@@ -119,13 +136,20 @@ def print_all_solutions(sol):
 
 def launch_amcd():
     begin = t.time()
+    global SCORES, POPULATION, POPU_SCORE
+    SCORES, POPULATION, POPU_SCORE = getData()
     print("Début de la méthode PROMETHEE II")
     sol = prometheeII()
-    print("Fin de la méthode PROMETHEE II en: ", round(t.time()-begin, 5), "s")
+    print("Fin de la méthode PROMETHEE II en: ", round(t.time() - begin, 5), "s")
     scores = [sol[i][1][1] for i in range(len(sol))]
     print_solution(sol[0])
     v.print_3D_solutions_AMCD(scores, best=sol[0][1][1])
 
 
+POIDS = [6, 2, 100]
+SEUIL_PREF = [0.7, 0.7, 0.9]
+SEUIL_INDIF = [0.2, 0.2, 0.5]
+NBGEN = 200
+NBPOP = 500
 if __name__ == "__main__":
     launch_amcd()

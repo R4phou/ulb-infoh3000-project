@@ -12,7 +12,7 @@ USAGE_MAP = read_usage_file("data/Usage_map.txt")
 BUILDINGS = position_of_item(2, USAGE_MAP)
 # Matrice de proximité
 PROXIMITY_MAP = calculate_proximity_map(USAGE_MAP, BUILDINGS)
-print("Matrices chargées en", round(t.time()-time_init, 5), "secondes")
+print("Matrices chargées en", round(t.time() - time_init, 5), "secondes")
 
 SIZE_X = len(COST_MAP[0])  # Taille (largeur) de la carte
 SIZE_Y = len(COST_MAP)  # Taille (hauteur) de la carte
@@ -57,7 +57,11 @@ def generate_random_solution():
         if i == 4:
             break
         position = get_initial_pos()
-        if budget + COST_MAP[position[1]][position[0]] <= BUDGET and check_in_map(position) and position not in solution:
+        if (
+            budget + COST_MAP[position[1]][position[0]] <= BUDGET
+            and check_in_map(position)
+            and position not in solution
+        ):
             budget += COST_MAP[position[1]][position[0]]
             solution.append(position)
             i = 0
@@ -81,30 +85,30 @@ def select_next_pos(old_pos):
     """Position c'est [x,y]"""
     pos = old_pos[:]
     x = r.randint(0, 3)
-    if x == 0 and pos[0]+1 < SIZE_X:
+    if x == 0 and pos[0] + 1 < SIZE_X:
         pos[0] += 1
-    elif x == 1 and 0 <= pos[0]-1:
+    elif x == 1 and 0 <= pos[0] - 1:
         pos[0] -= 1
-    elif x == 2 and pos[1]+1 < SIZE_Y:
+    elif x == 2 and pos[1] + 1 < SIZE_Y:
         pos[1] += 1
-    elif x == 3 and 0 <= pos[1]-1:
+    elif x == 3 and 0 <= pos[1] - 1:
         pos[1] -= 1
     return pos
 
 
 def get_pos_close_to(pos):
     """Renvoie une position proche de pos"""
-    newpos = [SIZE_X+1, SIZE_Y+1]
-    while(not check_in_map(newpos)):
+    newpos = [SIZE_X + 1, SIZE_Y + 1]
+    while not check_in_map(newpos):
         newpos = pos[:]
         x = r.randint(0, 3)
-        if x == 0 and newpos[0]+1 < SIZE_X:
+        if x == 0 and newpos[0] + 1 < SIZE_X:
             newpos[0] += 1
-        elif x == 1 and 0 <= newpos[0]-1:
+        elif x == 1 and 0 <= newpos[0] - 1:
             newpos[0] -= 1
-        elif x == 2 and newpos[1]+1 < SIZE_Y:
+        elif x == 2 and newpos[1] + 1 < SIZE_Y:
             newpos[1] += 1
-        elif x == 3 and 0 <= newpos[1]-1:
+        elif x == 3 and 0 <= newpos[1] - 1:
             newpos[1] -= 1
     return newpos
 
@@ -114,7 +118,11 @@ def check_in_map(position):
     Vérifie que la position est bien dans la carte, aussi non
     @return False si la position n'est pas achetable ou n'est pas dans la carte
     """
-    return ((position[0] < SIZE_X) and (position[1] < SIZE_Y) and (USAGE_MAP[position[1]][position[0]] == 0))
+    return (
+        (position[0] < SIZE_X)
+        and (position[1] < SIZE_Y)
+        and (USAGE_MAP[position[1]][position[0]] == 0)
+    )
 
 
 def generate_n_solutions(n):
@@ -133,7 +141,7 @@ def productivity(solution):
     score = 0
     for elem in solution:
         score += PRODUCTION_MAP[elem[1]][elem[0]]
-    return round(100/score, 3)
+    return round(100 / score, 3)
 
 
 def proximity(solution):
@@ -159,12 +167,13 @@ def proximity(solution):
 #                 score += 10
 #     return round(score, 3)
 
+
 def compacity(solution):
     """Calcule le score de compacité totale d'une solution"""
     distance_tot = 0
     n = len(solution)
     for i in range(n):
-        for j in range(i+1, n):
+        for j in range(i + 1, n):
             distance_tot += distance_between_tuple(solution[i], solution[j])
     return round(distance_tot, 3)
 
@@ -213,6 +222,7 @@ def get_scores(solutions):
 
 if __name__ == "__main__":
     import visualize as v
+
     begin = t.time()
     for j in range(100):
         solutions = generate_n_solutions(500)
@@ -221,4 +231,4 @@ if __name__ == "__main__":
         for i in range(len(solutions)):
             max_comp = max(max_comp, get_score(solutions[i])[2])
         print("max_comp: ", max_comp)
-    print("Le programme a pris: ", round(t.time()-begin, 4), "s")
+    print("Le programme a pris: ", round(t.time() - begin, 4), "s")

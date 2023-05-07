@@ -13,8 +13,12 @@ def is_dominated(ind1, ind2):
         ind1 (list): score de l'individu 1
         ind2 (list): score de l'individu 2
     """
-    return ind1[0] <= ind2[0] and ind1[1] <= ind2[1] and ind1[2] <= ind2[2] and (
-        ind1[0] < ind2[0] or ind1[1] < ind2[1] or ind1[2] < ind2[2])
+    return (
+        ind1[0] <= ind2[0]
+        and ind1[1] <= ind2[1]
+        and ind1[2] <= ind2[2]
+        and (ind1[0] < ind2[0] or ind1[1] < ind2[1] or ind1[2] < ind2[2])
+    )
 
 
 def sort_by_dominance(scores_pop):
@@ -74,15 +78,14 @@ def no_crossover(parent1, parent2):
     return child1, child2
 
 
-def reproduction(population):
-    """Reproduction d'un algorithme génétique
-    """
+def reproduction_compact(population):
+    """Reproduction d'un algorithme génétique"""
     for i in range(0, len(population), 2):
         individu1 = population[i]
         individu2 = population[i + 1]
         child1, child2 = no_crossover(individu1, individu2)
-        mutation(child1)
-        mutation(child2)
+        mutation_compact(child1)
+        mutation_compact(child2)
         population.append(child1)
         population.append(child2)
 
@@ -92,7 +95,7 @@ def reproduction(population):
 ----------------------------------------------------------------------------------------------------"""
 
 
-def mutation_simple(individu):
+def mutation_simple_compact(individu):
     """Mutation avec une probabilité de 50% d'un terrain"""
     if r.randint(0, 100) < 100:
         change_terrain = r.choice(individu)
@@ -100,7 +103,11 @@ def mutation_simple(individu):
         # retire le prix de l'ancien terrain et ajoute le prix du nouveau terrain
         i = 0
         while (new_terrain in individu) or (
-                get_price(individu) - get_price_terrain(change_terrain) + get_price_terrain(new_terrain) > BUDGET):
+            get_price(individu)
+            - get_price_terrain(change_terrain)
+            + get_price_terrain(new_terrain)
+            > BUDGET
+        ):
             new_terrain = get_pos_close_to(change_terrain)
             i += 1
             if i > 4:
@@ -110,27 +117,15 @@ def mutation_simple(individu):
         individu.append(new_terrain)
 
 
-def multiple_mutation(individu):
-    """Mutation avec une probabilité de 10% de chaque terrain"""
+def multiple_mutation_compact(individu):
+    """Mutation d'un chaque terrain"""
     return generate_compact_solution()[0]
-    # for change_terrain in individu:
-    #     if r.randint(0, 100) < 10:
-    #         new_terrain = change_terrain
-    #         # retire le prix de l'ancien terrain et ajoute le prix du nouveau terrain
-    #         while (new_terrain in individu) or (
-    #                 get_price(individu) - get_price_terrain(change_terrain) + get_price_terrain(new_terrain) > BUDGET):
-    #             new_terrain = get_pos_close_to(change_terrain)
-    #             # print("dans while2")
-    #         individu.remove(change_terrain)
-    #         individu.append(new_terrain)
-    #         # print("hors while 2")
 
 
-def mutation(individu):
-    """Mutation d'un algorithme génétique
-    """
-    mutation_simple(individu)
-    multiple_mutation(individu)
+def mutation_compact(individu):
+    """Mutation d'un algorithme génétique"""
+    mutation_simple_compact(individu)
+    multiple_mutation_compact(individu)
 
 
 """----------------------------------------------------------------------------------------------------
@@ -143,6 +138,18 @@ def algo_genetic(population, nb_gen):
     for gen in tqdm(range(nb_gen), desc="Générations"):
         population = selection_dominance_Pareto(population, score_pop)
         reproduction(population)
+        score_pop = get_scores(population)
+    population = selection_dominance_pareto_final(population, score_pop)
+    score_pop = get_scores(population)
+    return score_pop, population
+
+
+def algo_genetic_compact(nb_gen):
+    population = generate_n_compact_solutions(nb_gen)
+    score_pop = get_scores(population)
+    for gen in tqdm(range(nb_gen), desc="Générations"):
+        population = selection_dominance_Pareto(population, score_pop)
+        reproduction_compact(population)
         score_pop = get_scores(population)
     population = selection_dominance_pareto_final(population, score_pop)
     score_pop = get_scores(population)
@@ -167,7 +174,7 @@ if __name__ == "__main__":
     import visualize as v
 
     begin = t.time()
-    population_100 = generate_n_solutions(1000)
+    population_100 = generate_n_compact_solutions(1000)
     score_pop, population = algo_genetic(population_100, 100)
     print("Le programme a pris: ", round(t.time() - begin, 4), "s")
     # print(score_pop)

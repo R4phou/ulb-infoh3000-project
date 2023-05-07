@@ -66,5 +66,5 @@ if __name__ == "__main__":
     NB_INDIVIDUS = 500  # Nombre d'individus par génération
     launch_normal_genetic_for_AMCD(NB_GENERATIONS, NB_INDIVIDUS)
 #     launch_evolutive_genetic(NB_GENERATIONS, NB_INDIVIDUS)
-    import amcd as amcd
-    amcd.launch_amcd()
+    # import amcd as amcd
+    # amcd.launch_amcd()

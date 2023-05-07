@@ -13,8 +13,12 @@ def is_dominated(ind1, ind2):
         ind1 (list): score de l'individu 1
         ind2 (list): score de l'individu 2
     """
-    return ind1[0] <= ind2[0] and ind1[1] <= ind2[1] and ind1[2] <= ind2[2] and (
-        ind1[0] < ind2[0] or ind1[1] < ind2[1] or ind1[2] < ind2[2])
+    return (
+        ind1[0] <= ind2[0]
+        and ind1[1] <= ind2[1]
+        and ind1[2] <= ind2[2]
+        and (ind1[0] < ind2[0] or ind1[1] < ind2[1] or ind1[2] < ind2[2])
+    )
 
 
 def sort_by_dominance(scores_pop):
@@ -75,8 +79,7 @@ def no_crossover(parent1, parent2):
 
 
 def reproduction(population):
-    """Reproduction d'un algorithme génétique
-    """
+    """Reproduction d'un algorithme génétique"""
     for i in range(0, len(population), 2):
         individu1 = population[i]
         individu2 = population[i + 1]
@@ -99,7 +102,11 @@ def mutation_simple(individu):
         new_terrain = change_terrain
         # retire le prix de l'ancien terrain et ajoute le prix du nouveau terrain
         while (new_terrain in individu) or (
-                get_price(individu) - get_price_terrain(change_terrain) + get_price_terrain(new_terrain) > BUDGET):
+            get_price(individu)
+            - get_price_terrain(change_terrain)
+            + get_price_terrain(new_terrain)
+            > BUDGET
+        ):
             new_terrain = get_initial_pos()
         individu.remove(change_terrain)
         individu.append(new_terrain)
@@ -112,7 +119,11 @@ def multiple_mutation(individu):
             new_terrain = change_terrain
             # retire le prix de l'ancien terrain et ajoute le prix du nouveau terrain
             while (new_terrain in individu) or (
-                    get_price(individu) - get_price_terrain(change_terrain) + get_price_terrain(new_terrain) > BUDGET):
+                get_price(individu)
+                - get_price_terrain(change_terrain)
+                + get_price_terrain(new_terrain)
+                > BUDGET
+            ):
                 new_terrain = get_initial_pos()
             individu.remove(change_terrain)
             individu.append(new_terrain)
@@ -142,8 +153,7 @@ def multiple_mutation(individu):
 
 
 def mutation(individu):
-    """Mutation d'un algorithme génétique
-    """
+    """Mutation d'un algorithme génétique"""
     mutation_simple(individu)
     multiple_mutation(individu)
 
@@ -158,6 +168,18 @@ def algo_genetic(population, nb_gen):
     for gen in tqdm(range(nb_gen), desc="Générations"):
         population = selection_dominance_Pareto(population, score_pop)
         reproduction(population)
+        score_pop = get_scores(population)
+    population = selection_dominance_pareto_final(population, score_pop)
+    score_pop = get_scores(population)
+    return score_pop, population
+
+
+def algo_genetic_compact(nb_gen):
+    population = generate_n_compact_solutions(nb_gen)
+    score_pop = get_scores(population)
+    for gen in tqdm(range(nb_gen), desc="Générations"):
+        population = selection_dominance_Pareto(population, score_pop)
+        reproduction_compact(population)
         score_pop = get_scores(population)
     population = selection_dominance_pareto_final(population, score_pop)
     score_pop = get_scores(population)
