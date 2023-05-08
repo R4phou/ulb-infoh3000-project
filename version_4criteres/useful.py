@@ -85,7 +85,6 @@ def normalise(scores, maxs):
     return [[scores[i][j]/maxs[j] for j in range(len(scores[0]))]
             for i in range(len(scores))]
 
-
 def cree_nouvelle_map(filename):
     impact = read_file(filename)
     print(impact)
