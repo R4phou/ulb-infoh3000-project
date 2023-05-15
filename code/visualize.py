@@ -49,7 +49,7 @@ def print_maps(prod_map, cost_map, prox_map):
     axs[1].set_title("Cost Map")
     axs[1].matshow(cost_map, cmap=plt.cm.Blues)
     axs[2].set_title("Proximity Map")
-    axs[2].matshow(prox_map, cmap=plt.cm.Greens)
+    axs[2].matshow(prox_map, cmap="hot")
     plt.show()
 
 
@@ -246,12 +246,12 @@ def show_3d_multicolor(results_dictionnary):
 if __name__ == "__main__":
     import init as init
 
-    NB_GEN = 500
+    NB_GEN = 1000
     NB_POP = 1000
     NUM_IND = 48
-    filename = "result_AMCD/scores_gen" + str(NB_GEN) + "_pop" + str(NB_POP) + ".csv"
-    print_map(init.PROXIMITY_MAP, "Proximity Map")
-
+    filename = "result_AMCD/scores" + str(NB_GEN) + "_gen_" + str(NB_POP) + "_pop.csv"
+    # print_map(init.PROXIMITY_MAP, "Proximity Map")
+    plot_surface(filename)
     print_maps(init.PRODUCTION_MAP, init.COST_MAP, init.PROXIMITY_MAP)
     saved_scores = np.loadtxt(filename, delimiter=",")
     # saved_ind = np.loadtxt(filename_ind, delimiter=",", dtype=int)
