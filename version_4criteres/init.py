@@ -141,7 +141,7 @@ def generate_n_compact_solutions(n):
 
 def productivity(solution):
     """Calcule le score de productivité totale d'une solution
-    Solution = matrice de 0 et de 1 (1 = acheté et 0 = Pas acheté)
+    Solution = liste des positions achetées
     """
     score = 0
     for elem in solution:
@@ -150,11 +150,12 @@ def productivity(solution):
 
 
 def proximity(solution):
-    """Calcule le score de proximité totale d'une solution en sommant la valeur de chaque parcelle de la proximity_map"""
+    """Calcule le score de proximité totale d'une solution en sommant
+    la valeur de chaque parcelle de la proximity_map"""
     distance_tot = 0
     for bought in solution:
         distance_tot += PROXIMITY_MAP[bought[1]][bought[0]]
-    return round(distance_tot, 3)  # simplifier les calculs en arrondissant
+    return round(distance_tot, 3)
 
 
 def compacity(solution):
@@ -171,19 +172,18 @@ def compacity(solution):
             else:
                 score += 6
     return round(score, 3)
-  
-  
-def impactivity(solution):
-  impact_tot = 0
-  for bought in solution:
-      impact_tot += IMPACT_MAP[bought[1]][bought[0]]
-  return round(impact_tot, 3)  # simplifier les calculs en arrondissant
 
+
+def impactivity(solution):
+    impact_tot = 0
+    for bought in solution:
+        impact_tot += IMPACT_MAP[bought[1]][bought[0]]
+    return round(impact_tot, 3)  # simplifier les calculs en arrondissant
 
 
 def next_to(parcelle1, parcelle2):
     return distance_between_tuple(parcelle1, parcelle2) <= 1
-  
+
 
 def get_score(solution):
     """Renvoie la liste des scores [prod, prox, comp]"""

@@ -53,6 +53,13 @@ def print_maps(prod_map, cost_map, prox_map):
     plt.show()
 
 
+def print_map(map, nom):
+    fig, ax = plt.subplots()
+    ax.set_title(nom)
+    ax.matshow(map, cmap=plt.cm.Greens)
+    plt.show()
+
+
 def print_3D_solutions(scores):
     """Fonction qui reçoit en paramètre une liste des scores de toutes les solutions
     [prod, prox, comp] = [x, y, z]
@@ -214,9 +221,8 @@ if __name__ == "__main__":
     NB_POP = 1000
     NUM_IND = 48
     filename = "result_AMCD/scores_gen" + str(NB_GEN) + "_pop" + str(NB_POP) + ".csv"
-    # filename_ind = "results/ind" + \
-    #     str(NUM_IND)+"_gen" + str(NB_GEN)+"_pop"+str(NB_POP)+".csv"
-    # print_usage_map(init.USAGE_MAP)
+    print_map(init.PROXIMITY_MAP, "Proximity Map")
+
     print_maps(init.PRODUCTION_MAP, init.COST_MAP, init.PROXIMITY_MAP)
     saved_scores = np.loadtxt(filename, delimiter=",")
     # saved_ind = np.loadtxt(filename_ind, delimiter=",", dtype=int)
