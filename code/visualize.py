@@ -213,6 +213,35 @@ def read_pop(filename):
             population.append(ind)
     return population
 
+def show_3d_multicolor(results_dictionnary):
+    """"
+    Affiche chacun des résultats en 3D selon une couleur attribuée.
+    format du dictionnaire: {couleur:population}
+    """
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection="3d")
+    ax.set_xlabel("Productivity")
+    ax.set_ylabel("Proximity")
+    ax.set_zlabel("Compacity")
+    ax.set_xlim(0, 1.0)
+    ax.set_ylim(0, 1.0)
+    ax.set_zlim(0, 1.0)
+
+    for color in results_dictionnary.keys():
+        
+        # Les scores de la population considérée
+        score_pop = results_dictionnary[color]
+
+        # Les coordonnées des points
+        prods = [i[0] / MAX_PROD for i in score_pop]
+        proxs = [i[1] / MAX_PROX for i in score_pop]
+        comps = [i[2] / MAX_COMP for i in score_pop]
+
+        # Ajouter les points à l'axe 3D
+        ax.scatter(prods, proxs, comps, c=color)
+    # Afficher le graphique
+    plt.show()
+
 
 if __name__ == "__main__":
     import init as init

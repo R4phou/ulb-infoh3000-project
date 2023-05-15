@@ -165,23 +165,23 @@ def check_no_doubles(individual):
             individual[i] = get_initial_pos()
 
 
-def generate_solution():
+def generate_solution(nb_iterations):
     """Génère une solution aléatoire"""
     individual = generate_random_solution()[0]
-    print(individual)
-    for i in range(NB_ITERATIONS):
+    #print(individual)
+    for i in range(nb_iterations):
         update_coordinates(individual, init_velocity_matrix(individual), i)
         is_budget_ok(individual)
     return individual
 
 
-def get_initial_population():
+def get_initial_population(nb_individuals=100,nb_iterations=1000):
     """Génère une population de solutions aléatoires"""
     population = []
-    for i in tqdm(range(POPULATION_SIZE), desc="INDIVIDUS"):
-        population.append(generate_solution())
-        print(population[i])
-        print("Budget:", get_price(population[i]))
+    for i in tqdm(range(nb_individuals), desc="INDIVIDUS GSA"):
+        population.append(generate_solution(nb_iterations))
+        #print(population[i])
+        #print("Budget:", get_price(population[i]))
     return population
 
 
@@ -192,7 +192,7 @@ if __name__ == "__main__":
     # print(individu)
     # print(get_price(individu))
     # print(get_score(individu))
-    population = get_initial_population()
+    population = get_initial_population(POPULATION_SIZE, NB_ITERATIONS)
     scores = get_scores(population)
 
     import visualize as v

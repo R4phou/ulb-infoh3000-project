@@ -1,5 +1,6 @@
 from init import *
 from tqdm import tqdm
+import algo_gsa as gsa
 
 """----------------------------------------------------------------------------------------------------
                                     Etape de sélection
@@ -120,6 +121,7 @@ def mutation_simple(individu):
             > BUDGET
         ):
             new_terrain = get_initial_pos()
+        print("control")
         individu.remove(change_terrain)
         individu.append(new_terrain)
 
@@ -179,7 +181,6 @@ def mutation_compact(individu):
     mutation_simple_compact(individu)
     multiple_mutation_compact(individu)
 
-
 """----------------------------------------------------------------------------------------------------
                                     Algorithme complet
 ----------------------------------------------------------------------------------------------------"""
@@ -222,13 +223,47 @@ def algo_genetic_evolution(population, nb_gen):
     score_pop = get_scores(population)
     return score_pop, [evolution0, evolution1, score_pop]
 
+def gsa_genetic(nb_gen,nb_individuals):
+    population = gsa.get_initial_population(nb_individuals,nb_iterations=1000)
+    score_pop = get_scores(population)
+    print("population initiale: "+str(population))
+    print("score population initiale: "+str(score_pop))
+    for gen in tqdm(range(nb_gen), desc="Générations GSA"):
+        population = selection_dominance_Pareto(population, score_pop)
+        reproduction(population)
+        score_pop = get_scores(population)
+    population = selection_dominance_pareto_final(population, score_pop)
+    score_pop = get_scores(population)
+    return score_pop,population
 
-if __name__ == "__main__":
+def generate_population_file():
     import visualize as v
 
     begin = t.time()
     score_pop, population = algo_genetic(100)
+
     print("Le programme a pris: ", round(t.time() - begin, 4), "s")
     # print(score_pop)
     np.savetxt("score_pop.txt", score_pop)
     v.print_3D_solutions(score_pop)
+
+def compare_initial_populations(nb_gen,nb_ind):
+    """
+    compare les résultats obtenus avec les différentes génération de populations initiales:
+    - aléatoire
+    - compact
+    - GSA
+    """
+    import visualize as v
+
+    time_algo = t.time()
+    score_gsa, population_gsa = gsa_genetic(nb_gen,nb_ind)
+    score_pop, population = algo_genetic(nb_gen)
+    score_pop_comp, population_comp = algo_genetic_compact(nb_gen)
+
+    results = {"r": score_pop, "g": score_gsa, "b": score_pop_comp}
+
+    v.show_3d_multicolor(results)
+
+if __name__ == "__main__":
+    compare_initial_populations(500,500)
