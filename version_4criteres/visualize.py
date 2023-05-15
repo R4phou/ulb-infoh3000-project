@@ -17,7 +17,7 @@ def print_usagemap_plus_sol_list(usage, sol):
     """
     mat = usage
     # [vide, route, constru, acheté, erreur]
-    couleurs = ['white', 'lightblue', 'red',  'blue', 'green']
+    couleurs = ["white", "lightblue", "red", "blue", "green"]
     cmap = ListedColormap(couleurs)
     for elem in sol:
         if usage[elem[1]][elem[0]] == 0:
@@ -36,7 +36,7 @@ def print_usage_map(usage):
     """
     mat = usage
     # [vide, route, constru, acheté, erreur]
-    couleurs = ['white', 'lightblue', 'red',  'blue', 'green']
+    couleurs = ["white", "lightblue", "red", "blue", "green"]
     cmap = ListedColormap(couleurs)
     fig, ax = plt.subplots()
     ax.matshow(mat, cmap=cmap)
@@ -58,8 +58,12 @@ def print_maps(prod_map, cost_map, prox_map, impact_map):
 
 
 def print_4D_solutions(scores):
-    prod, prox, comp, imp = [sublst[0] for sublst in scores], [sublst[1] for sublst in scores], [
-        sublst[2] for sublst in scores], [sublst[3] for sublst in scores]
+    prod, prox, comp, imp = (
+        [sublst[0] for sublst in scores],
+        [sublst[1] for sublst in scores],
+        [sublst[2] for sublst in scores],
+        [sublst[3] for sublst in scores],
+    )
     maxes = [max(prod), max(prox), max(comp), max(imp)]
     print("maxes done")
     prod = u.normalize(prod, maxes[0])
@@ -69,49 +73,57 @@ def print_4D_solutions(scores):
     print("normlaisation done")
     fig, axs = plt.subplots(nrows=2, ncols=3)
     axs[0, 0].set_title("Prod vs Prox")
-    axs[0, 0].scatter(prod, prox, c='r')
+    axs[0, 0].scatter(prod, prox, c="r")
     axs[0, 1].set_title("Prod vs Comp")
-    axs[0, 1].scatter(prod, comp, c='r')
+    axs[0, 1].scatter(prod, comp, c="r")
     axs[0, 2].set_title("Prod vs Impact")
-    axs[0, 2].scatter(prod, imp, c='r')
+    axs[0, 2].scatter(prod, imp, c="r")
     axs[1, 0].set_title("Prox vs Comp")
-    axs[1, 0].scatter(prox, comp, c='r')
+    axs[1, 0].scatter(prox, comp, c="r")
     axs[1, 1].set_title("Prox vs Impact")
-    axs[1, 1].scatter(prox, imp, c='r')
+    axs[1, 1].scatter(prox, imp, c="r")
     axs[1, 2].set_title("Comp vs Impact")
-    axs[1, 2].scatter(comp, imp, c='r')
+    axs[1, 2].scatter(comp, imp, c="r")
     plt.show()
 
 
 def print_4D_solutions_with_best(scores, best_score):
-    prod, prox, comp, imp = [sublst[0] for sublst in scores], [sublst[1] for sublst in scores], [
-        sublst[2] for sublst in scores], [sublst[3] for sublst in scores]
+    prod, prox, comp, imp = (
+        [sublst[0] for sublst in scores],
+        [sublst[1] for sublst in scores],
+        [sublst[2] for sublst in scores],
+        [sublst[3] for sublst in scores],
+    )
     maxes = [max(prod), max(prox), max(comp), max(imp)]
     prod = u.normalize(prod, maxes[0])
     prox = u.normalize(prox, maxes[1])
     comp = u.normalize(comp, maxes[2])
     imp = u.normalize(imp, maxes[3])
-    best_score = [best_score[0]/maxes[0], best_score[1] /
-                  maxes[1], best_score[2]/maxes[2], best_score[3]/maxes[3]]
+    best_score = [
+        best_score[0] / maxes[0],
+        best_score[1] / maxes[1],
+        best_score[2] / maxes[2],
+        best_score[3] / maxes[3],
+    ]
     fig, axs = plt.subplots(nrows=2, ncols=3)
     axs[0, 0].set_title("Prod vs Prox")
-    axs[0, 0].scatter(prod, prox, c='r')
-    axs[0, 0].scatter(best_score[0], best_score[1], c='b')
+    axs[0, 0].scatter(prod, prox, c="r")
+    axs[0, 0].scatter(best_score[0], best_score[1], c="b")
     axs[0, 1].set_title("Prod vs Comp")
-    axs[0, 1].scatter(prod, comp, c='r')
-    axs[0, 1].scatter(best_score[0], best_score[2], c='b')
+    axs[0, 1].scatter(prod, comp, c="r")
+    axs[0, 1].scatter(best_score[0], best_score[2], c="b")
     axs[0, 2].set_title("Prod vs Impact")
-    axs[0, 2].scatter(prod, imp, c='r')
-    axs[0, 2].scatter(best_score[0], best_score[3], c='b')
+    axs[0, 2].scatter(prod, imp, c="r")
+    axs[0, 2].scatter(best_score[0], best_score[3], c="b")
     axs[1, 0].set_title("Prox vs Comp")
-    axs[1, 0].scatter(prox, comp, c='r')
-    axs[1, 0].scatter(best_score[1], best_score[2], c='b')
+    axs[1, 0].scatter(prox, comp, c="r")
+    axs[1, 0].scatter(best_score[1], best_score[2], c="b")
     axs[1, 1].set_title("Prox vs Impact")
-    axs[1, 1].scatter(prox, imp, c='r')
-    axs[1, 1].scatter(best_score[1], best_score[3], c='b')
+    axs[1, 1].scatter(prox, imp, c="r")
+    axs[1, 1].scatter(best_score[1], best_score[3], c="b")
     axs[1, 2].set_title("Comp vs Impact")
-    axs[1, 2].scatter(comp, imp, c='r')
-    axs[1, 2].scatter(best_score[2], best_score[3], c='b')
+    axs[1, 2].scatter(comp, imp, c="r")
+    axs[1, 2].scatter(best_score[2], best_score[3], c="b")
     plt.show()
 
 
@@ -119,13 +131,20 @@ def save_pop(population, nb_gen, nb_ind):
     """population est une liste de solutions sous la forme d'une liste d'individu
     un individu est une liste de liste [x,y]
     """
-    with open("version_4criteres/results/pop"+ str(nb_gen)+"_gen_"+str(nb_ind)+"_pop.txt", "w") as f:
+    with open(
+        "version_4criteres/results/pop"
+        + str(nb_gen)
+        + "_gen_"
+        + str(nb_ind)
+        + "_pop.txt",
+        "w",
+    ) as f:
         for i in range(len(population)):
             for j in range(len(population[i])):
-                f.write(str(population[i][j][0])+","+str(population[i][j][1]))
-                if j < len(population[i])-1:
+                f.write(str(population[i][j][0]) + "," + str(population[i][j][1]))
+                if j < len(population[i]) - 1:
                     f.write("|")
-            if i < len(population)-1:
+            if i < len(population) - 1:
                 f.write("\n")
 
 
@@ -143,7 +162,8 @@ def read_pop(filename):
 
 if __name__ == "__main__":
     import init as init
+
     NB_GEN = 500
     NB_POP = 1000
     NUM_IND = 48
-   
+    print_maps(init.PRODUCTION_MAP, init.COST_MAP, init.PROXIMITY_MAP, init.IMPACT_MAP)

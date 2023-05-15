@@ -14,14 +14,18 @@ CRITERES = ["Production", "Proximité", "Compacité", "Impact"]
 
 def getData():
     SCORES = np.loadtxt(
-        "version_4criteres/results/scores" + str(NBGEN) + "_gen_" + str(NBPOP) + "_pop.csv",
+        "version_4criteres/results/scores"
+        + str(NBGEN)
+        + "_gen_"
+        + str(NBPOP)
+        + "_pop.csv",
         delimiter=",",
     )
     # prends le maximum de chaque colonne pour normaliser
     MAXS = [max(SCORES[:, i]) for i in range(len(SCORES[0]))]
     SCORES = normalise(SCORES, MAXS)
     POPULATION = v.read_pop(
-        "version_4criteres/results/pop"+ str(NBGEN)+"_gen_"+str(NBPOP)+"_pop.txt"
+        "version_4criteres/results/pop" + str(NBGEN) + "_gen_" + str(NBPOP) + "_pop.txt"
     )
     POPU_SCORE = to_tuple_liste(POPULATION, SCORES)
     return SCORES, POPULATION, POPU_SCORE
@@ -147,10 +151,10 @@ def launch_amcd():
     v.print_4D_solutions_with_best(scores, sol[0][1][1])
 
 
-POIDS = [0.5, 0.5, 0.5, 0.5]
+POIDS = [0.5, 0.5, 100, 100]
 SEUIL_PREF = [0.7, 0.7, 0.7, 0.7]
 SEUIL_INDIF = [0.2, 0.2, 0.2, 0.2]
-NBGEN = 300
-NBPOP = 300
+NBGEN = 1000
+NBPOP = 1000
 if __name__ == "__main__":
     launch_amcd()

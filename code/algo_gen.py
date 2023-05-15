@@ -9,10 +9,7 @@ from tqdm import tqdm
 def is_dominated(ind1, ind2):
     """Fonction qui return true si ind1 est dominé
     False ne veut rien dire (si i1 n'est pas dominé, il n'est pas d'office dominant)
-    Args:
-        ind1 (list): score de l'individu 1
-        ind2 (list): score de l'individu 2
-    """
+    ind1 (list): score de l'individu 1"""
     return (
         ind1[0] <= ind2[0]
         and ind1[1] <= ind2[1]
@@ -83,7 +80,7 @@ def reproduction(population):
     for i in range(0, len(population), 2):
         individu1 = population[i]
         individu2 = population[i + 1]
-        child1, child2 = no_crossover(individu1, individu2)
+        child1, child2 = no_crossover(individu1, individu2)  # copie des parents
         mutation(child1)
         mutation(child2)
         population.append(child1)
@@ -108,7 +105,7 @@ def reproduction_compact(population):
 
 
 def mutation_simple(individu):
-    """Mutation avec une probabilité de 50% d'un terrain"""
+    """Mutation avec une probabilité de 100% d'un terrain"""
     if r.randint(0, 100) < 100:
         change_terrain = r.choice(individu)
         new_terrain = change_terrain
