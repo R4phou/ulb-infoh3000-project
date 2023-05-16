@@ -118,7 +118,6 @@ def mutation_simple(individu):
             > BUDGET
         ):
             new_terrain = get_initial_pos()
-        print("control")
         individu.remove(change_terrain)
         individu.append(new_terrain)
 
@@ -178,29 +177,76 @@ def mutation_compact(individu):
     mutation_simple_compact(individu)
     multiple_mutation_compact(individu)
 
+
 """----------------------------------------------------------------------------------------------------
-                                    Algorithme complet
+                                Critère d'arrêt et convergence
 ----------------------------------------------------------------------------------------------------"""
 
 
-def algo_genetic(nb_gen):
-    population = generate_n_solutions(nb_gen)
+def moyenne_score(scores_pop):
+    """Retourne la moyenne des scores de la population
+    Score = [prod, prox, comp]"""
+    m_prod = m_prox = m_comp = 0
+    for i in scores_pop:
+        m_prod += i[0]
+        m_prox += i[1]
+        m_comp += i[2]
+    return [
+        m_prod / len(scores_pop),
+        m_prox / len(scores_pop),
+        m_comp / len(scores_pop),
+    ]
+
+
+def convergence_algo_genetic(nb_gen, nb_ind, random=True):
+    import visualize as v
+
+    if random:
+        population = generate_n_solutions(nb_ind)
+    else:
+        population = generate_n_compact_solutions(nb_ind)
     score_pop = get_scores(population)
+    iteration = []
+    prod = []
+    prox = []
+    comp = []
     for gen in tqdm(range(nb_gen), desc="Générations normales"):
         population = selection_dominance_Pareto(population, score_pop)
-        reproduction(population)
+        a, b, c = moyenne_score(score_pop)
+        iteration.append(gen)
+        prod.append(a)
+        prox.append(b)
+        comp.append(c)
+        if random:
+            reproduction(population)
+        else:
+            reproduction(population)
         score_pop = get_scores(population)
+    v.print_conv(iteration, prod, prox, comp)
     population = selection_dominance_pareto_final(population, score_pop)
     score_pop = get_scores(population)
     return score_pop, population
 
 
-def algo_genetic_compact(nb_gen):
-    population = generate_n_compact_solutions(nb_gen)
+"""----------------------------------------------------------------------------------------------------
+                                    Algorithme complet
+----------------------------------------------------------------------------------------------------"""
+
+
+def algo_genetic(nb_gen, nb_ind, random=True):
+    if random:
+        desc = "Générations normales"
+        population = generate_n_solutions(nb_ind)
+    else:
+        desc = "Générations compactes"
+        population = generate_n_compact_solutions(nb_ind)
     score_pop = get_scores(population)
-    for gen in tqdm(range(nb_gen), desc="Générations compactes"):
+    for gen in tqdm(range(nb_gen), desc=desc):
         population = selection_dominance_Pareto(population, score_pop)
-        reproduction_compact(population)
+        if random:
+            reproduction(population)
+        else:
+            reproduction_compact(population)
         score_pop = get_scores(population)
     population = selection_dominance_pareto_final(population, score_pop)
     score_pop = get_scores(population)
@@ -220,31 +266,22 @@ def algo_genetic_evolution(population, nb_gen):
     score_pop = get_scores(population)
     return score_pop, [evolution0, evolution1, score_pop]
 
-def gsa_genetic(nb_gen,nb_individuals):
-    population = gsa.get_initial_population(nb_individuals,nb_iterations=1000)
+
+def gsa_genetic(nb_gen, nb_individuals):
+    population = gsa.get_initial_population(nb_individuals, nb_iterations=1000)
     score_pop = get_scores(population)
-    print("population initiale: "+str(population))
-    print("score population initiale: "+str(score_pop))
+    print("population initiale: " + str(population))
+    print("score population initiale: " + str(score_pop))
     for gen in tqdm(range(nb_gen), desc="Générations GSA"):
         population = selection_dominance_Pareto(population, score_pop)
         reproduction(population)
         score_pop = get_scores(population)
     population = selection_dominance_pareto_final(population, score_pop)
     score_pop = get_scores(population)
-    return score_pop,population
+    return score_pop, population
 
-def generate_population_file():
-    import visualize as v
 
-    begin = t.time()
-    score_pop, population = algo_genetic(100)
-
-    print("Le programme a pris: ", round(t.time() - begin, 4), "s")
-    # print(score_pop)
-    np.savetxt("score_pop.txt", score_pop)
-    v.print_3D_solutions(score_pop)
-
-def compare_initial_populations(nb_gen,nb_ind):
+def compare_algorithms(nb_gen, nb_ind):
     """
     compare les résultats obtenus avec les différentes génération de populations initiales:
     - aléatoire
@@ -254,13 +291,15 @@ def compare_initial_populations(nb_gen,nb_ind):
     import visualize as v
 
     time_algo = t.time()
-    score_gsa, population_gsa = gsa_genetic(nb_gen,nb_ind)
+    score_gsa, population_gsa = gsa_genetic(nb_gen, nb_ind)
     score_pop, population = algo_genetic(nb_gen)
-    score_pop_comp, population_comp = algo_genetic_compact(nb_gen)
+    score_pop_comp, population_comp = algo_genetic(nb_gen, nb_ind, random=False)
 
     results = {"r": score_pop, "g": score_gsa, "b": score_pop_comp}
 
     v.show_3d_multicolor(results)
 
+
 if __name__ == "__main__":
-    compare_initial_populations(500,500)
+    # compare_initial_populations(500, 500)
+    convergence_algo_genetic(1000, 100, False)

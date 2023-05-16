@@ -16,8 +16,10 @@ MAX_PROX = 330
 
 def get_agent_score(agent):
     # print("score - agent: ", agent)
-    return PRODUCTION_WEIGHT * PRODUCTION_MAP[agent[1]][agent[0]] / MAX_PROD + PROXIMITY_WEIGHT * \
-        PROXIMITY_MAP[agent[1]][agent[0]] / MAX_PROX
+    return (
+        PRODUCTION_WEIGHT * PRODUCTION_MAP[agent[1]][agent[0]] / MAX_PROD
+        + PROXIMITY_WEIGHT * PROXIMITY_MAP[agent[1]][agent[0]] / MAX_PROX
+    )
 
 
 def get_agent_worse_score(individual):
@@ -46,11 +48,13 @@ def get_agent_mass(individual):
     """Renvoie la masse de chaque parcelle d'un individu (matrice 1xn)"""
     mass_list = []
     for i in range(len(individual)):
-        """"Calcul de la masse de chaque individu (le calcul a été découpé pour + de lisibilité)"""
-        delta1 = get_agent_score(
-            individual[i]) - get_agent_worse_score(individual) + EPSILON_2
-        delta2 = get_agent_best_score(
-            individual) - get_agent_worse_score(individual)
+        """ "Calcul de la masse de chaque individu (le calcul a été découpé pour + de lisibilité)"""
+        delta1 = (
+            get_agent_score(individual[i])
+            - get_agent_worse_score(individual)
+            + EPSILON_2
+        )
+        delta2 = get_agent_best_score(individual) - get_agent_worse_score(individual)
         individual_mass = delta1 / delta2
         mass_list.append(individual_mass)
     return mass_list
@@ -68,7 +72,9 @@ def generate_agent_masses(individual):
 
 def calculate_gravitationnal_constant(universe_time):
     """Calcul de la constante gravitationnelle au temps universe_time ( > QUANTUM_TIME)"""
-    return FIRST_QUANTUM_GRAVITATIONNAL_CONSTANT * ((QUANTUM_TIME / (universe_time + 1)) ** BETA_UNIVERSE_CONSTANT)
+    return FIRST_QUANTUM_GRAVITATIONNAL_CONSTANT * (
+        (QUANTUM_TIME / (universe_time + 1)) ** BETA_UNIVERSE_CONSTANT
+    )
 
 
 # A CODER:
@@ -88,10 +94,22 @@ def generate_force_matrix(indiviual, universe_time):
                 # Calcul de la distance entre les deux individus (= R_ij)
                 distance = distance_between_tuple(indiviual[i], indiviual[j])
                 # Calcul de la force gravitationnelle
-                force_x += r.random() * gravitational_constant * matrix_masses[i] * matrix_masses[j] * (
-                    indiviual[j][0] - indiviual[i][0]) / (distance + EPSILON)
-                force_y += r.random() * gravitational_constant * matrix_masses[i] * matrix_masses[j] * (
-                    indiviual[j][1] - indiviual[i][1]) / (distance + EPSILON)
+                force_x += (
+                    r.random()
+                    * gravitational_constant
+                    * matrix_masses[i]
+                    * matrix_masses[j]
+                    * (indiviual[j][0] - indiviual[i][0])
+                    / (distance + EPSILON)
+                )
+                force_y += (
+                    r.random()
+                    * gravitational_constant
+                    * matrix_masses[i]
+                    * matrix_masses[j]
+                    * (indiviual[j][1] - indiviual[i][1])
+                    / (distance + EPSILON)
+                )
         matrix_forces.append([force_x, force_y])
     return matrix_forces
 
@@ -103,20 +121,25 @@ def generate_acceleration_matrix(individual, universe_time):
     matrix_forces = generate_force_matrix(individual, universe_time)
     for i in range(len(individual)):
         matrix_accelerations.append(
-            [matrix_forces[i][0] / matrix_masses[i], matrix_forces[i][1] / matrix_masses[i]])
+            [
+                matrix_forces[i][0] / matrix_masses[i],
+                matrix_forces[i][1] / matrix_masses[i],
+            ]
+        )
     return matrix_accelerations
 
 
 def generate_velocity_matrix(individual, old_velocity_matrix, universe_time):
     """Génère la matrice des vitesses (taille 1xn)"""
     matrix_velocities = []
-    matrix_accelerations = generate_acceleration_matrix(
-        individual, universe_time)
+    matrix_accelerations = generate_acceleration_matrix(individual, universe_time)
     for i in range(len(individual)):
-        velocity_x = r.random() * \
-            (old_velocity_matrix[i][0] + matrix_accelerations[i][0])
-        velocity_y = r.random() * \
-            (old_velocity_matrix[i][1] + matrix_accelerations[i][1])
+        velocity_x = r.random() * (
+            old_velocity_matrix[i][0] + matrix_accelerations[i][0]
+        )
+        velocity_y = r.random() * (
+            old_velocity_matrix[i][1] + matrix_accelerations[i][1]
+        )
         matrix_velocities.append([velocity_x, velocity_y])
     return matrix_velocities
 
@@ -124,7 +147,8 @@ def generate_velocity_matrix(individual, old_velocity_matrix, universe_time):
 def update_coordinates(individual, old_velocity_matrix, universe_time):
     """Génère la matrice des positions (taille 1xn)"""
     matrix_velocities = generate_velocity_matrix(
-        individual, old_velocity_matrix, universe_time)
+        individual, old_velocity_matrix, universe_time
+    )
 
     for i in range(len(individual)):
         individual[i][0] += int(matrix_velocities[i][0])
@@ -161,41 +185,36 @@ def pos_in_individu(individual, pos):
 def check_no_doubles(individual):
     """Vérifie qu'il n'y a pas de doublons dans l'individu"""
     for i in range(len(individual)):
-        if (pos_in_individu(individual, individual[i])):
+        if pos_in_individu(individual, individual[i]):
             individual[i] = get_initial_pos()
 
 
 def generate_solution(nb_iterations):
     """Génère une solution aléatoire"""
     individual = generate_random_solution()[0]
-    #print(individual)
+    # print(individual)
     for i in range(nb_iterations):
         update_coordinates(individual, init_velocity_matrix(individual), i)
         is_budget_ok(individual)
     return individual
 
 
-def get_initial_population(nb_individuals=100,nb_iterations=1000):
+def get_initial_population(nb_individuals=100, nb_iterations=1000):
     """Génère une population de solutions aléatoires"""
     population = []
     for i in tqdm(range(nb_individuals), desc="INDIVIDUS GSA"):
         population.append(generate_solution(nb_iterations))
-        #print(population[i])
-        #print("Budget:", get_price(population[i]))
     return population
 
 
 if __name__ == "__main__":
     NB_ITERATIONS = 1000
     POPULATION_SIZE = 100
-    # individu = generate_solution()
-    # print(individu)
-    # print(get_price(individu))
-    # print(get_score(individu))
     population = get_initial_population(POPULATION_SIZE, NB_ITERATIONS)
     scores = get_scores(population)
 
     import visualize as v
+
     # v.print_usagemap_plus_sol_list(USAGE_MAP, individu)
     v.print_3D_solutions(scores)
     v.save_pop(population, NB_ITERATIONS, POPULATION_SIZE)

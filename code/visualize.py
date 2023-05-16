@@ -213,8 +213,9 @@ def read_pop(filename):
             population.append(ind)
     return population
 
+
 def show_3d_multicolor(results_dictionnary):
-    """"
+    """ "
     Affiche chacun des résultats en 3D selon une couleur attribuée.
     format du dictionnaire: {couleur:population}
     """
@@ -228,7 +229,6 @@ def show_3d_multicolor(results_dictionnary):
     ax.set_zlim(0, 1.0)
 
     for color in results_dictionnary.keys():
-        
         # Les scores de la population considérée
         score_pop = results_dictionnary[color]
 
@@ -240,6 +240,17 @@ def show_3d_multicolor(results_dictionnary):
         # Ajouter les points à l'axe 3D
         ax.scatter(prods, proxs, comps, c=color)
     # Afficher le graphique
+    plt.show()
+
+
+def print_conv(iteration, prod, prox, comp):
+    fig, axs = plt.subplots(3)
+    axs[0].set_title("Convergence of Productivity")
+    axs[0].scatter(iteration, prod, c="purple")
+    axs[1].set_title("Convergence of Proximity")
+    axs[1].scatter(iteration, prox, c="purple")
+    axs[2].set_title("Convergence of Compac")
+    axs[2].scatter(iteration, comp, c="purple")
     plt.show()
 
 
