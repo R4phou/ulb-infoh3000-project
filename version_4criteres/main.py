@@ -5,7 +5,6 @@ from visualize import *
                                     Choix de la manière de launch
 ----------------------------------------------------------------------------------------------------"""
 
-
 def get_pareto_frontier(nb_gen, nb_ind):
     time_algo = t.time()
     score_pop, population = algo_genetic(nb_gen)
@@ -21,11 +20,7 @@ def get_pareto_frontier(nb_gen, nb_ind):
     )
     # sauvegarde les scores
     np.savetxt(
-        "version_4criteres/results/scores"
-        + str(nb_gen)
-        + "_gen_"
-        + str(nb_ind)
-        + "_pop.csv",
+        "version_4criteres/results/scores" + str(nb_gen) + "_gen_" + str(nb_ind) + "_pop.csv",
         score_pop,
         delimiter=",",
     )
@@ -38,8 +33,8 @@ def get_pareto_frontier(nb_gen, nb_ind):
 
 if __name__ == "__main__":
     r.seed(4)
-    NB_GENERATIONS = 3000  # Nombre de générations
-    NB_INDIVIDUS = 100  # Nombre d'individus par génération
+    NB_GENERATIONS = 300  # Nombre de générations
+    NB_INDIVIDUS = 300  # Nombre d'individus par génération
     get_pareto_frontier(NB_GENERATIONS, NB_INDIVIDUS)
     # import amcd as amcd
 
