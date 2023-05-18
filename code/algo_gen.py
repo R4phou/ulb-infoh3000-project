@@ -233,13 +233,18 @@ def convergence_algo_genetic(nb_gen, nb_ind, random=True):
 ----------------------------------------------------------------------------------------------------"""
 
 
-def algo_genetic(nb_gen, nb_ind, random=True):
+def algo_genetic(nb_gen, nb_ind, random=True, gravi=False, evolution=False):
     if random:
         desc = "Générations normales"
         population = generate_n_solutions(nb_ind)
     else:
         desc = "Générations compactes"
         population = generate_n_compact_solutions(nb_ind)
+    if gravi:
+        desc = "Générations GSA"
+        population = gsa.get_initial_population(nb_ind, nb_iterations=1000)
+    if evolution:
+        evolution0 = get_scores(population)
     score_pop = get_scores(population)
     for gen in tqdm(range(nb_gen), desc=desc):
         population = selection_dominance_Pareto(population, score_pop)
@@ -247,37 +252,14 @@ def algo_genetic(nb_gen, nb_ind, random=True):
             reproduction(population)
         else:
             reproduction_compact(population)
+        if evolution and gen == nb_gen // 2:
+            evolution1 = get_scores(population)
         score_pop = get_scores(population)
     population = selection_dominance_pareto_final(population, score_pop)
     score_pop = get_scores(population)
-    return score_pop, population
-
-
-def algo_genetic_evolution(population, nb_gen):
-    score_pop = get_scores(population)
-    evolution0 = score_pop
-    for gen in tqdm(range(nb_gen), desc="Générations évolutives"):
-        population = selection_dominance_Pareto(population, score_pop)
-        reproduction(population)
-        score_pop = get_scores(population)
-        if gen == nb_gen // 2:
-            evolution1 = score_pop
-    population = selection_dominance_pareto_final(population, score_pop)
-    score_pop = get_scores(population)
-    return score_pop, [evolution0, evolution1, score_pop]
-
-
-def gsa_genetic(nb_gen, nb_individuals):
-    population = gsa.get_initial_population(nb_individuals, nb_iterations=1000)
-    score_pop = get_scores(population)
-    print("population initiale: " + str(population))
-    print("score population initiale: " + str(score_pop))
-    for gen in tqdm(range(nb_gen), desc="Générations GSA"):
-        population = selection_dominance_Pareto(population, score_pop)
-        reproduction(population)
-        score_pop = get_scores(population)
-    population = selection_dominance_pareto_final(population, score_pop)
-    score_pop = get_scores(population)
+    if evolution:
+        evolution2 = score_pop
+        return score_pop, [evolution0, evolution1, evolution2]
     return score_pop, population
 
 
@@ -291,8 +273,8 @@ def compare_algorithms(nb_gen, nb_ind):
     import visualize as v
 
     time_algo = t.time()
-    score_gsa, population_gsa = gsa_genetic(nb_gen, nb_ind)
-    score_pop, population = algo_genetic(nb_gen)
+    score_gsa, population_gsa = algo_genetic(nb_gen, nb_ind, gravi=True)
+    score_pop, population = algo_genetic(nb_gen, nb_ind)
     score_pop_comp, population_comp = algo_genetic(nb_gen, nb_ind, random=False)
 
     results = {"r": score_pop, "g": score_gsa, "b": score_pop_comp}

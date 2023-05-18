@@ -11,7 +11,7 @@ def launch_evolutive_genetic(nb_gen, nb_ind):
     population = generate_n_solutions(nb_ind)
     print("Population initiale générée en: ", round(t.time() - time_algo, 5), "s")
     # evolution contient 3 populations a différentes générations
-    score_pop, evolution = algo_genetic_evolution(population, nb_gen)
+    score_pop, evolution = algo_genetic(population, nb_gen, evolution=True)
     print(
         "Temps d'exécution de l'algorithme génétique: ",
         round(t.time() - time_algo, 5),
@@ -22,48 +22,21 @@ def launch_evolutive_genetic(nb_gen, nb_ind):
     print_3D_evolutions(evolution)
 
 
-def launch_normal_genetic(nb_gen, nb_ind):
+def get_pareto_frontier(nb_gen, nb_ind, gsa=False):
     time_algo = t.time()
-    population = generate_n_solutions(nb_ind)
-    score_pop, population = algo_genetic(population, nb_gen)
-    print(
-        "Temps d'exécution de l'algorithme génétique: ",
-        round(t.time() - time_algo, 5),
-        "s",
-    )
-
-    # sauvegarde les scores
-    np.savetxt(
-        "results/scores_gen" + str(nb_gen) + "_pop" + str(nb_ind) + ".csv",
-        score_pop,
-        delimiter=",",
-    )
-
-    # permet de sauvegarder les individus
-    for i in range(10, 15):
-        np.savetxt(
-            "results/ind"
-            + str(i)
-            + "_gen"
-            + str(nb_gen)
-            + "_pop"
-            + str(nb_ind)
-            + ".csv",
-            population[i],
-            delimiter=",",
-        )
-
-    # affiche les solutions
-    print(len(population))
-    print_3D_solutions(score_pop)
-
-
-def get_pareto_frontier(nb_gen, nb_ind):
-    time_algo = t.time()
-    score_pop, population = algo_genetic(nb_gen, nb_ind)
+    score_pop = [[0, 0, 0]]
+    if gsa:
+        score_pop_gsa, population_gsa = algo_genetic(nb_gen, 100, gravi=True)
+    score_pop_random, population_random = algo_genetic(nb_gen, nb_ind)
     score_pop_comp, population_comp = algo_genetic(nb_gen, nb_ind, random=False)
-    score_pop = np.concatenate((score_pop, score_pop_comp), axis=0)
-    population = population + population_comp
+    np.concatenate((score_pop, score_pop_random), axis=0)
+    np.concatenate((score_pop, score_pop_comp), axis=0)
+    population = population_random + population_comp
+    if gsa:
+        np.concatenate((score_pop, score_pop_gsa), axis=0)
+        population += population_gsa
+
+    # recupération de la frontière de pareto finale
     population = selection_dominance_pareto_final(population, score_pop)
     score_pop = get_scores(population)
     print(
@@ -71,7 +44,9 @@ def get_pareto_frontier(nb_gen, nb_ind):
         round(t.time() - time_algo, 5),
         "s",
     )
-
+    if gsa:
+        results = {"r": score_pop_random, "g": score_pop_gsa, "b": score_pop_comp}
+        show_3d_multicolor(results)
     # sauvegarde les scores
     np.savetxt(
         "result_AMCD/scores" + str(nb_gen) + "_gen_" + str(nb_ind) + "_pop.csv",
@@ -88,9 +63,9 @@ def get_pareto_frontier(nb_gen, nb_ind):
 
 if __name__ == "__main__":
     r.seed(4)
-    NB_GENERATIONS = 1000  # Nombre de générations
-    NB_INDIVIDUS = 1000  # Nombre d'individus par génération
-    get_pareto_frontier(NB_GENERATIONS, NB_INDIVIDUS)
+    NB_GENERATIONS = 1002  # Nombre de générations
+    NB_INDIVIDUS = 1002  # Nombre d'individus par génération
+    get_pareto_frontier(NB_GENERATIONS, NB_INDIVIDUS, gsa=True)
     # launch_evolutive_genetic(NB_GENERATIONS, NB_INDIVIDUS)
     # import amcd as amcd
 
