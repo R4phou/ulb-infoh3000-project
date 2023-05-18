@@ -160,10 +160,30 @@ def read_pop(filename):
     return population
 
 
+def print_map(map, nom):
+    fig, ax = plt.subplots()
+    ax.set_title(nom)
+    ax.matshow(map, cmap=plt.cm.Greens)
+    plt.show()
+
+
+def print_conv(iteration, prod, prox, comp, impact):
+    fig, axs = plt.subplots(nrows=2, ncols=2)
+    axs[0, 0].set_title("Convergence of Productivity")
+    axs[0, 0].plot(iteration, prod, c="purple")
+    axs[0, 1].set_title("Convergence of Proximity")
+    axs[0, 1].plot(iteration, prox, c="purple")
+    axs[1, 0].set_title("Convergence of Compac")
+    axs[1, 0].plot(iteration, comp, c="purple")
+    axs[1, 1].set_title("Convergence of Impact")
+    axs[1, 1].plot(iteration, impact, c="purple")
+    plt.show()
+
+
 if __name__ == "__main__":
     import init as init
 
     NB_GEN = 500
     NB_POP = 1000
     NUM_IND = 48
-    print_maps(init.PRODUCTION_MAP, init.COST_MAP, init.PROXIMITY_MAP, init.IMPACT_MAP)
+    print_map(init.IMPACT_MAP, "Impact map")

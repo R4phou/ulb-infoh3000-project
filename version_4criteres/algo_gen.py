@@ -18,7 +18,12 @@ def is_dominated(ind1, ind2):
         and ind1[1] <= ind2[1]
         and ind1[2] <= ind2[2]
         and ind1[3] <= ind2[3]
-        and (ind1[0] < ind2[0] or ind1[1] < ind2[1] or ind1[2] < ind2[2] or ind1[3] < ind2[3])
+        and (
+            ind1[0] < ind2[0]
+            or ind1[1] < ind2[1]
+            or ind1[2] < ind2[2]
+            or ind1[3] < ind2[3]
+        )
     )
 
 
@@ -182,40 +187,97 @@ def mutation_compact(individu):
 
 
 """----------------------------------------------------------------------------------------------------
+                                Critère d'arrêt et convergence
+----------------------------------------------------------------------------------------------------"""
+
+
+def moyenne_score(scores_pop):
+    """Retourne la moyenne des scores de la population
+    Score = [prod, prox, comp]"""
+    m_prod = m_prox = m_comp = m_imp = 0
+    for i in scores_pop:
+        m_prod += i[0]
+        m_prox += i[1]
+        m_comp += i[2]
+        m_imp += i[3]
+    return [
+        m_prod / len(scores_pop),
+        m_prox / len(scores_pop),
+        m_comp / len(scores_pop),
+        m_imp / len(scores_pop),
+    ]
+
+
+def convergence_algo_genetic(nb_gen, nb_ind, random=True):
+    import visualize as v
+
+    if random:
+        population = generate_n_solutions(nb_ind)
+    else:
+        population = generate_n_compact_solutions(nb_ind)
+    score_pop = get_scores(population)
+    iteration = []
+    prod = []
+    prox = []
+    comp = []
+    imp = []
+    for gen in tqdm(range(nb_gen), desc="Générations normales"):
+        population = selection_dominance_Pareto(population, score_pop)
+        a, b, c, d = moyenne_score(score_pop)
+        iteration.append(gen)
+        prod.append(a)
+        prox.append(b)
+        comp.append(c)
+        imp.append(d)
+        if random:
+            reproduction(population)
+        else:
+            reproduction(population)
+        score_pop = get_scores(population)
+    v.print_conv(iteration, prod, prox, comp, imp)
+    population = selection_dominance_pareto_final(population, score_pop)
+    score_pop = get_scores(population)
+
+
+"""----------------------------------------------------------------------------------------------------
                                     Algorithme complet
 ----------------------------------------------------------------------------------------------------"""
 
 
-def algo_genetic(nb_gen):
-    population = generate_n_solutions(nb_gen)
+def algo_genetic(nb_gen, nb_ind, random=True):
+    if random:
+        desc = "Générations normales"
+        population = generate_n_solutions(nb_ind)
+    else:
+        desc = "Générations compactes"
+        population = generate_n_compact_solutions(nb_ind)
     score_pop = get_scores(population)
-    for gen in tqdm(range(nb_gen), desc="Générations normales"):
+    for gen in tqdm(range(nb_gen), desc=desc):
         population = selection_dominance_Pareto(population, score_pop)
-        reproduction(population)
+        if random:
+            reproduction(population)
+        else:
+            reproduction_compact(population)
         score_pop = get_scores(population)
     population = selection_dominance_pareto_final(population, score_pop)
     score_pop = get_scores(population)
     return score_pop, population
 
 
-def algo_genetic_compact(nb_gen):
-    population = generate_n_compact_solutions(nb_gen)
-    score_pop = get_scores(population)
-    for gen in tqdm(range(nb_gen), desc="Générations compactes"):
+def algo_genetic_evolution(nb_ind, nb_gen, random=True):
+    if random:
+        desc = "Générations évolutives normales"
+        population = generate_n_solutions(nb_ind)
+    else:
+        desc = "Générations évolutices compactes"
+        population = generate_n_compact_solutions(nb_ind)
+    evolution0 = population[:]
+    for gen in tqdm(range(nb_gen), desc=desc):
         population = selection_dominance_Pareto(population, score_pop)
-        reproduction_compact(population)
-        score_pop = get_scores(population)
-    population = selection_dominance_pareto_final(population, score_pop)
-    score_pop = get_scores(population)
-    return score_pop, population
-
-
-def algo_genetic_evolution(population, nb_gen):
-    score_pop = get_scores(population)
-    evolution0 = score_pop
-    for gen in tqdm(range(nb_gen), desc="Générations évolutives"):
-        population = selection_dominance_Pareto(population, score_pop)
-        reproduction(population)
+        if random:
+            reproduction(population)
+        else:
+            reproduction_compact(population)
         score_pop = get_scores(population)
         if gen == nb_gen // 2:
             evolution1 = score_pop
@@ -227,9 +289,11 @@ def algo_genetic_evolution(population, nb_gen):
 if __name__ == "__main__":
     import visualize as v
 
-    begin = t.time()
-    score_pop, population = algo_genetic(100)
-    print("Le programme a pris: ", round(t.time() - begin, 4), "s")
-    # print(score_pop)
-    np.savetxt("score_pop.txt", score_pop)
-    v.print_3D_solutions(score_pop)
+    r.seed(4)
+    convergence_algo_genetic(5000, 100, random=True)
+    # begin = t.time()
+    # score_pop, population = algo_genetic(100)
+    # print("Le programme a pris: ", round(t.time() - begin, 4), "s")
+    # # print(score_pop)
+    # np.savetxt("score_pop.txt", score_pop)
+    # v.print_4D_solutions(score_pop)

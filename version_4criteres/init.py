@@ -178,7 +178,7 @@ def impactivity(solution):
     impact_tot = 0
     for bought in solution:
         impact_tot += IMPACT_MAP[bought[1]][bought[0]]
-    return round(impact_tot, 3)  # simplifier les calculs en arrondissant
+    return round(impact_tot, 3)
 
 
 def next_to(parcelle1, parcelle2):
