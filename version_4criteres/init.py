@@ -215,7 +215,6 @@ if __name__ == "__main__":
     begin = t.time()
     for j in range(100):
         solutions = generate_n_solutions(500)
-        # print(get_scores(solutions))
         max_comp = max_prod = max_prox = 0
         for i in range(len(solutions)):
             max_comp = max(max_comp, get_score(solutions[i])[0])

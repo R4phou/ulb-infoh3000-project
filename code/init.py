@@ -172,29 +172,6 @@ def compacity(solution):
     return round(score, 3)
 
 
-# def compacity(solution):
-#     """Calcule le score de compacité totale d'une solution"""
-#     distance_tot = 0
-#     n = len(solution)
-#     for i in range(n):
-#         for j in range(i + 1, n):
-#             distance_tot += distance_between_tuple(solution[i], solution[j])
-#     return round(distance_tot, 3)
-
-
-# def compacity(individu):
-#     nb_colle = 0
-#     n = len(individu)
-#     for parcelle in range(n):
-#         for autre_parcelle in range(parcelle, n):
-#             distance = distance_between_tuple(
-#                 individu[parcelle], individu[autre_parcelle])
-#             if distance <= 1:
-#                 nb_colle += 1
-#                 break
-#     return 100*n/nb_colle
-
-
 def next_to(parcelle1, parcelle2):
     return distance_between_tuple(parcelle1, parcelle2) <= 1
 

@@ -1,10 +1,6 @@
 from algo_gen import *
 from visualize import *
 
-"""----------------------------------------------------------------------------------------------------
-                                    Choix de la manière de launch
-----------------------------------------------------------------------------------------------------"""
-
 
 def launch_evolutive_genetic(nb_gen, nb_ind):
     time_algo = t.time()
@@ -23,6 +19,13 @@ def launch_evolutive_genetic(nb_gen, nb_ind):
 
 
 def get_pareto_frontier(nb_gen, nb_ind, gsa=False):
+    """Fonction qui lance l'algorithme génétique aléatoire et compacte et qui affiche et sauvegarde les scores et la population de
+    la frontière de Pareto finale
+    Args:
+        nb_gen (int): nombre de génération effectuées par les algorithmes génétiques
+        nb_ind (int): nombre d'individus par population génération
+        gsa (bool, optional): Mettre à True pour que l'algorithme GSA soit aussi réalisé (souvent à false car assez lent). Defaults to False.
+    """
     time_algo = t.time()
     score_pop = [[0, 0, 0]]
     if gsa:

@@ -3,10 +3,6 @@ import visualize as v
 from useful import *
 
 
-Q = 3
-CRITERES = ["Production", "Proximité", "Compacité"]
-
-
 """----------------------------------------------------------------------------------------------------
                                     Chargement des données
 ----------------------------------------------------------------------------------------------------"""
@@ -147,6 +143,7 @@ def launch_amcd():
     v.print_3D_solutions_AMCD(scores, best=sol[0][1][1])
 
 
+CRITERES = ["Production", "Proximité", "Compacité"]
 POIDS = [0.5, 0.5, 0.5]  # Prod, prox, comp
 SEUIL_PREF = [0.7, 0.7, 0.7]
 SEUIL_INDIF = [0.2, 0.2, 0.2]

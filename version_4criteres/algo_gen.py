@@ -290,10 +290,4 @@ if __name__ == "__main__":
     import visualize as v
 
     r.seed(4)
-    convergence_algo_genetic(5000, 100, random=True)
-    # begin = t.time()
-    # score_pop, population = algo_genetic(100)
-    # print("Le programme a pris: ", round(t.time() - begin, 4), "s")
-    # # print(score_pop)
-    # np.savetxt("score_pop.txt", score_pop)
-    # v.print_4D_solutions(score_pop)
+    convergence_algo_genetic(3000, 100, random=True)

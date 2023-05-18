@@ -151,10 +151,11 @@ def launch_amcd():
     v.print_4D_solutions_with_best(scores, sol[0][1][1])
 
 
-POIDS = [0.5, 0.5, 100, 100]
-SEUIL_PREF = [0.7, 0.7, 0.7, 0.7]
-SEUIL_INDIF = [0.2, 0.2, 0.2, 0.2]
-NBGEN = 1000
-NBPOP = 1000
+CRITERES = ["Production", "Proximité", "Compacité", "Impact"]
+POIDS = [0.5, 0.5, 1, 1]
+SEUIL_PREF = [0.7, 0.7, 0.9, 0.9]
+SEUIL_INDIF = [0.2, 0.2, 0.4, 0.4]
+NBGEN = 3000
+NBPOP = 100
 if __name__ == "__main__":
     launch_amcd()

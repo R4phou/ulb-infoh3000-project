@@ -5,10 +5,11 @@ from visualize import *
                                     Choix de la manière de launch
 ----------------------------------------------------------------------------------------------------"""
 
+
 def get_pareto_frontier(nb_gen, nb_ind):
     time_algo = t.time()
-    score_pop, population = algo_genetic(nb_gen)
-    score_pop_comp, population_comp = algo_genetic_compact(nb_gen)
+    score_pop, population = algo_genetic(nb_gen, nb_ind)
+    score_pop_comp, population_comp = algo_genetic(nb_gen, nb_ind, random=False)
     score_pop = np.concatenate((score_pop, score_pop_comp), axis=0)
     population = population + population_comp
     population = selection_dominance_pareto_final(population, score_pop)
@@ -20,7 +21,11 @@ def get_pareto_frontier(nb_gen, nb_ind):
     )
     # sauvegarde les scores
     np.savetxt(
-        "version_4criteres/results/scores" + str(nb_gen) + "_gen_" + str(nb_ind) + "_pop.csv",
+        "version_4criteres/results/scores"
+        + str(nb_gen)
+        + "_gen_"
+        + str(nb_ind)
+        + "_pop.csv",
         score_pop,
         delimiter=",",
     )
@@ -33,9 +38,10 @@ def get_pareto_frontier(nb_gen, nb_ind):
 
 if __name__ == "__main__":
     r.seed(4)
-    NB_GENERATIONS = 300  # Nombre de générations
-    NB_INDIVIDUS = 300  # Nombre d'individus par génération
-    get_pareto_frontier(NB_GENERATIONS, NB_INDIVIDUS)
+    NB_GENERATIONS = 1500  # Nombre de générations
+    NB_INDIVIDUS = 500  # Nombre d'individus par génération
+    convergence_algo_genetic(NB_GENERATIONS, NB_INDIVIDUS)
+    # get_pareto_frontier(NB_GENERATIONS, NB_INDIVIDUS)
     # import amcd as amcd
 
     # amcd.launch_amcd()
