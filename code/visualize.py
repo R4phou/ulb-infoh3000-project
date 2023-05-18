@@ -238,7 +238,7 @@ def show_3d_multicolor(results_dictionnary):
         comps = [i[2] / MAX_COMP for i in score_pop]
 
         # Ajouter les points à l'axe 3D
-        ax.scatter(prods, proxs, comps, c=color)
+        ax.scatter(prods, proxs, comps, c=color, s=4)
     # Afficher le graphique
     plt.show()
 
