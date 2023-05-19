@@ -1,5 +1,7 @@
 import algo_gen as ag
 import visualize as v
+import main as m
+import os.path as f
 from useful import *
 
 
@@ -8,16 +10,26 @@ from useful import *
 ----------------------------------------------------------------------------------------------------"""
 
 
-def getData():
+def getData(use_seed=False,seed=4):
+    """Charge les données"""
+    score_file_name = "result_AMCD/scores" + str(NBGEN) + "_gen_" + str(NBPOP)+ "_pop"
+    pop_file_name = "result_AMCD/population" + str(NBGEN) + "_gen_" + str(NBPOP)+ "_pop"
+    if use_seed:
+        score_file_name += "_"+str(seed)+"_seed"
+        pop_file_name += "_"+str(seed)+"_seed"
+    score_file_name += ".csv"
+    pop_file_name += ".txt"
     SCORES = np.loadtxt(
-        "result_AMCD/scores" + str(NBGEN) + "_gen_" + str(NBPOP) + "_pop.csv",
+        #"result_AMCD/scores" + str(NBGEN) + "_gen_" + str(NBPOP) + "_pop.csv",
+        score_file_name,
         delimiter=",",
     )
     # prends le maximum de chaque colonne pour normaliser
     MAXS = [max(SCORES[:, i]) for i in range(len(SCORES[0]))]
     SCORES = normalise(SCORES, MAXS)
     POPULATION = v.read_pop(
-        "result_AMCD/population" + str(NBGEN) + "_gen_" + str(NBPOP) + "_pop.txt"
+        #"result_AMCD/population" + str(NBGEN) + "_gen_" + str(NBPOP) + "_pop.txt"
+        pop_file_name
     )
     POPU_SCORE = to_tuple_liste(POPULATION, SCORES)
     return SCORES, POPULATION, POPU_SCORE
@@ -112,7 +124,7 @@ def prometheeII():
 ----------------------------------------------------------------------------------------------------"""
 
 
-def print_solution(sol):
+def print_solution(sol,show_graph):
     """Affiche la meilleure solution PROMETHEE II"""
     print("Meilleure solution PROMETHEE II :")
     print("POIDS : ", POIDS)
@@ -120,35 +132,32 @@ def print_solution(sol):
     print("Individu : ", sol[1][0])
     print("Scores : ", sol[1][1])
     print("Budget : ", ag.get_price(sol[1][0]))
-    v.print_usagemap_plus_sol_list(ag.USAGE_MAP, sol[1][0])
+    if show_graph:
+        v.print_usagemap_plus_sol_list(ag.USAGE_MAP, sol[1][0])
 
 
-def print_all_solutions(sol):
+def print_all_solutions(sol,show_graph):
     """Affiche toutes les solutions PROMETHEE II"""
     for i in sol:
-        print_solution(i)
+        print_solution(i,show_graph)
         print("\n")
 
 
-def launch_amcd():
+def launch_amcd(show_graphs=True,seed=4,use_seed=False):
     begin = t.time()
     global SCORES, POPULATION, POPU_SCORE
-    SCORES, POPULATION, POPU_SCORE = getData()
+    SCORES, POPULATION, POPU_SCORE = getData(seed=seed,use_seed=use_seed)
     print("Début de la méthode PROMETHEE II")
     sol = prometheeII()
     print("Fin de la méthode PROMETHEE II en: ", round(t.time() - begin, 5), "s")
     scores = [sol[i][1][1] for i in range(len(sol))]
-    print_solution(sol[0])
+    print_solution(sol[0],show_graphs)
+    if show_graphs:
+        v.print_3D_solutions_AMCD(scores, best=sol[0][1][1])
 
-    v.print_3D_solutions_AMCD(scores, best=sol[0][1][1])
-
-
-CRITERES = ["Production", "Proximité", "Compacité"]
-POIDS = [0.5, 0.5, 0.5]  # Prod, prox, comp
-SEUIL_PREF = [0.9, 0.9, 0.9]
-SEUIL_INDIF = [0.05, 0.05, 0.05]
-NBGEN = 1000
-NBPOP = 1000
+"""----------------------------------------------------------------------------------------------------
+                                    Etude de la stabilité
+----------------------------------------------------------------------------------------------------"""
 
 def stabilite_poids():
     """Lance AMCD avec des poids différents"""
@@ -160,12 +169,35 @@ def stabilite_poids():
         [1, 1, 1],
         [0.3, 0.3, 0.3],
         [0.7, 0.7, 0.7],
-        [1, 0.7, 0.7]
+        [1, 0.7, 0.7],
+        [1, 0.2, 0.5],
     ]
 
     for weight in weight_list:
+        global POIDS
         POIDS = weight
-        launch_amcd()
+        separator_print()
+        launch_amcd(show_graphs=False)
+
+def stabilite_generations(nb_gen, nb_ind, nb_exec=3):
+    """Lance AMCD avec des générations issues de seed différentes"""
+    #Les seeds utilisées. Elles sont comprises entre 0 et nb_exec-1 inclus
+    seed_list = [i for i in range(4,4+nb_exec)]
+    #exécute la recherche Pareto puis amcd pour chaque seed
+    for s in seed_list:
+        seed_separator_print(s)
+        if not f.exists("result_AMCD/population" + str(NBGEN) + "_gen_" + str(NBPOP)+ "_pop_"+str(s)+"_seed.txt"):
+            print("Population non trouvée, création...")
+            m.get_pareto_frontier(nb_gen, nb_ind, gsa=True,seed=s,show_graph=False)
+        launch_amcd(show_graphs=False,seed=s,use_seed=True)
+
+CRITERES = ["Production", "Proximité", "Compacité"]
+POIDS = [0.5, 0.5, 0.5]  # Prod, prox, comp
+SEUIL_PREF = [0.9, 0.9, 0.9]
+SEUIL_INDIF = [0.05, 0.05, 0.05]
+NBGEN = 1000
+NBPOP = 1000
 
 if __name__ == "__main__":
     stabilite_poids()
+    #stabilite_generations(NBGEN,NBPOP)

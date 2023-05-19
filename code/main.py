@@ -18,7 +18,7 @@ def launch_evolutive_genetic(nb_gen, nb_ind):
     print_3D_evolutions(evolution)
 
 
-def get_pareto_frontier(nb_gen, nb_ind, gsa=False):
+def get_pareto_frontier(nb_gen, nb_ind, gsa=False,seed = 4,show_graph=True):
     """Fonction qui lance l'algorithme génétique aléatoire et compacte et qui affiche et sauvegarde les scores et la population de
     la frontière de Pareto finale
     Args:
@@ -52,19 +52,21 @@ def get_pareto_frontier(nb_gen, nb_ind, gsa=False):
     )
     if gsa:
         results = {"r": score_pop_random, "g": score_pop_gsa, "b": score_pop_comp}
-        show_3d_multicolor(results)
+        if show_graph:
+            show_3d_multicolor(results)
     # sauvegarde les scores
     np.savetxt(
-        "result_AMCD/scores" + str(nb_gen) + "_gen_" + str(nb_ind) + "_pop.csv",
+        "result_AMCD/scores" + str(nb_gen) + "_gen_" + str(nb_ind) + "_pop_"+str(seed)+"_seed.csv",
         score_pop_filtree,
         delimiter=",",
     )
 
     # sauvegarde des invividus
-    save_pop(population_tot_filtree, nb_gen, nb_ind)
+    save_pop(population_tot_filtree, nb_gen, nb_ind,seed=seed)
     print("Il y a ", len(population_tot_filtree), "solutions composant la frontière de Pareto!")
     #     print_usagemap_plus_sol_list(USAGE_MAP, population[0])
-    print_3D_solutions(score_pop_filtree)
+    if show_graph:
+        print_3D_solutions(score_pop_filtree)
 
 
 if __name__ == "__main__":

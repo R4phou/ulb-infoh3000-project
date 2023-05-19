@@ -185,12 +185,12 @@ def plot_surface(filename):
     plt.show()
 
 
-def save_pop(population, nb_gen, nb_ind):
+def save_pop(population, nb_gen, nb_ind,seed=4):
     """population est une liste de solutions sous la forme d'une liste d'individu
     un individu est une liste de liste [x,y]
     """
     with open(
-        "result_AMCD/population" + str(nb_gen) + "_gen_" + str(nb_ind) + "_pop.txt",
+        "result_AMCD/population" + str(nb_gen) + "_gen_" + str(nb_ind) + "_pop_"+str(seed)+"_seed.txt",
         "w",
     ) as f:
         for i in range(len(population)):

@@ -89,5 +89,13 @@ def flatten(list_to_merge):
     """Fonction qui réduit une liste de liste en une liste (réduction de 1 niveau de profondeur seulement)"""
     return [element for liste in list_to_merge for element in liste]
 
+def seed_separator_print(seed):
+    """Fonction qui affiche une ligne de séparation"""
+    print("--------------------------------------------------------------------------------------------------[ Seed : "+str(seed)+" ]---------------------------------------------------------------------------------------------------")
+
+def separator_print():
+    """Fonction qui affiche une ligne de séparation"""
+    print("-----------------------------------------------------")
+
 if __name__ == "__main__":
     import init as i
