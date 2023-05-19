@@ -85,6 +85,9 @@ def normalise(scores, maxs):
     return [[scores[i][j]/maxs[j] for j in range(len(scores[0]))]
             for i in range(len(scores))]
 
+def flatten(list_to_merge):
+    """Fonction qui réduit une liste de liste en une liste (réduction de 1 niveau de profondeur seulement)"""
+    return [element for liste in list_to_merge for element in liste]
 
 if __name__ == "__main__":
     import init as i

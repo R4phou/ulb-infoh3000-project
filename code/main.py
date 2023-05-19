@@ -27,21 +27,24 @@ def get_pareto_frontier(nb_gen, nb_ind, gsa=False):
         gsa (bool, optional): Mettre à True pour que l'algorithme GSA soit aussi réalisé (souvent à false car assez lent). Defaults to False.
     """
     time_algo = t.time()
-    score_pop = [[0, 0, 0]]
+    score_tot = [[0, 0, 0]]
     if gsa:
         score_pop_gsa, population_gsa = algo_genetic(nb_gen, 100, gravi=True)
+    
     score_pop_random, population_random = algo_genetic(nb_gen, nb_ind)
     score_pop_comp, population_comp = algo_genetic(nb_gen, nb_ind, random=False)
-    np.concatenate((score_pop, score_pop_random), axis=0)
-    np.concatenate((score_pop, score_pop_comp), axis=0)
-    population = population_random + population_comp
+
+    pop_list = [population_random, population_comp]
+
     if gsa:
-        np.concatenate((score_pop, score_pop_gsa), axis=0)
-        population += population_gsa
+        pop_list.append(population_gsa)
+    
+    population_tot_generee = flatten(pop_list)
+    score_pop_generee = get_scores(population_tot_generee)
 
     # recupération de la frontière de pareto finale
-    population = selection_dominance_pareto_final(population, score_pop)
-    score_pop = get_scores(population)
+    population_tot_filtree = selection_dominance_pareto_final(population_tot_generee, score_pop_generee)
+    score_pop_filtree = get_scores(population_tot_filtree)
     print(
         "Temps d'exécution des algorithmes génétiques: ",
         round(t.time() - time_algo, 5),
@@ -53,21 +56,21 @@ def get_pareto_frontier(nb_gen, nb_ind, gsa=False):
     # sauvegarde les scores
     np.savetxt(
         "result_AMCD/scores" + str(nb_gen) + "_gen_" + str(nb_ind) + "_pop.csv",
-        score_pop,
+        score_pop_filtree,
         delimiter=",",
     )
 
     # sauvegarde des invividus
-    save_pop(population, nb_gen, nb_ind)
-    print("Il y a ", len(population), "solutions composant la frontière de Pareto!")
+    save_pop(population_tot_filtree, nb_gen, nb_ind)
+    print("Il y a ", len(population_tot_filtree), "solutions composant la frontière de Pareto!")
     #     print_usagemap_plus_sol_list(USAGE_MAP, population[0])
-    print_3D_solutions(score_pop)
+    print_3D_solutions(score_pop_filtree)
 
 
 if __name__ == "__main__":
     r.seed(4)
-    NB_GENERATIONS = 1002  # Nombre de générations
-    NB_INDIVIDUS = 1002  # Nombre d'individus par génération
+    NB_GENERATIONS = 42  # Nombre de générations
+    NB_INDIVIDUS = 42  # Nombre d'individus par génération
     get_pareto_frontier(NB_GENERATIONS, NB_INDIVIDUS, gsa=True)
     # launch_evolutive_genetic(NB_GENERATIONS, NB_INDIVIDUS)
     # import amcd as amcd
