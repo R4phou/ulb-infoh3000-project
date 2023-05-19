@@ -145,9 +145,27 @@ def launch_amcd():
 
 CRITERES = ["Production", "Proximité", "Compacité"]
 POIDS = [0.5, 0.5, 0.5]  # Prod, prox, comp
-SEUIL_PREF = [0.7, 0.7, 0.7]
-SEUIL_INDIF = [0.2, 0.2, 0.2]
+SEUIL_PREF = [0.9, 0.9, 0.9]
+SEUIL_INDIF = [0.05, 0.05, 0.05]
 NBGEN = 1000
 NBPOP = 1000
+
+def stabilite_poids():
+    """Lance AMCD avec des poids différents"""
+    weight_list = [
+        [0.5, 0.5, 0.5],
+        [1, 0.5, 0.5],
+        [0.5, 1, 0.5],
+        [0.5, 0.5, 1],
+        [1, 1, 1],
+        [0.3, 0.3, 0.3],
+        [0.7, 0.7, 0.7],
+        [1, 0.7, 0.7]
+    ]
+
+    for weight in weight_list:
+        POIDS = weight
+        launch_amcd()
+
 if __name__ == "__main__":
-    launch_amcd()
+    stabilite_poids()
