@@ -185,12 +185,18 @@ def plot_surface(filename):
     plt.show()
 
 
-def save_pop(population, nb_gen, nb_ind,seed=4):
+def save_pop(population, nb_gen, nb_ind, seed=4):
     """population est une liste de solutions sous la forme d'une liste d'individu
     un individu est une liste de liste [x,y]
     """
     with open(
-        "result_AMCD/population" + str(nb_gen) + "_gen_" + str(nb_ind) + "_pop_"+str(seed)+"_seed.txt",
+        "result_AMCD/population"
+        + str(nb_gen)
+        + "_gen_"
+        + str(nb_ind)
+        + "_pop_"
+        + str(seed)
+        + "_seed.txt",
         "w",
     ) as f:
         for i in range(len(population)):
@@ -261,10 +267,6 @@ if __name__ == "__main__":
     NB_POP = 1000
     NUM_IND = 48
     filename = "result_AMCD/scores" + str(NB_GEN) + "_gen_" + str(NB_POP) + "_pop.csv"
-    # print_map(init.PROXIMITY_MAP, "Proximity Map")
-    plot_surface(filename)
     print_maps(init.PRODUCTION_MAP, init.COST_MAP, init.PROXIMITY_MAP)
     saved_scores = np.loadtxt(filename, delimiter=",")
-    # saved_ind = np.loadtxt(filename_ind, delimiter=",", dtype=int)
     print_3D_solutions(saved_scores)
-    # plot_surface(filename)

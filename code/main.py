@@ -33,18 +33,16 @@ def get_pareto_frontier(nb_gen, nb_ind, gsa=False, seed=4, show_graph=True):
     Args:
         nb_gen (int): nombre de génération effectuées par les algorithmes génétiques
         nb_ind (int): nombre d'individus par population génération
+        seed (int, optional): seed utilisée pour l'aléatoire. Defaults to 4.
         gsa (bool, optional): Mettre à True pour que l'algorithme GSA soit aussi réalisé (souvent à false car assez lent). Defaults to False.
     """
     time_algo = t.time()
-    score_tot = [[0, 0, 0]]
     if gsa:
         score_pop_gsa, population_gsa = algo_genetic(nb_gen, 100, gravi=True)
 
     score_pop_random, population_random = algo_genetic(nb_gen, nb_ind)
     score_pop_comp, population_comp = algo_genetic(nb_gen, nb_ind, random=False)
-
     pop_list = [population_random, population_comp]
-
     if gsa:
         pop_list.append(population_gsa)
 
@@ -85,16 +83,12 @@ def get_pareto_frontier(nb_gen, nb_ind, gsa=False, seed=4, show_graph=True):
         len(population_tot_filtree),
         "solutions composant la frontière de Pareto!",
     )
-    #     print_usagemap_plus_sol_list(USAGE_MAP, population[0])
     if show_graph:
         print_3D_solutions(score_pop_filtree)
 
 
 if __name__ == "__main__":
     r.seed(4)
-    NB_GENERATIONS = 42  # Nombre de générations
-    NB_INDIVIDUS = 42  # Nombre d'individus par génération
-    get_pareto_frontier(NB_GENERATIONS, NB_INDIVIDUS, gsa=True)
-    import amcd as amcd
-
-    amcd.launch_amcd()
+    NB_GENERATIONS = 100  # Nombre de générations
+    NB_INDIVIDUS = 100  # Nombre d'individus par génération
+    get_pareto_frontier(NB_GENERATIONS, NB_INDIVIDUS, gsa=False)

@@ -15,7 +15,7 @@ MAX_PROX = 330
 
 
 def get_agent_score(agent):
-    # print("score - agent: ", agent)
+    """Renvoie le score d'un agent (parcelle)"""
     return (
         PRODUCTION_WEIGHT * PRODUCTION_MAP[agent[1]][agent[0]] / MAX_PROD
         + PROXIMITY_WEIGHT * PROXIMITY_MAP[agent[1]][agent[0]] / MAX_PROX
@@ -24,7 +24,6 @@ def get_agent_score(agent):
 
 def get_agent_worse_score(individual):
     """Renvoie la moins bonne parcelle de l'individu"""
-    # print("worse - individual: ", individual)
     max = -1
     for i in range(len(individual)):
         agent_score = get_agent_score(individual[i])
@@ -34,7 +33,6 @@ def get_agent_worse_score(individual):
 
 
 def get_agent_best_score(individual):
-    # print("best - individual: ", individual)
     """Renvoie la meilleure parcelle de l'individu"""
     min = -1
     for i in range(len(individual)):
@@ -77,9 +75,6 @@ def calculate_gravitationnal_constant(universe_time):
     )
 
 
-# A CODER:
-# individual représente un individu (liste de parcelles)
-# une parcelle est représentée par un tuple (x,y) correspondant à sa position
 def generate_force_matrix(indiviual, universe_time):
     """Génère la matrice des forces (taille 1xn)"""
     matrix_forces = []

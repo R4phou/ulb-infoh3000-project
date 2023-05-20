@@ -114,7 +114,7 @@ def get_pos_close_to(pos):
 
 
 def check_in_map(position):
-    """reçoit un position = [x, y]
+    """Reçoit un position = [x, y]
     Vérifie que la position est bien dans la carte, aussi non
     @return False si la position n'est pas achetable ou n'est pas dans la carte
     """
@@ -126,10 +126,12 @@ def check_in_map(position):
 
 
 def generate_n_solutions(n):
+    """Génère n solutions aléatoires qui répondent aux différentes contraintes (une population de départ)"""
     return [generate_random_solution()[0] for i in range(n)]
 
 
 def generate_n_compact_solutions(n):
+    """Génère n solutions compactes qui répondent aux différentes contraintes (une population de départ)"""
     return [generate_compact_solution()[0] for i in range(n)]
 
 
@@ -206,11 +208,4 @@ if __name__ == "__main__":
     import visualize as v
 
     begin = t.time()
-    for j in range(100):
-        solutions = generate_n_solutions(500)
-        # print(get_scores(solutions))
-        max_comp = max_prod = max_prox = 0
-        for i in range(len(solutions)):
-            max_comp = max(max_comp, get_score(solutions[i])[0])
-        print("max_comp: ", max_comp)
     print("Le programme a pris: ", round(t.time() - begin, 4), "s")
