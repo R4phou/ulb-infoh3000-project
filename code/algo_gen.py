@@ -276,7 +276,7 @@ def compare_algorithms(nb_gen, nb_ind):
     score_gsa, population_gsa = algo_genetic(nb_gen, nb_ind, gravi=True)
     score_pop, population = algo_genetic(nb_gen, nb_ind)
     score_pop_comp, population_comp = algo_genetic(nb_gen, nb_ind, random=False)
-
+    print("Temps d'exécution: ", round(t.time() - time_algo, 5), "s")
     results = {"r": score_pop, "g": score_gsa, "b": score_pop_comp}
 
     v.show_3d_multicolor(results)

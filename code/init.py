@@ -198,6 +198,7 @@ def get_price_terrain(terrain):
 
 
 def get_scores(solutions):
+    """Renvoie la liste des scores de chaque solution"""
     return [get_score(solutions[i]) for i in range(len(solutions))]
 
 
