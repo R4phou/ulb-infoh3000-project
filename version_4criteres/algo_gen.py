@@ -245,6 +245,11 @@ def convergence_algo_genetic(nb_gen, nb_ind, random=True):
 
 
 def algo_genetic(nb_gen, nb_ind, random=True):
+    """
+    Fonction qui permet de lancer l'algorithme génétique.
+    Utilise uniquement une population initiale aléatoire par défaut.
+    Renvoie la population et le score de chaque individu
+    """
     if random:
         desc = "Générations normales"
         population = generate_n_solutions(nb_ind)
@@ -265,6 +270,12 @@ def algo_genetic(nb_gen, nb_ind, random=True):
 
 
 def algo_genetic_evolution(nb_ind, nb_gen, random=True):
+    """
+    compare les résultats obtenus avec les différentes génération de populations initiales:
+    - aléatoire
+    - compact
+    - GSA
+    """
     if random:
         desc = "Générations évolutives normales"
         population = generate_n_solutions(nb_ind)

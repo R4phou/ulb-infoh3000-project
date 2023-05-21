@@ -71,7 +71,8 @@ def generate_random_solution():
 
 
 def get_initial_pos():
-    """Fonction qui renvoie la position initiale à partir de laquelle on va commencer à acheter des terrains
+    """
+    Fonction qui renvoie la position initiale à partir de laquelle on va commencer à acheter des terrains
     Vérifie que la position de départ est bien achetable
     """
     pos = [r.randint(0, SIZE_X), r.randint(0, SIZE_Y)]
@@ -114,9 +115,10 @@ def get_pos_close_to(pos):
 
 
 def check_in_map(position):
-    """Reçoit un position = [x, y]
+    """
+    Reçoit un position = [x, y]
     Vérifie que la position est bien dans la carte, aussi non
-    @return False si la position n'est pas achetable ou n'est pas dans la carte
+    Renvoie False si la position n'est pas achetable ou n'est pas dans la carte
     """
     return (
         (position[0] < SIZE_X)
@@ -141,7 +143,8 @@ def generate_n_compact_solutions(n):
 
 
 def productivity(solution):
-    """Calcule le score de productivité totale d'une solution
+    """
+    Calcule le score de productivité totale d'une solution
     Solution = matrice de 0 et de 1 (1 = acheté et 0 = Pas acheté)
     """
     score = 0

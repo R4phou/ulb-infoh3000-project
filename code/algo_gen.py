@@ -199,6 +199,10 @@ def moyenne_score(scores_pop):
 
 
 def convergence_algo_genetic(nb_gen, nb_ind, random=True):
+    """
+    Fonction qui permet de visualiser la convergence de l'algorithme génétique.
+    Renvoie la population et le score de chaque individu
+    """
     import visualize as v
 
     if random:
@@ -234,6 +238,11 @@ def convergence_algo_genetic(nb_gen, nb_ind, random=True):
 
 
 def algo_genetic(nb_gen, nb_ind, random=True, gravi=False, evolution=False):
+    """
+    Fonction qui permet de lancer l'algorithme génétique.
+    Utilise uniquement une population initiale aléatoire par défaut.
+    Renvoie la population et le score de chaque individu
+    """
     if random:
         desc = "Générations normales"
         population = generate_n_solutions(nb_ind)

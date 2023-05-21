@@ -46,7 +46,7 @@ def get_agent_mass(individual):
     """Renvoie la masse de chaque parcelle d'un individu (matrice 1xn)"""
     mass_list = []
     for i in range(len(individual)):
-        """ "Calcul de la masse de chaque individu (le calcul a été découpé pour + de lisibilité)"""
+        """Calcul de la masse de chaque individu (le calcul a été découpé pour + de lisibilité)"""
         delta1 = (
             get_agent_score(individual[i])
             - get_agent_worse_score(individual)
@@ -187,7 +187,6 @@ def check_no_doubles(individual):
 def generate_solution(nb_iterations):
     """Génère une solution aléatoire"""
     individual = generate_random_solution()[0]
-    # print(individual)
     for i in range(nb_iterations):
         update_coordinates(individual, init_velocity_matrix(individual), i)
         is_budget_ok(individual)

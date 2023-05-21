@@ -7,6 +7,12 @@ from visualize import *
 
 
 def get_pareto_frontier(nb_gen, nb_ind):
+    """Fonction qui lance l'algorithme génétique aléatoire et compacte et qui affiche et sauvegarde les scores et la population de
+    la frontière de Pareto finale
+    Args:
+        nb_gen (int): nombre de génération effectuées par les algorithmes génétiques
+        nb_ind (int): nombre d'individus par population génération
+    """
     time_algo = t.time()
     score_pop, population = algo_genetic(nb_gen, nb_ind)
     score_pop_comp, population_comp = algo_genetic(nb_gen, nb_ind, random=False)

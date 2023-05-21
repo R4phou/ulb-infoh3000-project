@@ -61,7 +61,8 @@ def print_map(map, nom):
 
 
 def print_3D_solutions(scores):
-    """Fonction qui reçoit en paramètre une liste des scores de toutes les solutions
+    """
+    Fonction qui reçoit en paramètre une liste des scores de toutes les solutions
     [prod, prox, comp] = [x, y, z]
 
     """
@@ -87,7 +88,8 @@ def print_3D_solutions(scores):
 
 
 def print_3D_solutions_AMCD(scores, best):
-    """Fonction qui reçoit en paramètre une liste des scores de toutes les solutions
+    """
+    Fonction qui reçoit en paramètre une liste des scores de toutes les solutions
     [prod, prox, comp] = [x, y, z]
 
     """
@@ -114,9 +116,9 @@ def print_3D_solutions_AMCD(scores, best):
 
 
 def print_3D_evolutions(scores):
-    """Fonction qui reçoit en paramètre une liste contenant les scores initiaux, intermédiaires et finaux des solutions
+    """
+    Fonction qui reçoit en paramètre une liste contenant les scores initiaux, intermédiaires et finaux des solutions
     [prod, prox, comp] = [x, y, z]
-
     """
     # Créer la figure et l'axe 3D
     fig = plt.figure()
@@ -186,7 +188,8 @@ def plot_surface(filename):
 
 
 def save_pop(population, nb_gen, nb_ind, seed=4):
-    """population est une liste de solutions sous la forme d'une liste d'individu
+    """
+    population est une liste de solutions sous la forme d'une liste d'individu
     un individu est une liste de liste [x,y]
     """
     with open(
@@ -250,6 +253,7 @@ def show_3d_multicolor(results_dictionnary):
 
 
 def print_conv(iteration, prod, prox, comp):
+    """Affiche les graphiques de convergence"""
     fig, axs = plt.subplots(3)
     axs[0].set_title("Convergence of Productivity")
     axs[0].scatter(iteration, prod, c="purple")

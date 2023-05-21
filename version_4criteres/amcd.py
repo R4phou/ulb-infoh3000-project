@@ -139,6 +139,7 @@ def print_all_solutions(sol):
 
 
 def launch_amcd():
+    """Lance AMCD"""
     begin = t.time()
     global SCORES, POPULATION, POPU_SCORE
     SCORES, POPULATION, POPU_SCORE = getData()

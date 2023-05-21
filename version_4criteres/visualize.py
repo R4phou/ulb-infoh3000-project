@@ -45,6 +45,7 @@ def print_usage_map(usage):
 
 
 def print_maps(prod_map, cost_map, prox_map, impact_map):
+    """Affiche les 4 cartes (1/critère)"""
     fig, axs = plt.subplots(nrows=2, ncols=2)
     axs[0, 0].set_title("Production Map")
     axs[0, 0].matshow(prod_map, cmap=plt.cm.Oranges)
@@ -58,6 +59,7 @@ def print_maps(prod_map, cost_map, prox_map, impact_map):
 
 
 def print_4D_solutions(scores):
+    """Affiche les solutions 4D en plusieurs vues 2D"""
     prod, prox, comp, imp = (
         [sublst[0] for sublst in scores],
         [sublst[1] for sublst in scores],
@@ -88,6 +90,7 @@ def print_4D_solutions(scores):
 
 
 def print_4D_solutions_with_best(scores, best_score):
+    """Affiche les solutions 4D en plusieurs vues 2D, ainsi que la meilleure solution en bleu"""
     prod, prox, comp, imp = (
         [sublst[0] for sublst in scores],
         [sublst[1] for sublst in scores],
@@ -128,7 +131,9 @@ def print_4D_solutions_with_best(scores, best_score):
 
 
 def save_pop(population, nb_gen, nb_ind):
-    """population est une liste de solutions sous la forme d'une liste d'individu
+    """
+    Sauvegarde la population dans un fichier
+    population est une liste de solutions sous la forme d'une liste d'individu
     un individu est une liste de liste [x,y]
     """
     with open(
@@ -149,6 +154,10 @@ def save_pop(population, nb_gen, nb_ind):
 
 
 def read_pop(filename):
+    """
+    Récupère une population à partir d'un fichier
+    filename est le nom du fichier contenant la population
+    """
     with open(filename, "r") as f:
         lines = f.readlines()
         population = []
@@ -161,6 +170,7 @@ def read_pop(filename):
 
 
 def print_map(map, nom):
+    """Affiche une carte"""
     fig, ax = plt.subplots()
     ax.set_title(nom)
     ax.matshow(map, cmap=plt.cm.Greens)
@@ -168,6 +178,7 @@ def print_map(map, nom):
 
 
 def print_conv(iteration, prod, prox, comp, impact):
+    """Affiche la convergence des 4 critères"""
     fig, axs = plt.subplots(nrows=2, ncols=2)
     axs[0, 0].set_title("Convergence of Productivity")
     axs[0, 0].plot(iteration, prod, c="purple")

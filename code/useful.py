@@ -17,7 +17,8 @@ def read_file(path):
 
 
 def read_usage_file(path):
-    """Fonction qui lit le fichier Usage_map
+    """
+    Fonction qui lit le fichier Usage_map
     Renvoie une matrice de nombres (numpy)
     Lorsqu'il n'y a rien, c'est remplacé par le nombre 0
     Les routes R sont remplacées par le nombre 1
