@@ -11,22 +11,6 @@ from algo_gen import *
 from visualize import *
 
 
-def launch_evolutive_genetic(nb_gen, nb_ind):
-    time_algo = t.time()
-    population = generate_n_solutions(nb_ind)
-    print("Population initiale générée en: ", round(t.time() - time_algo, 5), "s")
-    # evolution contient 3 populations a différentes générations
-    score_pop, evolution = algo_genetic(population, nb_gen, evolution=True)
-    print(
-        "Temps d'exécution de l'algorithme génétique: ",
-        round(t.time() - time_algo, 5),
-        "s",
-    )
-
-    # affiche l'évolution des solutions
-    print_3D_evolutions(evolution)
-
-
 def get_pareto_frontier(nb_gen, nb_ind, gsa=False, seed=4, show_graph=True):
     """Fonction qui lance l'algorithme génétique aléatoire et compacte et qui affiche et sauvegarde les scores et la population de
     la frontière de Pareto finale
@@ -89,6 +73,6 @@ def get_pareto_frontier(nb_gen, nb_ind, gsa=False, seed=4, show_graph=True):
 
 if __name__ == "__main__":
     r.seed(4)
-    NB_GENERATIONS = 100  # Nombre de générations
-    NB_INDIVIDUS = 100  # Nombre d'individus par génération
+    NB_GENERATIONS = 1000  # Nombre de générations
+    NB_INDIVIDUS = 1000  # Nombre d'individus par génération
     get_pareto_frontier(NB_GENERATIONS, NB_INDIVIDUS, gsa=False)

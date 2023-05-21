@@ -142,6 +142,7 @@ def print_all_solutions(sol, show_graph):
 
 
 def launch_amcd(show_graphs=True, seed=4, use_seed=False):
+    """Lance AMCD"""
     begin = t.time()
     global SCORES, POPULATION, POPU_SCORE
     SCORES, POPULATION, POPU_SCORE = get_data(seed=seed, use_seed=use_seed)

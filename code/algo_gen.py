@@ -283,5 +283,10 @@ def compare_algorithms(nb_gen, nb_ind):
 
 
 if __name__ == "__main__":
-    # compare_initial_populations(500, 500)
-    convergence_algo_genetic(1000, 100, False)
+    r.seed(4)
+    # compare_algorithms(nb_gen=0, nb_ind=100)
+    # convergence_algo_genetic(1000, 100, False)
+    a, b = algo_genetic(1000, 100, random=False, evolution=True)
+    import visualize as v
+
+    v.print_3D_evolutions(b)
