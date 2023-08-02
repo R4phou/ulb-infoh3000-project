@@ -73,6 +73,6 @@ def get_pareto_frontier(nb_gen, nb_ind, gsa=False, seed=4, show_graph=True):
 
 if __name__ == "__main__":
     r.seed(4)
-    NB_GENERATIONS = 1000  # Nombre de générations
-    NB_INDIVIDUS = 1000  # Nombre d'individus par génération
+    NB_GENERATIONS = 502  # Nombre de générations
+    NB_INDIVIDUS = 102  # Nombre d'individus par génération
     get_pareto_frontier(NB_GENERATIONS, NB_INDIVIDUS, gsa=False)
